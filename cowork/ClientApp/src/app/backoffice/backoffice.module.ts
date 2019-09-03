@@ -21,6 +21,8 @@ import {TicketListComponent} from '../components/Backoffice/ticket-list/ticket-l
 import {TicketAttributionListComponent} from '../components/Backoffice/ticket-attribution-list/ticket-attribution-list.component';
 import {WareBookingListComponent} from '../components/Backoffice/ware-booking-list/ware-booking-list.component';
 import {WareListComponent} from '../components/Backoffice/ware-list/ware-list.component';
+import {DynamicFormBuilderModule} from "../components/dynamic-form-builder/dynamic-form-builder.module";
+import {DynamicFormModalComponent} from "../components/Backoffice/dynamic-form-modal/dynamic-form-modal.component";
 
 @NgModule({
     imports: [
@@ -30,6 +32,7 @@ import {WareListComponent} from '../components/Backoffice/ware-list/ware-list.co
         PipesModule,
         RouterModule.forChild([{path: '', component: BackofficeComponent}]),
         BackofficeComponentsModule,
+        DynamicFormBuilderModule,
     ],
     entryComponents: [
         UserListComponent,
@@ -47,6 +50,7 @@ import {WareListComponent} from '../components/Backoffice/ware-list/ware-list.co
         TicketAttributionListComponent,
         WareBookingListComponent,
         WareListComponent,
+        DynamicFormModalComponent,
     ],
     declarations: [BackofficeComponent]
 })

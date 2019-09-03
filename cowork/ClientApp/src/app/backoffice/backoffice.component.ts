@@ -16,6 +16,8 @@ import {TicketListComponent} from '../components/Backoffice/ticket-list/ticket-l
 import {TimeSlotListComponent} from '../components/Backoffice/time-slot-list/time-slot-list.component';
 import {WareBookingListComponent} from '../components/Backoffice/ware-booking-list/ware-booking-list.component';
 import {WareListComponent} from '../components/Backoffice/ware-list/ware-list.component';
+import {ModalController} from "@ionic/angular";
+import {DynamicFormModalComponent} from "../components/Backoffice/dynamic-form-modal/dynamic-form-modal.component";
 
 @Component({
     selector: 'app-backoffice',
@@ -28,7 +30,7 @@ export class BackofficeComponent implements OnInit {
     private selectedDefinition: string = "User";
     Refresher: Subject<any>;
 
-    constructor() {
+    constructor(private modalCtrl: ModalController) {
         this.definitions = [
             new DynamicRowDefinition(UserListComponent, {}, "User"),
             new DynamicRowDefinition(SubscriptionListComponent, {}, "Subscription"),
@@ -58,5 +60,13 @@ export class BackofficeComponent implements OnInit {
     LoadDataTable(name: string) {
         this.selectedDefinition = name;
         this.Refresher.next(null);
+    }
+
+    AddItem(selectedDefinition: string) {
+        this.modalCtrl.create({
+            component: DynamicFormModalComponent,
+        }).then(modal => {
+            modal.present();
+        })
     }
 }

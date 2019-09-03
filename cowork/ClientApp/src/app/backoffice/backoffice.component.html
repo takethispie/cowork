@@ -11,6 +11,9 @@
       Co'Work
     </ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="AddItem(selectedDefinition)">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
       <ion-button (click)="Refresh()">
         <ion-icon name="refresh"></ion-icon>
       </ion-button>
@@ -45,6 +48,11 @@
 
     <!-- the main content -->
     <ion-content id="menu-content">
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
       <dynamic-data-host [DataModelComponents]="definitions" [SelectedComponent]="selectedDefinition" [Refresher]="Refresher"></dynamic-data-host>
     </ion-content>
   </ion-split-pane>
