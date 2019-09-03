@@ -1,0 +1,9 @@
+<ion-list>
+  <ion-item *ngIf="RoomBookings == null || RoomBookings.length === 0">Vous n'avez pas de réservations de salle</ion-item>
+  <ion-item *ngFor="let item of RoomBookings">
+    <ion-label>
+      <h3>Salle {{ item.Room.Name }} - {{ item.Start.toFormat("dd/MM/yyyy") }} </h3>
+      <p>{{ item.End.diff(item.Start).as('minutes') }} Minutes</p>
+    </ion-label>
+  </ion-item>
+</ion-list>

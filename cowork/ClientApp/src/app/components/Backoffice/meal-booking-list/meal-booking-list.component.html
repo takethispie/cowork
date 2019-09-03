@@ -1,0 +1,12 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Id du repas</ion-col>
+    <ion-col>Id de l'utilisateur</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.MealId }}</ion-col>
+    <ion-col>{{ row.UserId }}</ion-col>
+  </ion-row>
+</ion-grid>

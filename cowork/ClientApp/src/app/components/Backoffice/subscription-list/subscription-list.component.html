@@ -1,0 +1,18 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Id client</ion-col>
+    <ion-col>Contrat avec engagement</ion-col>
+    <ion-col>Dernier renouvellement</ion-col>
+    <ion-col>Espace de coworking</ion-col>
+    <ion-col>Type d'abonnement</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.ClientId }}</ion-col>
+    <ion-col>{{ row.FixedContract ? "Oui" : "Non" }}</ion-col>
+    <ion-col>{{ row.LatestRenewal | date: "dd/MM/yyyy" }}</ion-col>
+    <ion-col>{{ row.Place.Name }}</ion-col>
+    <ion-col>{{ row.Type.Name }}</ion-col>
+  </ion-row>
+</ion-grid>

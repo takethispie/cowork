@@ -1,0 +1,26 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Nom</ion-col>
+    <ion-col size="2">Description</ion-col>
+    <ion-col>Durée Contrat avec engagement</ion-col>
+    <ion-col>Prix mensuel sans engagement</ion-col>
+    <ion-col>Prix mensuel avec engagement</ion-col>
+    <ion-col>Prix journée</ion-col>
+    <ion-col>Prix journée (étudiant)</ion-col>
+    <ion-col>Prix première heure</ion-col>
+    <ion-col>Prix heure suivante</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Name }}</ion-col>
+    <ion-col size="2">{{ row.Description }}</ion-col>
+    <ion-col>{{ row.FixedContractDurationMonth + " Mois" }}</ion-col>
+    <ion-col>{{ row.MonthlyFeeContractFree + "€/Mois" }}</ion-col>
+    <ion-col>{{ row.MonthlyFeeFixedContract + "€/Mois" }}</ion-col>
+    <ion-col>{{ row.PriceDay + "€" }}</ion-col>
+    <ion-col>{{ row.PriceDayStudent + "€" }}</ion-col>
+    <ion-col>{{ row.PriceFirstHour + "€" }}</ion-col>
+    <ion-col>{{ row.PriceNextHalfHour + "€"}}</ion-col>
+  </ion-row>
+</ion-grid>

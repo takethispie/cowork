@@ -1,0 +1,10 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-textarea [(ngModel)]="message" type="text" placeholder="Commenter .... "></ion-textarea>
+    </ion-col>
+    <ion-col size="3">
+      <ion-button small float-right round (click)="sendComment()">Commenter</ion-button>
+    </ion-col>  
+  </ion-row>
+</ion-grid>

@@ -1,0 +1,26 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button (click)="GoBack()">
+                <ion-icon name="arrow-round-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Calendrier des reservations Salle {{ room.Name }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="dark" (click)="PreviousWeek()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+            <ion-button color="dark" (click)="TodayWeek()">
+                <ion-label>Aujourd'hui</ion-label>
+            </ion-button>
+            <ion-button color="dark" (click)="NextWeek()">
+                <ion-icon name="arrow-forward"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [weekStartsOn]="1" [refresh]="refresh"
+        (hourSegmentClicked)="HourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)" [dayStartHour]="7" [dayEndHour]="23">
+    </mwl-calendar-week-view>
+</ion-content>

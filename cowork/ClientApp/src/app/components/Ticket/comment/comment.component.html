@@ -1,0 +1,9 @@
+<ion-card>
+  <ion-card-content>
+    <strong>{{ TicketComment.Author?.FirstName }} {{ TicketComment.Author?.LastName }}</strong>
+    <h5>{{ TicketComment.Content }}</h5>
+    <p>
+      {{ TicketComment.Created | date: "dd/MM/yyyy - hh:mm"}}
+    </p>
+  </ion-card-content>
+</ion-card>

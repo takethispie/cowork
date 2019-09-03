@@ -1,0 +1,40 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="account">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>Compte</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="meal" *ngIf="auth.User.Type == 0">
+      <ion-icon name="pizza"></ion-icon>
+      <ion-label>Reservation Repas</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="reservation" *ngIf="auth.User.Type == 0">
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Reservation Salles</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="ware" *ngIf="auth.User.Type == 0">
+      <ion-icon name="laptop"></ion-icon>
+      <ion-label>Reservation Materiel</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="backoffice" *ngIf="auth.User.Type == 2">
+      <ion-icon name="laptop"></ion-icon>
+      <ion-label>Backoffice</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="ticket">
+      <ion-icon name="help"></ion-icon>
+      <ion-label>Support Technique</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="Disconnect()">
+      <ion-icon name="exit"></ion-icon>
+      <ion-label>Se Déconnecter</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

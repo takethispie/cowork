@@ -1,0 +1,31 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ajouter un Ticket</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="CreateTicket(form)">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Titre</ion-label>
+        <ion-input name="title" ngModel required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea rows="6" cols="20" name="description" ngModel></ion-textarea>
+      </ion-item>
+      <!-- TODO add ware list -->
+    </ion-list>
+    <ion-footer>
+        <ion-button type="submit" [disabled]="form.invalid" expand="block">Creer un ticket</ion-button>
+    </ion-footer>
+  </form>
+</ion-content>
+
+

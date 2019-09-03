@@ -1,0 +1,21 @@
+<ion-list>
+  <ion-card *ngFor="let item of Places" (click)="Choose(item)">
+    <ion-card-header>
+      <h4><b>{{ item.Name }}</b></h4>
+      <ion-icon *ngIf="item.Id === SelectedId" style="margin-left: 85%; font-size: 24px; position: fixed;" name="checkmark" color="success"></ion-icon>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="item.HighBandwidthWifi">Wifi Grande bande passante <ion-icon name="checkmark"></ion-icon></p>
+      <p *ngIf="item.MembersOnlyArea"> Zone membres uniquement <ion-icon name="checkmark"></ion-icon></p>
+      <p *ngIf="item.UnlimitedBeverages"> Snacking et boissons gratuites à volonté<ion-icon name="checkmark"></ion-icon></p>
+      <p *ngIf="item.PrinterAmount > 0">Imprimantes: {{ item.PrinterAmount }}</p>
+      <p *ngIf="item.CosyRoomAmount > 0">Salons Cosy: {{ item.CosyRoomAmount }}</p>
+      <p *ngIf="item.LaptopAmount > 0">Ordinateurs portables: {{ item.LaptopAmount }}</p>
+      <br>
+      <h4><b>Horaires</b></h4>
+      <p *ngFor="let time of OrderByDay(item.OpenedTimes)"> {{ GetWeekDayName(time.Day) }}
+        {{ time.StartHour.toString().padStart(2,'0') + ":" + time.StartMinutes.toString().padStart(2,'0') }} -
+        {{ time.EndHour.toString().padStart(2,'0') + ":" + time.EndMinutes.toString().padStart(2,'0') }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-list>

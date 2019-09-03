@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="GoBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Ajouter un évenement</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime [readonly]="true" [value]="EventDate" [displayFormat]="'DD/MM/YYYY HH:mm'"></ion-datetime>
+    </ion-item>
+  </ion-list>
+</ion-content>

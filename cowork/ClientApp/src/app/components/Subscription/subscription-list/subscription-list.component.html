@@ -1,0 +1,17 @@
+<ion-list>
+  <ion-card *ngFor="let item of SubscriptionTypeList" (click)="Choose(item)">
+    <ion-card-header>
+      <h4>{{ item.Name }}</h4>
+      <ion-icon *ngIf="item.Id === SelectedId" style="margin-left: 85%; font-size: 24px; position: fixed;" name="checkmark" color="success"></ion-icon>
+      <p>{{ item.Description }}</p>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Prix avec engagement de {{ item.FixedContractDurationMonth }} Mois: {{ item.MonthlyFeeFixedContract }} Euros/mois</p>
+      <p>Prix sans engagement: {{ item.MonthlyFeeContractFree }} Euros/mois</p>
+      <br>
+      <p>Prix première heure: {{ item.PriceFirstHour }} Euros</p>
+      <p>Prix demi-heure suivante: {{ item.PriceNextHalfHour }} Euros</p>
+      <p>Prix Journée: {{ item.PriceDay }} Euros</p>
+    </ion-card-content>
+  </ion-card>
+</ion-list>

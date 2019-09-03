@@ -1,0 +1,16 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Id de l'auteur</ion-col>
+    <ion-col>Contenu</ion-col>
+    <ion-col>Date création</ion-col>
+    <ion-col>Id du ticket</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.AuthorId }}</ion-col>
+    <ion-col>{{ row.Content }}</ion-col>
+    <ion-col>{{ row.Created | date: "dd/MM/yyyy" }}</ion-col>
+    <ion-col>{{ row.TicketId }}</ion-col>
+  </ion-row>
+</ion-grid>

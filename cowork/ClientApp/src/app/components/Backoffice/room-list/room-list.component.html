@@ -1,0 +1,14 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Nom</ion-col>
+    <ion-col>Espace de coworking</ion-col>
+    <ion-col>Type de salle</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Name }}</ion-col>
+    <ion-col>{{ row.Place.Name }}</ion-col>
+    <ion-col>{{ GetRoomType(row.Type) }}</ion-col>
+  </ion-row>
+</ion-grid>

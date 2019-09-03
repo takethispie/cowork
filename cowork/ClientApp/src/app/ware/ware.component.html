@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Co'Work
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="dark">
+  <ion-grid>
+    <ion-row class="calendar">
+      <ion-col size="4">
+        <ware-list [UserId]="auth.User.Id" [PlaceId]="auth.Subscription.Place.Id" (WareSelected)="WareSelected($event)" (FirstWare)="FirstWareLoaded($event)"></ware-list>
+      </ion-col>
+      <ion-col size="8">
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-buttons slot="end">
+              <ion-button color="dark" (click)="PreviousWeek()">
+                <ion-icon name="arrow-back"></ion-icon>
+              </ion-button>
+              <ion-button color="dark" (click)="TodayWeek()">
+                <ion-label>Aujourd'hui</ion-label>
+              </ion-button>
+              <ion-button color="dark" (click)="NextWeek()">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [weekStartsOn]="1" [refresh]="refresh"
+                                  (hourSegmentClicked)="HourSegmentClicked($event)" (eventTimesChanged)="eventTimesChanged($event)" [dayStartHour]="7" [dayEndHour]="23">
+          </mwl-calendar-week-view>
+        </ion-content>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Nom</ion-col>
+    <ion-col>Nombre de salons</ion-col>
+    <ion-col>Wifi Haute Vitesse</ion-col>
+    <ion-col>Nombre d'ordinateurs portables</ion-col>
+    <ion-col>Zone réservée aux membres</ion-col>
+    <ion-col>Nombre d'imprimantes</ion-col>
+    <ion-col>Snacking & boissons à volonté</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Name }}</ion-col>
+    <ion-col>{{ row.CosyRoomAmount }}</ion-col>
+    <ion-col>{{ row.HighBandwidthWifi ? "Oui" : "Non" }}</ion-col>
+    <ion-col>{{ row.LaptopAmount }}</ion-col>
+    <ion-col>{{ row.MembersOnlyArea ? "Oui" : "Non" }}</ion-col>
+    <ion-col>{{ row.PrinterAmount }}</ion-col>
+    <ion-col>{{ row.UnlimitedBeverages ? "Oui" : "Non" }}</ion-col>
+  </ion-row>
+</ion-grid>

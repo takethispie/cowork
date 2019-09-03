@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button text="" (click)="retour()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      Selectionner un Espace Co'Work
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="Reload()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <place-list [Places]="Places" (PlaceChosen)="PlaceChosen($event)" [SelectedId]="SelectedId"></place-list>
+</ion-content>

@@ -1,0 +1,12 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Id du personnel</ion-col>
+    <ion-col>Id du ticket</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.StaffId }}</ion-col>
+    <ion-col>{{ row.TicketId }}</ion-col>
+  </ion-row>
+</ion-grid>

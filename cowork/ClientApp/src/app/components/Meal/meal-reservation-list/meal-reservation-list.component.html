@@ -1,0 +1,11 @@
+<ion-list>
+  <ion-item *ngIf="MealReservations == null || MealReservations.length === 0">Vous n'avez pas de réservations de plateaux repas</ion-item>
+  <ion-item *ngFor="let item of MealReservations">
+    <ion-label>
+      <h3>{{ (mealService.ById(item.MealId) | async ).Description }}</h3>
+      <p>{{ (mealService.ById(item.MealId) | async).Date.toLocaleString() }}</p>
+      <p>{{ item.Note }}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+

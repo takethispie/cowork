@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Co'Work
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="Refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">
+  <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
+  <ion-grid>
+    <ion-row>
+      <ion-col offset="3" size="6">
+        <room-list [Rooms]="rooms"></room-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,16 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>jour concerné</ion-col>
+    <ion-col>Espace de coworking</ion-col>
+    <ion-col>Heure d'ouverture</ion-col>
+    <ion-col>Heure de fermeture</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ GetWeekDay(row.Day) }}</ion-col>
+    <ion-col>{{ row.Place.Name }}</ion-col>
+    <ion-col>{{ row.StartHour + ":" + row.StartMinutes }}</ion-col>
+    <ion-col>{{ row.EndHour + ":" + row.EndMinutes }}</ion-col>
+  </ion-row>
+</ion-grid>

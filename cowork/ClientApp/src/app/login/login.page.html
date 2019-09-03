@@ -1,0 +1,31 @@
+<ion-content color="dark">
+  <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
+  <form #form="ngForm" (ngSubmit)="login(form)">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Login</h3>
+          </div>
+          <div padding>
+            <ion-item>
+              <ion-input name="email" type="email" placeholder="votre@email.com" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="password" type="password" placeholder="Mot de passe" ngModel required></ion-input>
+            </ion-item>
+          </div>
+          <div padding>
+            <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Se Connecter</ion-button>
+          </div>
+          <div padding>
+            <ion-button size="large" (click)="LoginTakethispie()"  expand="block">Se Connecter (takethispie)</ion-button>
+          </div>
+          <div padding>
+            <ion-button size="large" expand="block" (click)="Register()">S'inscrire</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

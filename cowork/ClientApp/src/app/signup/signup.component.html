@@ -1,0 +1,36 @@
+<ion-content color="dark" padding>
+    <form #form="ngForm" (ngSubmit)="register(form)">
+      <ion-grid>
+        <ion-row color="primary" justify-content-center>
+          <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+            <div text-center>
+              <h3>Inscription</h3>
+            </div>
+            <div padding>
+              <ion-item>
+                <ion-input name="email" type="email" placeholder="votre@email.com" ngModel required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input name="firstName" type="text" placeholder="Prénom" ngModel></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input name="lastName" type="text" placeholder="Nom" ngModel></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input name="password" type="password" placeholder="Mot de passe" ngModel required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input name="confirmPassword" type="password" placeholder="Confirmer Mot de passe" ngModel required></ion-input>
+              </ion-item>
+            </div>
+            <div padding>
+              <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Creer un compte</ion-button>
+            </div>
+            <div padding>
+              <ion-button size="large" (click)="GoBack()" expand="block">Annuler</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+</ion-content>

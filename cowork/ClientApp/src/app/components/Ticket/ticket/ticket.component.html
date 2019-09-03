@@ -1,0 +1,24 @@
+<ion-card color="light">
+  <ion-card-header color="primary">
+    <ion-card-title>
+      <ion-label> {{ Ticket.Title }} </ion-label>
+    </ion-card-title>
+    <ion-card-subtitle>
+      <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>
+      <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ GetCreatedDuration(Ticket.Created) }}</i>
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-label>{{ Ticket.Description  }}</ion-label>
+  </ion-card-content>
+  <ion-toolbar color="light">
+    <ion-buttons>
+      <ion-button color="danger" *ngIf="UserCanDelete" (click)="Delete()">
+        <ion-icon name="trash"></ion-icon>
+        <ion-label>Supprimmer</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <comment *ngFor="let comment of Ticket.Comments" [TicketComment]="comment"></comment>
+  <comment-form (CommentSent)="CommentSent($event)"></comment-form>
+</ion-card>

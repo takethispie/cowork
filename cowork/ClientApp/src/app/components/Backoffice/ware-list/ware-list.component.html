@@ -1,0 +1,18 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Nom</ion-col>
+    <ion-col>Description</ion-col>
+    <ion-col>En Stockage</ion-col>
+    <ion-col>Espace de coworking</ion-col>
+    <ion-col size="2">Numéro de série</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Name }}</ion-col>
+    <ion-col>{{ row.Description }}</ion-col>
+    <ion-col>{{ row.InStorage ? "Oui" : "Non" }}</ion-col>
+    <ion-col>{{ row.Place.Name }}</ion-col>
+    <ion-col size="2">{{ row.SerialNumber }}</ion-col>
+  </ion-row>
+</ion-grid>

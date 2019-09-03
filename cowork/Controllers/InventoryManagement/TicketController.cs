@@ -1,0 +1,161 @@
+using System.Linq;
+using coworkdomain;
+using coworkdomain.Cowork.Interfaces;
+using coworkdomain.InventoryManagement;
+using coworkdomain.InventoryManagement.Interfaces;
+using coworkpersistence.Repositories;
+using Microsoft.AspNetCore.Mvc;
+
+namespace cowork.Controllers.InventoryManagement {
+
+    [Route("api/[controller]")]
+    public class TicketController : ControllerBase {
+
+        private ITicketRepository repository;
+        private IUserRepository userRepository;
+        private ITicketAttributionRepository ticketAttributionRepository;
+        private ITicketCommentRepository ticketCommentRepository;
+
+
+        public TicketController(ITicketRepository ticketRepository, IUserRepository userRepository, 
+            ITicketAttributionRepository ticketAttributionRepository, ITicketCommentRepository ticketCommentRepository) {
+            repository = ticketRepository;
+            this.userRepository = userRepository;
+            this.ticketAttributionRepository = ticketAttributionRepository;
+            this.ticketCommentRepository = ticketCommentRepository;
+        }
+        
+        [HttpGet]
+        public IActionResult All() {
+            var res = repository.GetAll().Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if(ticketAttribution != null) 
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
+            return Ok(res);
+        }
+
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Ticket ticket) {
+            var res = repository.Create(ticket);
+            if (res == -1) return Conflict();
+            return Ok(res);
+        }
+
+
+        [HttpPut]
+        public IActionResult Update([FromBody] Ticket ticket) {
+            var res = repository.Update(ticket);
+            if (res == -1) return Conflict();
+            return Ok(res);
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id) {
+            var comments = ticketCommentRepository.GetByTicketId(id);
+            comments.ForEach(comment => ticketCommentRepository.Delete(comment.Id));
+            var result = repository.Delete(id);
+            if (!result) return NotFound();
+            return Ok();
+        }
+        
+        
+        [HttpGet("{id}")]
+        public IActionResult ById(long id) {
+            var result = repository.GetById(id);
+            if (result == null) return NotFound();
+            var ticketAttribution = ticketAttributionRepository.GetFromTicket(result.Id);
+            if(ticketAttribution != null) 
+                result.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+            result.Comments = ticketCommentRepository.GetByTicketId(result.Id);
+            return Ok();
+        }
+
+
+        [HttpGet("FromPlace/{placeId}")]
+        public IActionResult AllFromPlace(long placeId) {
+            var res = repository.GetAllOfPlace(placeId).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if(ticketAttribution != null) 
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
+            return Ok(res);
+        }
+
+
+        [HttpGet("OpenedBy/{userId}")]
+        public IActionResult AllOpenedBy(long userId) {
+            var user = userRepository.GetById(userId);
+            if (user == null) return NotFound("Utilisateur introuvable");
+            var res = repository.GetAllOpenedBy(user).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if(ticketAttribution != null) 
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
+            return Ok(res);
+        }
+
+
+        [HttpGet("AttributedTo/{personnalId}")]
+        public IActionResult AllAttributedTo(long personnalId) {
+            var personnal = userRepository.GetById(personnalId);
+            if (personnal == null) return NotFound("Personnel introuvable");
+            var res = ticketAttributionRepository.GetAllFromStaffId(personnalId)
+                .Select(ticketAttr => repository.GetById(ticketAttr.TicketId))
+                .Select(ticket => {
+                    ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                    return ticket;
+                });
+            return Ok(res);
+        }
+
+
+        [HttpGet("AllAttributions")]
+        public IActionResult AllAttribution() {
+            var result = ticketAttributionRepository.GetAll();
+            return Ok(result);
+        }
+
+
+        [HttpGet("AllComments")]
+        public IActionResult AllComments() {
+            var result = ticketCommentRepository.GetAll();
+            return Ok(result);
+        }
+
+
+        [HttpPost("AddComment")]
+        public IActionResult AddComment([FromBody] TicketComment ticketComment) {
+            if (ticketComment == null) return BadRequest();
+            var result = ticketCommentRepository.Create(ticketComment);
+            if (result == -1) return Conflict();
+            return Ok(result);
+        }
+
+
+        [HttpDelete("DeleteComment/{commentId}")]
+        public IActionResult DeleteComment(long commentId) {
+            var result = ticketCommentRepository.Delete(commentId);
+            if (!result) return NotFound();
+            return Ok();
+        }
+
+
+        [HttpGet("CommentsOf/{ticketId}")]
+        public IActionResult CommentsOf(long ticketId) {
+            var result = ticketCommentRepository.GetByTicketId(ticketId);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+    }
+
+}

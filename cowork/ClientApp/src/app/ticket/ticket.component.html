@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Co'Work
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="dark">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="5">
+        <form #form="ngForm" (ngSubmit)="CreateTicket(form)">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Titre</ion-label>
+              <ion-input name="title" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Description</ion-label>
+              <ion-textarea rows="6" cols="20" name="description" ngModel></ion-textarea>
+            </ion-item>
+            <ware-list [PlaceId]="placeId" [UserId]="userId"></ware-list>
+          </ion-list>
+          <ion-footer>
+            <ion-button type="submit" [disabled]="form.invalid" expand="block">Creer un ticket</ion-button>
+          </ion-footer>
+        </form>
+      </ion-col>
+      <ion-col size="6">
+        <ticket-list [Tickets]="Tickets"></ticket-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

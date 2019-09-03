@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button text="" (click)="retour()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      Selectionner un abonnement
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="Refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <span *ngIf="PartIndex === 0">
+        <subscription-list [SubscriptionTypeList]="SubscriptionTypeList" (ChosenSubscriptionType)="Choose($event)" [SelectedId]="ChosenSubscriptionType?.Id"></subscription-list>
+    </span>
+  <span *ngIf="PartIndex === 1">
+        <ion-radio-group (ionChange)="OnSubFormatChange($event)">
+            <ion-item>
+                <ion-label>Sans Engagement</ion-label>
+                <ion-radio value="ContractFree" [checked]="true"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Avec Engagement de {{ ChosenSubscriptionType.FixedContractDurationMonth }} Mois</ion-label>
+                <ion-radio value="FixedContract"></ion-radio>
+            </ion-item>
+            <ion-item margin-top="50%">
+                Payement Placeholder
+            </ion-item>
+        </ion-radio-group>
+    </span>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button  *ngIf="PartIndex > 0" (click)="retour()">
+        <ion-icon name="arrow-back"></ion-icon>
+        <ion-label>Retour</ion-label>
+      </ion-button>
+      <ion-button *ngIf="PartIndex === 0" (click)="GoNext()">
+        <ion-label>Suivant</ion-label>
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="PartIndex === 1" (click)="Finish()">
+        <ion-icon name="arrow-forward"></ion-icon>
+        <ion-label>Finaliser</ion-label>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

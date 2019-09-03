@@ -1,0 +1,14 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col>Id</ion-col>
+    <ion-col>Date</ion-col>
+    <ion-col>Description</ion-col>
+    <ion-col>Id espace de coworking</ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Date | date: "dd/MM/yyyy" }}</ion-col>
+    <ion-col>{{ row.Description }}</ion-col>
+    <ion-col>{{ row.PlaceId }}</ion-col>
+  </ion-row>
+</ion-grid>

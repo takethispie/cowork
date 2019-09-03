@@ -1,0 +1,20 @@
+<ion-grid>
+    <ion-row *ngFor="let item of Meals">
+        <ion-col offset="3" size="5">
+            <ion-card color="light">
+                <ion-card-header color="primary">
+                    <ion-label>{{ item.Date | ToFormatedDateTimePipe }}</ion-label>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-label>
+                        <p>{{ item.Description }}</p>
+                    </ion-label>
+                    <ion-button *ngIf="IsAlreadyBooked(item)" slot="end" disabled="true">Déjà Reservé</ion-button>
+                    <ion-button *ngIf="IsAlreadyBooked(item)" slot="end" (click)="Unbookmeal(item)">Annuler Reservation</ion-button>
+                    <ion-button *ngIf="!IsAlreadyBooked(item)" slot="end" (click)="BookMeal(item)">Reserver</ion-button>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+

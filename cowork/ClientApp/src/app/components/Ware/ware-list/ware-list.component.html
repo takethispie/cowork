@@ -1,0 +1,17 @@
+<ion-list>
+  <ion-item *ngIf="Wares?.length === 0">
+    <ion-label>Aucun Matériel disponible</ion-label>
+  </ion-item>
+  <ion-item *ngFor="let ware of Wares" (click)="ItemSelected(ware)">
+    <ion-label>
+      <h3>{{ ware.Name }}</h3>
+      <p>{{ ware.Description }}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+<ion-infinite-scroll threshold="20%" (ionInfinite)="LoadData($event)">
+  <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
