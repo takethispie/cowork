@@ -13,6 +13,10 @@ export class UserService {
   public All() {
     return this.http.get<User[]>("api/User/ALL");
   }
+  
+  public Create(user: User) {
+    return this.http.post<number>("api/User", user, CONTENTJSON);
+  }
 
 
   public Update(ticket: User) {

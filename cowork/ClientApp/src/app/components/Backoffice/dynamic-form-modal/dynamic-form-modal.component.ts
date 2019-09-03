@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {Field} from "../../dynamic-form-builder/Field";
+import {ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-dynamic-form-modal',
@@ -9,50 +10,13 @@ import {Field} from "../../dynamic-form-builder/Field";
 })
 export class DynamicFormModalComponent implements OnInit {
 
-  public fields: Field[] = [
-    {
-      Type: 'Text',
-      Name: 'firstName',
-      Label: 'First Name',
-      Value: ""
-    },
-    {
-      Type: 'Text',
-      Name: 'lastName',
-      Label: 'Last Name',
-      Value: ""
-    },
-    {
-      Type: 'Text',
-      Name: 'email',
-      Label: 'Email',
-      Value: ""
-    },
-    {
-      Type: "Radio",
-      Name: "etudiant",
-      Label: "Est Etudiant",
-      Value: "non",
-      Options: [
-        {
-          Name: "non",
-          Label: "Non",
-          Value: "non"
-        },
-        {
-          Name: "oui",
-          Label: "oui",
-          Value: "oui"
-        },
-      ]
-    }
-  ];
+  @Input() Fields: Field[] = [];
 
-  constructor() { }
+  constructor(private modal: ModalController) { }
 
   ngOnInit() {}
 
   FormSubmitted(event: any) {
-    console.log(event);
+    this.modal.dismiss(event);
   }
 }

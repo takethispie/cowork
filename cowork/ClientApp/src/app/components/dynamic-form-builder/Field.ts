@@ -1,11 +1,10 @@
 ﻿export class Field {
-    public Type: "Text" | "Radio" | "Checkbox";
+    public Type: "Text" | "Select" | "Checkbox";
     public Name: string;
     public Label: string;
-    public Value: string;
+    public Value: string | number | boolean;
     public Options?: {
-        Name: string,
         Label: string,
-        Value: string
+        Value: string | number | boolean
     }[];
 }

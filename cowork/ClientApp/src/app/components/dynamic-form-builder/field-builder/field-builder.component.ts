@@ -10,6 +10,10 @@ import {Field} from "../Field";
         <ion-label>{{ field.Label }}</ion-label>
         <ion-input [name]="field.Name"  [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
+      <ion-item *ngSwitchCase="'Checkbox'">
+        <ion-label>{{field.Label}}</ion-label>
+        <ion-checkbox slot="end" [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-checkbox>
+      </ion-item>
     </div>
   `
 })

@@ -45,6 +45,14 @@ namespace cowork.Controllers.Cowork {
         }
 
 
+        [HttpPost]
+        public IActionResult Create([FromBody] User user) {
+            var result = Repository.Create(user);
+            if (result == -1) return Conflict();
+            return Ok(result);
+        }
+
+
         [HttpPut]
         public IActionResult Update([FromBody] User user) {
             var result = Repository.Update(user);
