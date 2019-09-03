@@ -1,1 +1,9 @@
-<dynamic-form-builder [fields]="fields"></dynamic-form-builder>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <dynamic-form-builder [fields]="fields" (onSubmit)="FormSubmitted($event)"></dynamic-form-builder>
+</ion-content>

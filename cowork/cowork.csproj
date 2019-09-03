@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp" />
+    <Folder Include="ClientApp\src\app\components\dynamic-form-builder\atoms" />
     <Folder Include="ClientApp\src\app\services" />
   </ItemGroup>
 
@@ -41,14 +42,10 @@
 
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\atoms\checkbox.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\atoms\dropdown.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\atoms\file.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\atoms\radio.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\atoms\textbox.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\dynamic-form-builder.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\dynamic-form-builder.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\field-builder\field-builder.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\Field.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Meal.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\MealReservation.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Personnal.ts" />

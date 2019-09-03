@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from "@angular/forms";
+import {Field} from "../../dynamic-form-builder/Field";
 
 @Component({
   selector: 'app-dynamic-form-modal',
@@ -7,58 +9,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DynamicFormModalComponent implements OnInit {
 
-  public fields: any[] = [
+  public fields: Field[] = [
     {
-      type: 'text',
-      name: 'firstName',
-      label: 'First Name',
-      value: '',
-      required: true,
+      Type: 'Text',
+      Name: 'firstName',
+      Label: 'First Name',
+      Value: ""
     },
     {
-      type: 'text',
-      name: 'lastName',
-      label: 'Last Name',
-      value: '',
-      required: true,
+      Type: 'Text',
+      Name: 'lastName',
+      Label: 'Last Name',
+      Value: ""
     },
     {
-      type: 'text',
-      name: 'email',
-      label: 'Email',
-      value: '',
-      required: true,
+      Type: 'Text',
+      Name: 'email',
+      Label: 'Email',
+      Value: ""
     },
     {
-      type: 'dropdown',
-      name: 'country',
-      label: 'Country',
-      value: 'in',
-      required: true,
-      options: [
-        { key: 'in', label: 'India' },
-        { key: 'us', label: 'USA' }
-      ]
-    },
-    {
-      type: 'radio',
-      name: 'country',
-      label: 'Country',
-      value: 'in',
-      required: true,
-      options: [
-        { key: 'm', label: 'Male' },
-        { key: 'f', label: 'Female' }
-      ]
-    },
-    {
-      type: 'checkbox',
-      name: 'hobby',
-      label: 'Hobby',
-      required: true,
-      options: [
-        { key: 'f', label: 'Fishing' },
-        { key: 'c', label: 'Cooking' }
+      Type: "Radio",
+      Name: "etudiant",
+      Label: "Est Etudiant",
+      Value: "non",
+      Options: [
+        {
+          Name: "non",
+          Label: "Non",
+          Value: "non"
+        },
+        {
+          Name: "oui",
+          Label: "oui",
+          Value: "oui"
+        },
       ]
     }
   ];
@@ -67,4 +52,7 @@ export class DynamicFormModalComponent implements OnInit {
 
   ngOnInit() {}
 
+  FormSubmitted(event: any) {
+    console.log(event);
+  }
 }
