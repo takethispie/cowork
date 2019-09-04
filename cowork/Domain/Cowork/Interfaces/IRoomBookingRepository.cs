@@ -16,6 +16,7 @@ namespace coworkdomain.Cowork.Interfaces {
         List<RoomBooking> GetAllOfRoomStartingAtDate(long roomId, DateTime date);
 
         List<RoomBooking> GetAllFromGivenDate(DateTime date);
+        List<RoomBooking> GetAllWithPaging(int page, int amount);
 
         long Update(RoomBooking reservation);
 

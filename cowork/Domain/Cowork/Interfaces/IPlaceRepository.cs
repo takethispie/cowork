@@ -5,6 +5,7 @@ namespace coworkdomain.Cowork.Interfaces {
     public interface IPlaceRepository {
 
         List<Place> GetAll();
+        List<Place> GetAllWithPaging(int page, int amount);
 
         Place GetById(long id);
 

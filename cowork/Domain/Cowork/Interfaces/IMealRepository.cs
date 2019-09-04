@@ -12,6 +12,7 @@ namespace coworkdomain.Cowork.Interfaces {
         List<Meal> GetAllFromDateAndPlace(DateTime date, long placeId);
 
         List<Meal> GetAllFromPlaceStartingAtDate(long placeId, DateTime date);
+        List<Meal> GetAllByPaging(int page, int amount);
 
         Meal GetById(long id);
 

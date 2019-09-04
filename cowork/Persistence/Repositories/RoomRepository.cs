@@ -52,6 +52,16 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public List<Room> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"Room\"" + innerJoin + " ORDER BY \"Room\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", page * amount)
+            };
+            return datamapper.MultiItemCommand(sql, par);
+        }
+
+
         public long Create(Room room) {
             const string sql =
                 "INSERT INTO public.\"Room\" (\"Id\", \"Name\", \"PlaceId\", \"RoomType\") VALUES (DEFAULT, @name, @placeId, @roomType) RETURNING \"Room\".\"Id\";";

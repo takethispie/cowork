@@ -61,6 +61,16 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public List<TicketComment> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"TicketComment\"" + innerJoin + " ORDER BY \"TicketComment\".\"Created\" ASC LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", page * amount)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
+
         public TicketComment GetById(long id) {
             const string sql = "SELECT * FROM \"TicketComment\"" + innerJoin + "WHERE \"TicketComment\".\"Id\"= @id";
             var par = new List<DbParameter> {

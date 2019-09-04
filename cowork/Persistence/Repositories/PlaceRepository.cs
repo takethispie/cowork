@@ -25,6 +25,16 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public List<Place> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"Place\" ORDER BY \"Place\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", page * amount)
+            };
+            return datamapper.MultiItemCommand(sql, par);
+        }
+
+
         public Place GetById(long id) {
             const string sql = "SELECT * FROM public.\"Place\" WHERE  \"Id\" = @p";
             var parameters = new List<DbParameter> {

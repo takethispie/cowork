@@ -15,6 +15,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         List<StaffLocation> GetAll();
 
         List<StaffLocation> GetAllByPlace(long placeId);
+        List<StaffLocation> GetAllWithPaging(int page, int amount);
 
     }
 

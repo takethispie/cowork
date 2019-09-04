@@ -5,6 +5,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
     public interface ITicketAttributionRepository {
 
         List<TicketAttribution> GetAll();
+        List<TicketAttribution> GetAllWithPaging(int page, int amount);
 
         TicketAttribution GetById(long id);
 

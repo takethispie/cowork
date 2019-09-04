@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Security.Cryptography;
-using Bogus;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Datamappers;
@@ -32,6 +30,16 @@ namespace coworkpersistence.Repositories {
             const string sql = "SELECT * FROM public.\"Users\" WHERE \"Id\" = @p";
             var parameters = new List<DbParameter> {new NpgsqlParameter("p", id)};
             return datamapper.OneItemCommand(sql, parameters);
+        }
+
+
+        public List<User> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"Users\" ORDER BY \"Id\" ASC LIMIT @amount OFFSET @skip";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", amount * page)
+            };
+            return datamapper.MultiItemCommand(sql, par);
         }
 
 

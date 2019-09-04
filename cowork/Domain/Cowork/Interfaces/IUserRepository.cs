@@ -7,6 +7,8 @@ namespace coworkdomain.Cowork.Interfaces {
         List<User> GetAll();
 
         User GetById(long id);
+
+        List<User> GetAllWithPaging(int page, int amount);
         
         long Update(User user);
 

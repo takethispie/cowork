@@ -5,6 +5,7 @@ namespace coworkdomain.Cowork.Interfaces {
     public interface ISubscriptionRepository {
 
         List<Subscription> GetAll();
+        List<Subscription> GetAllWithPaging(int page, int amount);
 
         Subscription GetById(long id);
 

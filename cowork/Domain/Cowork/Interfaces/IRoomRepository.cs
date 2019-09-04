@@ -11,6 +11,7 @@ namespace coworkdomain.Cowork.Interfaces {
         Room GetByName(string name);
 
         List<Room> GetAllFromPlace(long placeId);
+        List<Room> GetAllWithPaging(int page, int amount);
 
         long Create(Room room);
 

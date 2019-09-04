@@ -44,6 +44,16 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public List<TimeSlot> GetAllByPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin + " ORDER BY \"TimeSlot\".\"PlaceId\" ASC LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", page * amount)
+            };
+            return datamapper.MultiItemCommand(sql, par);
+        }
+
+
         public bool Delete(long id) {
             const string sql = "DELETE FROM public.\"TimeSlot\" where \"Id\"=@id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {

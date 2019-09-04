@@ -11,6 +11,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         long Update(TicketComment ticketComment);
 
         List<TicketComment> GetAll();
+        List<TicketComment> GetAllWithPaging(int page, int amount);
 
         TicketComment GetById(long id);
 

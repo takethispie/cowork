@@ -43,6 +43,16 @@ namespace coworktest {
 
 
         [Test]
+        public void GetUserWithPaging() {
+            var users = repo.GetAllWithPaging(0, 10);
+            Assert.NotNull(users);
+            Assert.AreEqual(3, users.Count);
+            var mustBeNull = repo.GetAllWithPaging(1, 10);
+            Assert.AreEqual(0, mustBeNull.Count);
+        }
+
+
+        [Test]
         public void GetUserById() {
             var user = repo.GetById(testUser);
             Assert.NotNull(user);

@@ -9,6 +9,7 @@ namespace coworkdomain.Cowork.Interfaces {
         TimeSlot GetById(long id);
 
         List<TimeSlot> GetAllOfPlace(long placeId);
+        List<TimeSlot> GetAllByPaging(int page, int amount);
 
         bool Delete(long id);
 
