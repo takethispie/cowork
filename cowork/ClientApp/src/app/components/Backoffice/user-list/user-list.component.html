@@ -5,6 +5,11 @@
     <ion-col>FirstName</ion-col>
     <ion-col>LastName</ion-col>
     <ion-col>Est Étudiant</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -12,5 +17,10 @@
     <ion-col>{{ row.FirstName }}</ion-col>
     <ion-col>{{ row.LastName }}</ion-col>
     <ion-col>{{ row.IsAStudent ? "Oui" : "Non"}}</ion-col>
+    <ion-col>
+      <ion-button expand="full" size="small" (click)="Delete(row.Id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

@@ -8,6 +8,11 @@
     <ion-col>Zone réservée aux membres</ion-col>
     <ion-col>Nombre d'imprimantes</ion-col>
     <ion-col>Snacking & boissons à volonté</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -18,5 +23,10 @@
     <ion-col>{{ row.MembersOnlyArea ? "Oui" : "Non" }}</ion-col>
     <ion-col>{{ row.PrinterAmount }}</ion-col>
     <ion-col>{{ row.UnlimitedBeverages ? "Oui" : "Non" }}</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

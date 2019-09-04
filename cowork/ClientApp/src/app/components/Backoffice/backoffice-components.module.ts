@@ -67,6 +67,7 @@ import {DynamicFormModalComponent} from "./dynamic-form-modal/dynamic-form-modal
   entryComponents: [
       DynamicDataHostComponent,
       UserListComponent,
+      DynamicFormModalComponent,
   ],
     imports: [
         CommonModule,

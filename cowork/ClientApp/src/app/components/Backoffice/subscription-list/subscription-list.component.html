@@ -6,6 +6,11 @@
     <ion-col>Dernier renouvellement</ion-col>
     <ion-col>Espace de coworking</ion-col>
     <ion-col>Type d'abonnement</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon name="Add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -14,5 +19,10 @@
     <ion-col>{{ row.LatestRenewal | date: "dd/MM/yyyy" }}</ion-col>
     <ion-col>{{ row.Place.Name }}</ion-col>
     <ion-col>{{ row.Type.Name }}</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

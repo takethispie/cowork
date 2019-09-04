@@ -5,6 +5,11 @@
     <ion-col>Id salle</ion-col>
     <ion-col>Début de la réservation</ion-col>
     <ion-col>Fin de la réservation</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -12,5 +17,10 @@
     <ion-col>{{ row.RoomId }}</ion-col>
     <ion-col>{{ row.Start | date: "dd/MM/yyyy HH/mm"}}</ion-col>
     <ion-col>{{ row.End | date: "dd/MM/yyyy HH/mm"}}</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

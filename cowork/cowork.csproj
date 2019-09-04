@@ -46,6 +46,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\dynamic-form-builder.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\field-builder\field-builder.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\dynamic-form-builder\Field.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\FormDefinitions.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Meal.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\MealReservation.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Personnal.ts" />
@@ -55,6 +56,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\RoomType.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Subscription.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\SubscriptionType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\Table.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Ticket.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\TicketState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Ware.ts" />
