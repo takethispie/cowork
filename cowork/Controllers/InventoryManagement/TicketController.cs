@@ -156,6 +156,22 @@ namespace cowork.Controllers.InventoryManagement {
             return Ok(result);
         }
 
+
+        [HttpPost("Attribution")]
+        public IActionResult CreateAttribution([FromBody] TicketAttribution ticketAttribution) {
+            var result = ticketAttributionRepository.Create(ticketAttribution);
+            if (result == -1) return Conflict();
+            return Ok(result);
+        }
+
+
+        [HttpDelete("Attribution/{id}")]
+        public IActionResult DeleteAttribution(long id) {
+            var result = ticketAttributionRepository.Delete(id);
+            if (result == false) return NotFound();
+            return Ok();
+        }
+        
     }
 
 }

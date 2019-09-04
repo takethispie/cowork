@@ -35,6 +35,14 @@ export class TicketService {
   public Create(ticket: Ticket) {
     return this.http.post<number>("api/Ticket", ticket, CONTENTJSON);
   }
+  
+  public CreateAttribution(ticketAttribution: TicketAttribution) {
+    return this.http.post<number>("api/Ticket/Attribution", ticketAttribution, CONTENTJSON);
+  }
+  
+  public DeleteAttribution(id: number) {
+    return this.http.delete("api/Ticket/Attribution/" + id);
+  }
 
 
   public Update(ticket: Ticket) {

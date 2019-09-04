@@ -15,7 +15,7 @@ export  class Ticket {
     public PlaceId: number;
     public OpendedBy: User;
     public Ware: Ware;
-    public AttibutedTo: User;
+    public AttributedTo: User;
     public Place: Place;
     public Created: DateTime;
     public Title: string;

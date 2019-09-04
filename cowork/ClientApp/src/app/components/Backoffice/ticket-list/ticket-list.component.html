@@ -9,6 +9,11 @@
     <ion-col>Espace de coworking</ion-col>
     <ion-col>Date planifié pour la résolution du ticket</ion-col>
     <ion-col>État du ticket</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -20,5 +25,10 @@
     <ion-col>{{ row.Place.Name }}</ion-col>
     <ion-col>{{ row.PlanifiedResolution || null }}</ion-col>
     <ion-col>{{ GetTicketState(row.State) }}</ion-col>
+    <ion-col>
+      <ion-button color="danger" size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

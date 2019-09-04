@@ -6,6 +6,11 @@
     <ion-col>En Stockage</ion-col>
     <ion-col>Espace de coworking</ion-col>
     <ion-col size="2">Numéro de série</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -14,5 +19,10 @@
     <ion-col>{{ row.InStorage ? "Oui" : "Non" }}</ion-col>
     <ion-col>{{ row.Place.Name }}</ion-col>
     <ion-col size="2">{{ row.SerialNumber }}</ion-col>
+    <ion-col>
+      <ion-button color="danger" size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

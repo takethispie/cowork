@@ -1,5 +1,5 @@
 ﻿export class Field {
-    public Type: "Text" | "Select" | "Checkbox" | "DatePicker" | "DateTimePicker";
+    public Type: "Text" | "Select" | "Checkbox" | "DatePicker" | "DateTimePicker" | "TimePicker";
     public Name: string;
     public Label: string;
     public Value: string | number | boolean;

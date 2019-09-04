@@ -10,6 +10,11 @@
     <ion-col>Prix journée (étudiant)</ion-col>
     <ion-col>Prix première heure</ion-col>
     <ion-col>Prix heure suivante</ion-col>
+    <ion-col>
+      <ion-button size="small" expand="full" (click)="AddItem()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
@@ -22,5 +27,10 @@
     <ion-col>{{ row.PriceDayStudent + "€" }}</ion-col>
     <ion-col>{{ row.PriceFirstHour + "€" }}</ion-col>
     <ion-col>{{ row.PriceNextHalfHour + "€"}}</ion-col>
+    <ion-col>
+      <ion-button color="danger" size="small" expand="full" (click)="Delete(row.Id)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-col>
   </ion-row>
 </ion-grid>

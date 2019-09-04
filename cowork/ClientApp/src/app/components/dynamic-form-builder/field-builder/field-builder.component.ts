@@ -8,7 +8,7 @@ import {DateTime} from "luxon";
     <div style="margin-bottom: 10px;" [ngSwitch]="field.Type">
       <app-select *ngSwitchCase="'Select'" [field]="field" (value)="SetValue($event)"></app-select>
       <ion-item *ngSwitchCase="'Text'">
-        <ion-label>{{ field.Label }}</ion-label>
+        <ion-label position="floating">{{ field.Label }}</ion-label>
         <ion-input [name]="field.Name"  [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
       <ion-item *ngSwitchCase="'Checkbox'">
@@ -16,12 +16,16 @@ import {DateTime} from "luxon";
         <ion-checkbox slot="end" [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-checkbox>
       </ion-item>
       <ion-item *ngSwitchCase="'DatePicker'">
-        <ion-label>{{field.Label}}</ion-label>
+        <ion-label position="floating">{{field.Label}}</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value" max="{{MaxYear()}}"></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'DateTimePicker'">
-        <ion-label>{{field.Label}}</ion-label>
+        <ion-label position="floating">{{field.Label}}</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value" max="{{MaxYear()}}"></ion-datetime>
+      </ion-item>
+      <ion-item *ngSwitchCase="'TimePicker'">
+        <ion-label position="floating">{{field.Label}}</ion-label>
+        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value"></ion-datetime>
       </ion-item>
     </div>
   `
