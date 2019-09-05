@@ -22,6 +22,7 @@ export class WareBookingListComponent implements OnInit {
   
   constructor(private wareBookingService: WareBookingService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "UserId", Label: "Id de l'utilisateur", Value: null},
       { Type: "Text", Name: "WareId", Label: "Id du matériel", Value: null},
       { Type: "DateTimePicker", Name: "Start", Label: "Début", Value: DateTime.local().toISO()},
@@ -36,7 +37,7 @@ export class WareBookingListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new WareBooking();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.UserId = fieldDic["UserId"][0].Value as number;
     model.WareId = fieldDic["WareId"][0].Value as number;
     model.Start = DateTime.fromISO(fieldDic["Start"][0].Value as string);

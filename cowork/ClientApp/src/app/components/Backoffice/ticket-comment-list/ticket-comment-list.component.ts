@@ -19,6 +19,7 @@ export class TicketCommentListComponent implements OnInit {
 
   constructor(private ApiService: TicketCommentService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: 'UserId', Label: "Id de l'utilisateur", Value: null},
       { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null},
       { Type: "Text", Name: "Content", Label: "Texte du commentaire", Value: null},
@@ -32,7 +33,7 @@ export class TicketCommentListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new TicketComment();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.AuthorId = fieldDic["UserId"][0].Value as number;
     model.TicketId = fieldDic["TicketId"][0].Value as number;
     model.Content = fieldDic["Content"][0].Value as string;

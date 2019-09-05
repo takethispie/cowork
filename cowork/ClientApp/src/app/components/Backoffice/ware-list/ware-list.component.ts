@@ -21,6 +21,7 @@ export class WareListComponent implements OnInit {
 
   constructor(private wareService: WareService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "Name", Label: "Nom", Value: null},
       { Type: "Text", Name: "Description", Label: "Description", Value: null},
       { Type: "Text", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
@@ -37,7 +38,7 @@ export class WareListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new Ware();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.Description = fieldDic["Description"][0].Value as string;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;

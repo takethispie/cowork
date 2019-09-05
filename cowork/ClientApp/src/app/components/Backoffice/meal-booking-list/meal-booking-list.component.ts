@@ -17,6 +17,7 @@ export class MealBookingListComponent implements OnInit {
 
   constructor(private mealBookingService: MealBookingService, private modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "MealId", Label: "Id repas", Value: 0 },
       { Type: "Text", Name: "UserId", Label: "Id utilisateur", Value: 0},
     ];
@@ -31,7 +32,7 @@ export class MealBookingListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new MealBooking();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.MealId = fieldDic["MealId"][0].Value as number;
     model.UserId = fieldDic["UserId"][0].Value as number;
     model.Note = "";

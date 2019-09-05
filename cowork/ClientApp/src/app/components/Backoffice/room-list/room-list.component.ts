@@ -21,6 +21,7 @@ export class RoomListComponent implements OnInit {
 
   constructor(private roomService: RoomService, private modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "Name", Label: "Nom", Value: null},
       { Type: "Text", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
       { Type: "Select", Name: "Type", Label: "Type de salle", Value: "Call", Options: [
@@ -44,7 +45,7 @@ export class RoomListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new Room();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     model.Type = fieldDic["Type"][0].Value as number;

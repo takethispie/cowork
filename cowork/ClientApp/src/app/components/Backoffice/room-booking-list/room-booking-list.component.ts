@@ -20,6 +20,7 @@ export class RoomBookingListComponent implements OnInit {
 
   constructor(public roomBookingService: RoomBookingService, public modalCtrl: ModalController) { 
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "ClientId", Label: "Id utilisateur", Value: null},
       { Type: "Text", Name: "RoomId", Label: "Id de la salle", Value: null},
       { Type: "DateTimePicker", Name: "Start", Label: "Début de la réservation", Value: ""},
@@ -34,7 +35,7 @@ export class RoomBookingListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new RoomBooking();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.ClientId = fieldDic["ClientId"][0].Value as number;
     model.RoomId = fieldDic["RoomId"][0].Value as number;
     model.Start = DateTime.fromISO(fieldDic["Start"][0].Value as string);

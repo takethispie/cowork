@@ -20,6 +20,7 @@ export class PlaceListComponent implements OnInit {
 
   constructor(private placeService: PlaceService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "Name", Label: "Nom", Value: ''},
       { Type: "Text", Name: "CosyRoomAmount", Label: "Nombre de salons cosy", Value: 0},
       { Type: "Checkbox", Name: "HighBandwidthWifi", Label: "Wifi très haut débit", Value: false},
@@ -37,7 +38,7 @@ export class PlaceListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new Place();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.CosyRoomAmount = fieldDic["CosyRoomAmount"][0].Value as number;
     model.HighBandwidthWifi = fieldDic["HighBandwidthWifi"][0].Value as boolean;

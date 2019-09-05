@@ -19,6 +19,7 @@ export class MealListComponent implements OnInit {
 
   constructor(private mealService: MealService, private modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "DatePicker", Name: "Date", Value: DateTime.local().toISODate(), Label: "Date"},
       { Type: "Text", Name: "Description", Label: "Description", Value: ""},
       { Type: "Text", Name: "PlaceId", Label: "Id espace de coworking", Value: 0}
@@ -32,7 +33,7 @@ export class MealListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new Meal();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.Date = DateTime.fromISO(fieldDic["Date"][0].Value as string);
     model.Description = fieldDic["Description"][0].Value as string;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;

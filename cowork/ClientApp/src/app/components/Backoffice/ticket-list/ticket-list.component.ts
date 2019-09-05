@@ -20,6 +20,7 @@ export class TicketListComponent implements OnInit {
 
   constructor(private ticketService: TicketService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "Title", Label: "Titre", Value: null},
       { Type: "Text", Name: "Description", Label: "Description", Value: ""},
       { Type: "Text", Name: "UserId", Label: "Auteur du ticket", Value: null},
@@ -45,7 +46,7 @@ export class TicketListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new Ticket();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.Title = fieldDic["Title"][0].Value as string;
     model.Description = fieldDic["Description"][0].Value as string;
     model.Created = DateTime.local();

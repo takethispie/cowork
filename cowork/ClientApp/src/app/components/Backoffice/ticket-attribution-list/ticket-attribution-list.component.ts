@@ -23,6 +23,7 @@ export class TicketAttributionListComponent implements OnInit {
   
   constructor(public ApiService: TicketAttributionService, public modalCtrl: ModalController) { 
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "StaffId", Label: "Id du personnel", Value: null},
       { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null}  
     ];
@@ -35,7 +36,7 @@ export class TicketAttributionListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new TicketAttribution();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.StaffId = fieldDic["StaffId"][0].Value as number;
     model.TicketId = fieldDic["TicketId"][0].Value as number;
     return model;

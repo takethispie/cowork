@@ -22,6 +22,7 @@ export class TimeSlotListComponent implements OnInit {
 
   constructor(private  timeSlotService: TimeSlotService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "PlaceId", Label: "Id de l'espace de corworking", Value: null},
       { Type: "TimePicker", Name: "Start", Label: "Heure d'ouverture", Value: "08:00"},
       { Type: "TimePicker", Name: "End", Label: "Heure de fermeture", Value: "20:00"},
@@ -53,7 +54,7 @@ export class TimeSlotListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new TimeSlot();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     const start = DateTime.fromFormat(fieldDic["Start"][0].Value as string, "HH:mm");
     const end = DateTime.fromFormat(fieldDic["End"][0].Value as string, "HH:mm");

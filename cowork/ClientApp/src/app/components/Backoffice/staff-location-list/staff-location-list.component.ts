@@ -19,6 +19,7 @@ export class StaffLocationListComponent implements OnInit {
 
   constructor(private staffLocationService: StaffLocationService, public modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "UserId", Label: "Id utilisateur", Value: null},
       { Type: "Text", Name: "PlaceId", Label: "Id espace de coworking", Value: null}
     ];
@@ -31,7 +32,7 @@ export class StaffLocationListComponent implements OnInit {
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     let model = new StaffLocation();
-    model.Id = -1;
+    model.Id = fieldDic["Id"][0].Value as number;
     model.UserId = fieldDic["UserId"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     return model;
