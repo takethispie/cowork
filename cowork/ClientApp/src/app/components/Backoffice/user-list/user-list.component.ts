@@ -6,6 +6,8 @@ import {Field} from "../../dynamic-form-builder/Field";
 import List from "linqts/dist/src/list";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
+import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-list',
@@ -18,6 +20,7 @@ export class UserListComponent implements OnInit {
 
   constructor(private userService: UserService, private modalCtrl: ModalController) {
     this.fields = [
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "FirstName", Value: "", Label: "Prénom" },
       { Type: "Text", Name: "LastName", Value: "", Label: "Nom"},
       { Type: "Text", Name: "Email", Value: "", Label: "Email"},
@@ -56,24 +59,63 @@ export class UserListComponent implements OnInit {
     let user = new User();
     user.LastName = fieldDic["LastName"][0].Value as string;
     user.FirstName = fieldDic["FirstName"][0].Value as string;
-    user.Id = -1;
+    user.Id = fieldDic["Id"][0].Value as number;
     user.IsAStudent = fieldDic["IsAStudent"][0].Value as boolean;
     user.Email = fieldDic["Email"][0].Value as string;
+    user.Type = fieldDic["Type"][0].Value as number;
     return user;
+  }
+  
+  async UpdateItem(user: User, fields: Field[]) {
+    const fieldlist = new List(fields).Select(field => {
+      switch (field.Name) {
+        case "Id": 
+          field.Value = user.Id;
+          return field;
+          
+        case "LastName":
+          field.Value = user.LastName;
+          return field;
+          
+        case "FirstName":
+          field.Value = user.FirstName;
+          return field;
+          
+        case "IsAStudent":
+          field.Value = user.IsAStudent;
+          return field;
+          
+        case "Email":
+          field.Value = user.Email;
+          return field;
+          
+        case "Type":
+          field.Value = user.Type;
+          return field;
+          
+        default: return field;
+      }
+    });
+    await this.OpenModal("Update", { Fields: fieldlist.ToArray()}, this.userService);
   }
 
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields }, this.userService);
+  }
+  
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any, apiService: { http: HttpClient, Create: (user: User) => Observable<number>, Update: (user: User) => Observable<number>}) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
       const user = this.CreateModelFromFields(this.fields);
-      this.userService.Create(user).subscribe({
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? apiService.Update(user).subscribe(observer) : apiService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

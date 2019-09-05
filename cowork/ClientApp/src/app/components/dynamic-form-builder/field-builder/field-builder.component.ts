@@ -27,6 +27,10 @@ import {DateTime} from "luxon";
         <ion-label position="floating">{{field.Label}}</ion-label>
         <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value"></ion-datetime>
       </ion-item>
+      <ion-item *ngSwitchCase="'ReadonlyText'">
+        <ion-label position="floating">{{ field.Label }}</ion-label>
+        <ion-input [name]="field.Name" readonly  [(ngModel)]="field.Value" ngModel></ion-input>
+      </ion-item>
     </div>
   `
 })

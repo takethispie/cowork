@@ -15,7 +15,6 @@ export class SelectComponent implements OnInit {
   ngOnInit() {}
 
   ValueChanged(event: CustomEvent) {
-    console.log(event);
     this.value.emit(event.detail.value);
   }
 }

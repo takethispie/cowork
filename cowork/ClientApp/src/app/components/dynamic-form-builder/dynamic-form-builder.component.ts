@@ -8,7 +8,7 @@ import {Field} from "./Field";
     <form #form="ngForm" (ngSubmit)="onSubmit.emit(fields)">
       <field-builder *ngFor="let field of fields" [field]="field"></field-builder>
       <div padding>
-        <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Ajouter</ion-button>
+        <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Sauvegarder</ion-button>
       </div>
     </form>
   `,

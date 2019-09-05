@@ -18,9 +18,14 @@
     <ion-col>{{ row.LastName }}</ion-col>
     <ion-col>{{ row.IsAStudent ? "Oui" : "Non"}}</ion-col>
     <ion-col>
-      <ion-button color="danger" expand="full" size="small" (click)="Delete(row.Id)">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
+      <ion-buttons>
+        <ion-button color="danger" size="small" (click)="Delete(row.Id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button size="small" (click)="UpdateItem(row, fields)">
+          <ion-icon slot="icon-only" name="open"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
 </ion-grid>

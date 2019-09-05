@@ -2,7 +2,6 @@ import {Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild
 import {DataModelHostDirective} from '../data-model-host.directive';
 import {DynamicRowDefinition} from '../../../models/DynamicRowDefinition';
 import {IDynamic} from '../../../models/IDynamic';
-import {IModel} from '../../../models/IModel';
 import {Observable, Subscription} from 'rxjs';
 import {ToastService} from '../../../services/toast.service';
 import {UserListComponent} from '../user-list/user-list.component';

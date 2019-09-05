@@ -1,6 +1,6 @@
 <ion-item>
   <ion-label>{{field.Label}}</ion-label>
-  <ion-select (ionChange)="ValueChanged($event)"  interface="popover">
+  <ion-select (ionChange)="ValueChanged($event)" [value]="field.Value" okText="Ok" cancelText="Annuler"  interface="popover">
     <ion-select-option *ngFor="let item of field.Options" [value]="item.Value">{{item.Label}}</ion-select-option>
   </ion-select>
 </ion-item>
