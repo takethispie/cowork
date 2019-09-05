@@ -18,6 +18,10 @@ export class StaffLocationService {
     return this.http.post<number>("api/StaffLocation", staffLocation, CONTENTJSON);
   }
   
+  Update(staffLocation: StaffLocation) {
+    return this.http.put<number>("api/StaffLocation", staffLocation, CONTENTJSON);
+  }
+  
   Delete(id: number) {
     return this.http.delete("api/StaffLocation/" + id);
   }

@@ -66,44 +66,19 @@ export class UserListComponent implements OnInit {
     return user;
   }
   
-  async UpdateItem(user: User, fields: Field[]) {
-    const fieldlist = new List(fields).Select(field => {
-      switch (field.Name) {
-        case "Id": 
-          field.Value = user.Id;
-          return field;
-          
-        case "LastName":
-          field.Value = user.LastName;
-          return field;
-          
-        case "FirstName":
-          field.Value = user.FirstName;
-          return field;
-          
-        case "IsAStudent":
-          field.Value = user.IsAStudent;
-          return field;
-          
-        case "Email":
-          field.Value = user.Email;
-          return field;
-          
-        case "Type":
-          field.Value = user.Type;
-          return field;
-          
-        default: return field;
-      }
+  async UpdateItem(model: User, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
     });
-    await this.OpenModal("Update", { Fields: fieldlist.ToArray()}, this.userService);
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
   }
 
   async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields }, this.userService);
+    await this.OpenModal("Create", { Fields: this.fields });
   }
   
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any, apiService: { http: HttpClient, Create: (user: User) => Observable<number>, Update: (user: User) => Observable<number>}) {
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
       componentProps
@@ -115,7 +90,7 @@ export class UserListComponent implements OnInit {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
       };
-      mode === "Update" ? apiService.Update(user).subscribe(observer) : apiService.Create(user).subscribe(observer);
+      mode === "Update" ? this.userService.Update(user).subscribe(observer) : this.userService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

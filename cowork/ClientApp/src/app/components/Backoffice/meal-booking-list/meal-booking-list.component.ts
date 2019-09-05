@@ -4,9 +4,7 @@ import {MealBookingService} from '../../../services/meal-booking.service';
 import {ModalController} from "@ionic/angular";
 import {Field} from "../../dynamic-form-builder/Field";
 import List from "linqts/dist/src/list";
-import {User} from "../../../models/User";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {MealService} from "../../../services/meal.service";
 
 @Component({
   selector: 'app-meal-booking-list',
@@ -17,7 +15,7 @@ export class MealBookingListComponent implements OnInit {
     data: MealBooking[];
     fields: Field[];
 
-  constructor(private mealBookingService: MealBookingService, private mealService: MealService, private modalCtrl: ModalController) {
+  constructor(private mealBookingService: MealBookingService, private modalCtrl: ModalController) {
     this.fields = [
       { Type: "Text", Name: "MealId", Label: "Id repas", Value: 0 },
       { Type: "Text", Name: "UserId", Label: "Id utilisateur", Value: 0},
@@ -40,18 +38,31 @@ export class MealBookingListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: MealBooking, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.mealBookingService.Create(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.mealBookingService.Update(user).subscribe(observer) : this.mealBookingService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

@@ -8,6 +8,7 @@ import List from "linqts/dist/src/list";
 import {Ticket} from "../../../models/Ticket";
 import {DateTime} from "luxon";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
+import {MealBooking} from "../../../models/MealBooking";
 
 @Component({
   selector: 'app-time-slot-list',
@@ -64,18 +65,31 @@ export class TimeSlotListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: TimeSlot, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.timeSlotService.Create(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.timeSlotService.Update(user).subscribe(observer) : this.timeSlotService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

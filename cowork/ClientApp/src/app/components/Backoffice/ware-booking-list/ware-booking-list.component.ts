@@ -7,6 +7,8 @@ import {Meal} from "../../../models/Meal";
 import {DateTime} from "luxon";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
+import {MealBooking} from "../../../models/MealBooking";
+import {Ware} from "../../../models/Ware";
 
 @Component({
   selector: 'app-ware-booking-list',
@@ -42,18 +44,31 @@ export class WareBookingListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: Ware, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.wareBookingService.Create(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.wareBookingService.Update(user).subscribe(observer) : this.wareBookingService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

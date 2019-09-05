@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {TicketComment} from '../../../models/TicketComment';
-import {TicketService} from '../../../services/ticket.service';
 import {Field} from "../../dynamic-form-builder/Field";
 import List from "linqts/dist/src/list";
-import {TicketAttribution} from "../../../models/TicketAttribution";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
 import {DateTime} from "luxon";
+import {TicketCommentService} from "../../../services/ticket-comment.service";
 
 @Component({
   selector: 'app-ticket-comment-list',
@@ -18,7 +17,7 @@ export class TicketCommentListComponent implements OnInit {
   data: TicketComment[];
   fields: Field[];
 
-  constructor(private ticketService: TicketService, public modalCtrl: ModalController) {
+  constructor(private ApiService: TicketCommentService, public modalCtrl: ModalController) {
     this.fields = [
       { Type: "Text", Name: 'UserId', Label: "Id de l'utilisateur", Value: null},
       { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null},
@@ -27,7 +26,7 @@ export class TicketCommentListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ticketService.AllComments().subscribe(res => this.data = res);
+    this.ApiService.All().subscribe(res => this.data = res);
   }
 
   CreateModelFromFields(fields: Field[]) {
@@ -41,24 +40,37 @@ export class TicketCommentListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: TicketComment, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.ticketService.AddComment(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.ApiService.Update(user).subscribe(observer) : this.ApiService.Create(user).subscribe(observer);
     });
     await modal.present();
   }
 
   async Delete(id: number) {
-    this.ticketService.DeleteComment(id).subscribe({
+    this.ApiService.Delete(id).subscribe({
       next: value => this.ngOnInit(),
       error: err => {}
     });

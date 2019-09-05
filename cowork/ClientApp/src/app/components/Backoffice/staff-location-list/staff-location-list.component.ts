@@ -5,6 +5,7 @@ import {Field} from "../../dynamic-form-builder/Field";
 import List from "linqts/dist/src/list";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
+import {MealBooking} from "../../../models/MealBooking";
 
 @Component({
   selector: 'app-staff-location-list',
@@ -36,18 +37,31 @@ export class StaffLocationListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: MealBooking, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.staffLocationService.Create(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.staffLocationService.Update(user).subscribe(observer) : this.staffLocationService.Create(user).subscribe(observer);
     });
     await modal.present();
   }

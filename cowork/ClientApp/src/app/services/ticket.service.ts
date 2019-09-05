@@ -4,9 +4,6 @@ import {CONTENTJSON} from "../Utils";
 import {Ticket} from "../models/Ticket";
 import {DateTime} from 'luxon';
 import {map} from 'rxjs/operators';
-import {TicketComment} from '../models/TicketComment';
-import {tick} from '@angular/core/testing';
-import {TicketAttribution} from '../models/TicketAttribution';
 
 @Injectable({
   providedIn: 'root'
@@ -35,14 +32,6 @@ export class TicketService {
   public Create(ticket: Ticket) {
     return this.http.post<number>("api/Ticket", ticket, CONTENTJSON);
   }
-  
-  public CreateAttribution(ticketAttribution: TicketAttribution) {
-    return this.http.post<number>("api/Ticket/Attribution", ticketAttribution, CONTENTJSON);
-  }
-  
-  public DeleteAttribution(id: number) {
-    return this.http.delete("api/Ticket/Attribution/" + id);
-  }
 
 
   public Update(ticket: Ticket) {
@@ -66,26 +55,9 @@ export class TicketService {
   public OpenedBy(userId: number) {
     return this.http.get<Ticket[]>("api/Ticket/OpenedBy/" + userId).pipe(map(this.ParseDateTimeArray));
   }
-
-
-  public AllAttribution() {
-    return this.http.get<TicketAttribution[]>("api/Ticket/AllAttributions");
-  }
-
-  public AllComments() {
-    return this.http.get<TicketComment[]>("api/Ticket/AllComments");
-  }
   
   
   public AttributedTo(personnalId: number) {
     return this.http.get<Ticket[]>("api/Ticket/AttributedTo/" + personnalId).pipe(map(this.ParseDateTimeArray));
-  }
-
-  public AddComment(ticketComment: TicketComment) {
-    return this.http.post<number>("api/Ticket/AddComment", ticketComment, CONTENTJSON);
-  }
-
-  public DeleteComment(commentId: number) {
-    return this.http.delete("api/Ticket/Comment/" + commentId);
   }
 }

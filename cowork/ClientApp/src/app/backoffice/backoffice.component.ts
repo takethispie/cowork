@@ -17,6 +17,7 @@ import {TimeSlotListComponent} from '../components/Backoffice/time-slot-list/tim
 import {WareBookingListComponent} from '../components/Backoffice/ware-booking-list/ware-booking-list.component';
 import {WareListComponent} from '../components/Backoffice/ware-list/ware-list.component';
 import {Table} from "../models/Table";
+import {TicketWareListComponent} from "../components/Backoffice/ticket-ware-list/ticket-ware-list.component";
 
 @Component({
     selector: 'app-backoffice',
@@ -43,6 +44,7 @@ export class BackofficeComponent implements OnInit {
             new DynamicRowDefinition(TicketAttributionListComponent, {}, "TicketAttribution"),
             new DynamicRowDefinition(TicketCommentListComponent, {}, "TicketComment"),
             new DynamicRowDefinition(TicketListComponent, {}, "Ticket"),
+            new DynamicRowDefinition(TicketWareListComponent, {}, "TicketWare"),
             new DynamicRowDefinition(TimeSlotListComponent, {}, "TimeSlot"),
             new DynamicRowDefinition(WareBookingListComponent, {}, "WareBooking"),
             new DynamicRowDefinition(WareListComponent, {}, "Ware")

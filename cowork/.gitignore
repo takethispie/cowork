@@ -231,3 +231,5 @@ _Pvt_Extensions
 .fake/
 .vscode
 .idea
+
+*.db

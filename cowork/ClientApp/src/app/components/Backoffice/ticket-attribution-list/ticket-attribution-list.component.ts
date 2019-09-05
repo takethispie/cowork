@@ -8,6 +8,8 @@ import {DateTime} from "luxon";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
 import {Ticket} from "../../../models/Ticket";
+import {MealBooking} from "../../../models/MealBooking";
+import {TicketAttributionService} from "../../../services/ticket-attribution.service";
 
 @Component({
   selector: 'app-ticket-attribution-list',
@@ -19,7 +21,7 @@ export class TicketAttributionListComponent implements OnInit {
   data: TicketAttribution[];
   fields: Field[];
   
-  constructor(public ticketService: TicketService, public modalCtrl: ModalController) { 
+  constructor(public ApiService: TicketAttributionService, public modalCtrl: ModalController) { 
     this.fields = [
       { Type: "Text", Name: "StaffId", Label: "Id du personnel", Value: null},
       { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null}  
@@ -27,7 +29,7 @@ export class TicketAttributionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ticketService.AllAttribution().subscribe(res => this.data = res);
+    this.ApiService.All().subscribe(res => this.data = res);
   }
 
   CreateModelFromFields(fields: Field[]) {
@@ -39,24 +41,37 @@ export class TicketAttributionListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: TicketAttribution, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.ticketService.CreateAttribution(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.ApiService.Update(user).subscribe(observer) : this.ApiService.Create(user).subscribe(observer);
     });
     await modal.present();
   }
 
   async Delete(id: number) {
-    this.ticketService.DeleteAttribution(id).subscribe({
+    this.ApiService.Delete(id).subscribe({
       next: value => this.ngOnInit(),
       error: err => {}
     });

@@ -4,12 +4,6 @@
 			"path": "cowork"
 		},
 		{
-			"path": "coworkdomain"
-		},
-		{
-			"path": "coworkpersistence"
-		},
-		{
 			"path": "coworktest"
 		}
 	],

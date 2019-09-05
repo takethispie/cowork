@@ -10,6 +10,7 @@ import {DateTime} from "luxon";
 import {SubscriptionTypeService} from "../../../services/subscription-type.service";
 import {PlaceService} from "../../../services/place.service";
 import {flatMap, map} from "rxjs/operators";
+import {MealBooking} from "../../../models/MealBooking";
 
 @Component({
   selector: 'app-subscription-list',
@@ -55,18 +56,31 @@ export class SubscriptionListComponent implements OnInit {
     return model;
   }
 
+  async UpdateItem(model: Subscription, fields: Field[]) {
+    const fieldList = new List(fields).Select(field => {
+      field.Value = model[field.Name];
+      return field;
+    });
+    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
+  }
+
   async AddItem() {
+    await this.OpenModal("Create", { Fields: this.fields });
+  }
+
+  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
     const modal = await this.modalCtrl.create({
       component: DynamicFormModalComponent,
-      componentProps: { Fields: this.fields }
+      componentProps
     });
     modal.onDidDismiss().then(res => {
       if(res.data == null) return;
-      const model = this.CreateModelFromFields(this.fields);
-      this.subscriptionService.Create(model).subscribe({
+      const user = this.CreateModelFromFields(this.fields);
+      const observer = {
         next: value => this.ngOnInit(),
         error: err => console.log(err)
-      });
+      };
+      mode === "Update" ? this.subscriptionService.Update(user).subscribe(observer) : this.subscriptionService.Create(user).subscribe(observer);
     });
     await modal.present();
   }
