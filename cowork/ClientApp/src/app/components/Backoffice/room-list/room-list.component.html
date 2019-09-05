@@ -16,9 +16,14 @@
     <ion-col>{{ row.Place.Name }}</ion-col>
     <ion-col>{{ GetRoomType(row.Type) }}</ion-col>
     <ion-col>
-      <ion-button color="danger" size="small" expand="full">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
+      <ion-buttons>
+        <ion-button color="danger" size="small" (click)="Delete(row.Id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button size="small" (click)="UpdateItem(row, fields)">
+          <ion-icon slot="icon-only" name="open"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
 </ion-grid>

@@ -18,9 +18,14 @@
     <ion-col>{{ PadTime(row.StartHour) + ":" + PadTime(row.StartMinutes) }}</ion-col>
     <ion-col>{{ PadTime(row.EndHour) + ":" + PadTime(row.EndMinutes) }}</ion-col>
     <ion-col>
-      <ion-button color="danger" size="small" expand="full" (click)="Delete(row.Id)">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
+      <ion-buttons>
+        <ion-button color="danger" size="small" (click)="Delete(row.Id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button size="small" (click)="UpdateItem(row, fields)">
+          <ion-icon slot="icon-only" name="open"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
 </ion-grid>
