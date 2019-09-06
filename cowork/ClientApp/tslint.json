@@ -90,6 +90,7 @@
     "eofline": false,
     "curly": false,
     "comment-format": false,
-    "semicolon": false
+    "semicolon": false,
+    "no-string-literal": false
   }
 }

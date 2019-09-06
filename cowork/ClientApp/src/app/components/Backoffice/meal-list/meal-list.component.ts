@@ -22,7 +22,7 @@ export class MealListComponent implements OnInit {
       { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "DatePicker", Name: "Date", Value: DateTime.local().toISODate(), Label: "Date"},
       { Type: "Text", Name: "Description", Label: "Description", Value: ""},
-      { Type: "Text", Name: "PlaceId", Label: "Id espace de coworking", Value: 0}
+      { Type: "Number", Name: "PlaceId", Label: "Id espace de coworking", Value: 0}
     ]
   }
 

@@ -21,16 +21,16 @@ export class SubscriptionTypeListComponent implements OnInit {
 
   constructor(private subscriptionTypeService: SubscriptionTypeService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
       { Type: "Text", Name: "Name", Label: "Nom", Value: null},
       { Type: "Text", Name: "Description", Label: "Description", Value: null },
-      { Type: "Text", Name: "FixedContractDurationMonth", Label: "Durée Contrat avec engagement", Value: null},
-      { Type: "Text", Name: "MonthlyFeeContractFree", Label: "Coût mensuel abonnement contrat sans engagement", Value: null},
-      { Type: "Text", Name: "MonthlyFeeFixedContract", Label: "Coût mensuel abonnement contrat avec engagement", Value: null},
-      { Type: "Text", Name: "PriceDay", Label: "Prix journée (5heures et plus)", Value: null},
-      { Type: "Text", Name: "PriceDayStudent", Label: "Prix journée étudiant", Value: null},
-      { Type: "Text", Name: "PriceFirstHour", Label: "Prix première heure", Value: null},
-      { Type: "Text", Name: "PriceNextHalfHour", Label: "Prix demi-heure suivante", Value: null}
+      { Type: "Number", Name: "FixedContractDurationMonth", Label: "Durée Contrat avec engagement", Value: null},
+      { Type: "Number", Name: "MonthlyFeeContractFree", Label: "Coût mensuel abonnement contrat sans engagement", Value: null},
+      { Type: "Number", Name: "MonthlyFeeFixedContract", Label: "Coût mensuel abonnement contrat avec engagement", Value: null},
+      { Type: "Number", Name: "PriceDay", Label: "Prix journée (5heures et plus)", Value: null},
+      { Type: "Number", Name: "PriceDayStudent", Label: "Prix journée étudiant", Value: null},
+      { Type: "Number", Name: "PriceFirstHour", Label: "Prix première heure", Value: null},
+      { Type: "Number", Name: "PriceNextHalfHour", Label: "Prix demi-heure suivante", Value: null}
     ]
   }
     

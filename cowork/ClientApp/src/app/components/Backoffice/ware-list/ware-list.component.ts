@@ -21,10 +21,10 @@ export class WareListComponent implements OnInit {
 
   constructor(private wareService: WareService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
       { Type: "Text", Name: "Name", Label: "Nom", Value: null},
       { Type: "Text", Name: "Description", Label: "Description", Value: null},
-      { Type: "Text", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
+      { Type: "Number", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
       { Type: "Text", Name: "SerialNumber", Label: "Numéro de série", Value: null},
       { Type: "Checkbox", Name: "InStorage", Label: "En réserve", Value: null}
     ]

@@ -4,7 +4,6 @@ export class User {
     public Id: number;
     public FirstName: string;
     public LastName: string;
-    public Email: string;
     public IsAStudent: boolean;
     public Token: string;
     public Type: UserType;
@@ -13,7 +12,7 @@ export class User {
         this.Id = -1;
         this.FirstName = "";
         this.LastName = "";
-        this.Email = "";
         this.IsAStudent = false;
+        this.Type = UserType.User;
     }
 }

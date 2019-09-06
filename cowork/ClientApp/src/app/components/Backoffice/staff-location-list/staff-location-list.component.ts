@@ -20,8 +20,8 @@ export class StaffLocationListComponent implements OnInit {
   constructor(private staffLocationService: StaffLocationService, public modalCtrl: ModalController) {
     this.fields = [
       { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "UserId", Label: "Id utilisateur", Value: null},
-      { Type: "Text", Name: "PlaceId", Label: "Id espace de coworking", Value: null}
+      { Type: "Number", Name: "UserId", Label: "Id utilisateur", Value: null},
+      { Type: "Number", Name: "PlaceId", Label: "Id espace de coworking", Value: null}
     ];
   }
 

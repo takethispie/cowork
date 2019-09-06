@@ -22,12 +22,12 @@ export class PlaceListComponent implements OnInit {
     this.fields = [
       { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
       { Type: "Text", Name: "Name", Label: "Nom", Value: ''},
-      { Type: "Text", Name: "CosyRoomAmount", Label: "Nombre de salons cosy", Value: 0},
+      { Type: "Number", Name: "CosyRoomAmount", Label: "Nombre de salons cosy", Value: 0},
       { Type: "Checkbox", Name: "HighBandwidthWifi", Label: "Wifi très haut débit", Value: false},
-      { Type: "Text", Name: "LaptopAmount", Label: "Nombre d'ordinateurs portables", Value: 0},
+      { Type: "Number", Name: "LaptopAmount", Label: "Nombre d'ordinateurs portables", Value: 0},
       { Type: "Checkbox", Name: "MembersOnlyArea", Label: "Espace membres", Value: false},
       { Type: "Checkbox", Name: "UnlimitedBeverages", Label: "Snack & boissons illimitées", Value: false},
-      { Type: "Text", Name: "PrinterAmount", Label: "Nombre d'imprimantes", Value: 0}
+      { Type: "Number", Name: "PrinterAmount", Label: "Nombre d'imprimantes", Value: 0}
     ];
   }
 

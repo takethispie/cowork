@@ -18,8 +18,8 @@ export class MealBookingListComponent implements OnInit {
   constructor(private mealBookingService: MealBookingService, private modalCtrl: ModalController) {
     this.fields = [
       { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "MealId", Label: "Id repas", Value: 0 },
-      { Type: "Text", Name: "UserId", Label: "Id utilisateur", Value: 0},
+      { Type: "Number", Name: "MealId", Label: "Id repas", Value: 0 },
+      { Type: "Number", Name: "UserId", Label: "Id utilisateur", Value: 0},
     ];
    
   }

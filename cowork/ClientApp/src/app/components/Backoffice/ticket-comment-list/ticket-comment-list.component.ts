@@ -19,9 +19,9 @@ export class TicketCommentListComponent implements OnInit {
 
   constructor(private ApiService: TicketCommentService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: 'UserId', Label: "Id de l'utilisateur", Value: null},
-      { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
+      { Type: "Number", Name: 'UserId', Label: "Id de l'utilisateur", Value: null},
+      { Type: "Number", Name: "TicketId", Label: "Id du ticket", Value: null},
       { Type: "Text", Name: "Content", Label: "Texte du commentaire", Value: null},
     ];
   }

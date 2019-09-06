@@ -1,10 +1,6 @@
 <ion-grid>
   <ion-row class="legend">
-    <ion-col>Id</ion-col>
-    <ion-col>Type</ion-col>
-    <ion-col>FirstName</ion-col>
-    <ion-col>LastName</ion-col>
-    <ion-col>Est Étudiant</ion-col>
+    <ion-col *ngFor="let field of fields">{{ field.Label }}</ion-col>
     <ion-col>
       <ion-button size="small" expand="full" (click)="AddItem()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -13,9 +9,9 @@
   </ion-row>
   <ion-row *ngFor="let row of data">
     <ion-col>{{ row.Id }}</ion-col>
-    <ion-col>{{ GetUserType(row.Type) }}</ion-col>
     <ion-col>{{ row.FirstName }}</ion-col>
     <ion-col>{{ row.LastName }}</ion-col>
+    <ion-col>{{ GetUserType(row.Type) }}</ion-col>
     <ion-col>{{ row.IsAStudent ? "Oui" : "Non"}}</ion-col>
     <ion-col>
       <ion-buttons>

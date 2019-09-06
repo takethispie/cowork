@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {Field} from "./Field";
 
 @Component({

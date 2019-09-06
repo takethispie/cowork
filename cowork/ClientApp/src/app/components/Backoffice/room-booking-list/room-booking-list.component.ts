@@ -21,8 +21,8 @@ export class RoomBookingListComponent implements OnInit {
   constructor(public roomBookingService: RoomBookingService, public modalCtrl: ModalController) { 
     this.fields = [
       { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "ClientId", Label: "Id utilisateur", Value: null},
-      { Type: "Text", Name: "RoomId", Label: "Id de la salle", Value: null},
+      { Type: "Number", Name: "ClientId", Label: "Id utilisateur", Value: null},
+      { Type: "Number", Name: "RoomId", Label: "Id de la salle", Value: null},
       { Type: "DateTimePicker", Name: "Start", Label: "Début de la réservation", Value: ""},
       { Type: "DateTimePicker", Name: "End", Label: "Fin de la réservation", Value: ""}
     ];

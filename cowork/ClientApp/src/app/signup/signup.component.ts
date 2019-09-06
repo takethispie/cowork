@@ -20,10 +20,9 @@ export class SignupComponent implements OnInit {
   async register(form: NgForm) {
     if(form.value.password === form.value.confirmPassword) {
       const user = new User();
-      user.Email = form.value.email;
       user.FirstName = form.value.firstName;
       user.LastName = form.value.lastName;
-      this.authService.Register(user, form.value.password).subscribe( async result => {
+      this.authService.Register(user, form.value.password, form.value.email).subscribe( async result => {
         this.toast.PresentToast("Création du compte réussie");
         form.resetForm();
         this.navCtrl.navigateRoot('Auth');

@@ -20,10 +20,14 @@ export class TicketListComponent implements OnInit {
 
   constructor(private ticketService: TicketService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
       { Type: "Text", Name: "Title", Label: "Titre", Value: null},
       { Type: "Text", Name: "Description", Label: "Description", Value: ""},
-      { Type: "Text", Name: "UserId", Label: "Auteur du ticket", Value: null},
+      { Type: 'Number', Name: "AttributedToId", Label: "Id du personnel auquel est attribué le ticket", Value: -1},
+      { Type: 'DateTimePicker', Name: "Created", Label: "Date de création du ticket", Value: DateTime.local().toISO()},
+      { Type: "Number", Name: "UserId", Label: "Auteur du ticket", Value: -1},
+      { Type: "Number", Name: "PlaceId", Label: "Espace de coworking de l'auteur", Value: -1},
+      { Type: 'DateTimePicker', Name: "PlanifiedResolution", Label: "Date planifiée de résolution du ticket", Value: DateTime.local().toISO()},
       { Type: "Select", Name: "State", Label: "Status du ticket", Value: 0, Options: [
           { Label: TicketState[0], Value: 0},
           { Label: TicketState[1], Value: 1},
@@ -45,7 +49,7 @@ export class TicketListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new Ticket();
+    const model = new Ticket();
     model.Id = fieldDic["Id"][0].Value as number;
     model.Title = fieldDic["Title"][0].Value as string;
     model.Description = fieldDic["Description"][0].Value as string;

@@ -22,8 +22,8 @@ export class TimeSlotListComponent implements OnInit {
 
   constructor(private  timeSlotService: TimeSlotService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "PlaceId", Label: "Id de l'espace de corworking", Value: null},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
+      { Type: "Number", Name: "PlaceId", Label: "Id de l'espace de corworking", Value: null},
       { Type: "TimePicker", Name: "Start", Label: "Heure d'ouverture", Value: "08:00"},
       { Type: "TimePicker", Name: "End", Label: "Heure de fermeture", Value: "20:00"},
       { Type: "Select", Name: "Day", Label: "Jour", Value: 0, Options: [

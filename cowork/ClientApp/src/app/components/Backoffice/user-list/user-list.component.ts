@@ -6,8 +6,7 @@ import {Field} from "../../dynamic-form-builder/Field";
 import List from "linqts/dist/src/list";
 import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
 import {ModalController} from "@ionic/angular";
-import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+
 
 @Component({
   selector: 'app-user-list',
@@ -20,10 +19,9 @@ export class UserListComponent implements OnInit {
 
   constructor(private userService: UserService, private modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
       { Type: "Text", Name: "FirstName", Value: "", Label: "Prénom" },
       { Type: "Text", Name: "LastName", Value: "", Label: "Nom"},
-      { Type: "Text", Name: "Email", Value: "", Label: "Email"},
       { Type: "Select", Name: "Type", Value: "User", Label: "Type d'utilisateur", Options: [
           { Label: "User", Value: 0 },
           { Label: "Staff", Value: 1 },
@@ -61,7 +59,6 @@ export class UserListComponent implements OnInit {
     user.FirstName = fieldDic["FirstName"][0].Value as string;
     user.Id = fieldDic["Id"][0].Value as number;
     user.IsAStudent = fieldDic["IsAStudent"][0].Value as boolean;
-    user.Email = fieldDic["Email"][0].Value as string;
     user.Type = fieldDic["Type"][0].Value as number;
     return user;
   }

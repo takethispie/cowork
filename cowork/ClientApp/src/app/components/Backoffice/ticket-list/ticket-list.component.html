@@ -3,7 +3,7 @@
     <ion-col>Id</ion-col>
     <ion-col>Titre</ion-col>
     <ion-col>Description</ion-col>
-    <ion-col>Id personnel auquel est attribué le ticket</ion-col>
+    <ion-col>Id du personnel auquel est attribué le ticket</ion-col>
     <ion-col>Date création</ion-col>
     <ion-col>Id utilisateur ayant ouvert le ticket</ion-col>
     <ion-col>Espace de coworking</ion-col>
@@ -19,7 +19,7 @@
     <ion-col>{{ row.Id }}</ion-col>
     <ion-col>{{ row.Title }}</ion-col>
     <ion-col>{{ row.Description }}</ion-col>
-    <ion-col>{{ row.AttributedToId }}</ion-col>
+    <ion-col>{{ row.AttributedToId || -1 }}</ion-col>
     <ion-col>{{ row.Created | date: "dd/MM/yyyy" }}</ion-col>
     <ion-col>{{ row.OpenedById }}</ion-col>
     <ion-col>{{ row.Place.Name }}</ion-col>

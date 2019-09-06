@@ -23,9 +23,9 @@ export class TicketAttributionListComponent implements OnInit {
   
   constructor(public ApiService: TicketAttributionService, public modalCtrl: ModalController) { 
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "StaffId", Label: "Id du personnel", Value: null},
-      { Type: "Text", Name: "TicketId", Label: "Id du ticket", Value: null}  
+      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
+      { Type: "Number", Name: "StaffId", Label: "Id du personnel", Value: null},
+      { Type: "Number", Name: "TicketId", Label: "Id du ticket", Value: null}
     ];
   }
 

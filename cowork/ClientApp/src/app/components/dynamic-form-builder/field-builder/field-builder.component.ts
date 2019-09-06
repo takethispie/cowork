@@ -9,7 +9,11 @@ import {DateTime} from "luxon";
       <app-select *ngSwitchCase="'Select'" [field]="field" (value)="SetValue($event)"></app-select>
       <ion-item *ngSwitchCase="'Text'">
         <ion-label position="floating">{{ field.Label }}</ion-label>
-        <ion-input [name]="field.Name"  [(ngModel)]="field.Value" ngModel></ion-input>
+        <ion-input [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'Number'">
+        <ion-label position="floating">{{ field.Label }}</ion-label>
+        <ion-input type="number" [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
       <ion-item *ngSwitchCase="'Checkbox'">
         <ion-label>{{field.Label}}</ion-label>
@@ -17,22 +21,23 @@ import {DateTime} from "luxon";
       </ion-item>
       <ion-item *ngSwitchCase="'DatePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value" max="{{MaxYear()}}"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
+                      max="{{MaxYear()}}" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'DateTimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value" max="{{MaxYear()}}"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
+                      max="{{MaxYear()}}" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'TimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'ReadonlyText'">
         <ion-label position="floating">{{ field.Label }}</ion-label>
-        <ion-input [name]="field.Name" readonly  [(ngModel)]="field.Value" ngModel></ion-input>
+        <ion-input [name]="field.Name" readonly [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
-    </div>
-  `
+    </div>    `
 })
 export class FieldBuilderComponent implements OnInit {
   @Input() field: Field;

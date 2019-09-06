@@ -7,6 +7,7 @@ import {TicketState} from '../../../models/TicketState';
 import {TicketService} from '../../../services/ticket.service';
 import {TicketComment} from '../../../models/TicketComment';
 import {LoadingService} from '../../../services/loading.service';
+import {TicketCommentService} from "../../../services/ticket-comment.service";
 
 @Component({
     selector: 'ticket-item',
@@ -22,7 +23,7 @@ export class TicketComponent implements OnInit {
     public UserCanDelete: boolean = false;
 
 
-    constructor(private toast: ToastService, private ticketService: TicketService, private loading: LoadingService) {
+    constructor(private toast: ToastService, private ticketCommentService: TicketCommentService, private loading: LoadingService) {
     }
 
     ngOnInit() {
@@ -41,7 +42,7 @@ export class TicketComponent implements OnInit {
         comment.Id = -1;
         comment.TicketId = this.Ticket.Id;
         this.loading.Loading = true;
-        this.ticketService.AddComment(comment).subscribe({
+        this.ticketCommentService.Create(comment).subscribe({
             next: res => {
                 console.log(res);
                 comment.Id = res;

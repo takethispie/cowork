@@ -31,7 +31,7 @@ export class SubscriptionListComponent implements OnInit {
         const typeOptions = value.Types.map(type => ({ Label: type.Name, Value: type.Id }) );
         this.fields = [
           { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-          { Type: "Text", Name: "UserId", Label: "Id de l'utilisateur", Value: null},
+          { Type: "Number", Name: "UserId", Label: "Id de l'utilisateur", Value: null},
           { Type: "Checkbox", Name: "FixedContract", Label: "Contrat avec engagement", Value: false},
           { Type: "Select", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: "0" , Options: placeOptions },
           { Type: "Select", Name: "TypeId", Label: "Id du type d'abonnement", Value: "0", Options: typeOptions}
@@ -47,7 +47,7 @@ export class SubscriptionListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new Subscription();
+    const model = new Subscription();
     model.Id = fieldDic["Id"][0].Value as number;
     model.ClientId = fieldDic["UserId"][0].Value as number;
     model.FixedContract = fieldDic["FixedContract"][0].Value as boolean;
