@@ -7,16 +7,16 @@
     <ion-col>Fin de la réservation</ion-col>
     <ion-col>
       <ion-buttons>
-        <ion-button size="small" (click)="AddItem()">
+        <ion-button size="small" (click)="dataHandler.AddItem()">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
-        <ion-button size="small" (click)="Refresh()">
+        <ion-button size="small" (click)="dataHandler.Refresh()">
           <ion-icon name="refresh"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-col>
   </ion-row>
-  <ion-row *ngFor="let row of data">
+  <ion-row *ngFor="let row of dataHandler.Data">
     <ion-col>{{ row.Id }}</ion-col>
     <ion-col>{{ row.ClientId }}</ion-col>
     <ion-col>{{ row.RoomId }}</ion-col>
@@ -24,16 +24,16 @@
     <ion-col>{{ row.End | date: "dd/MM/yyyy HH/mm"}}</ion-col>
     <ion-col>
       <ion-buttons>
-        <ion-button color="danger" size="small" (click)="Delete(row.Id)">
+        <ion-button color="danger" size="small" (click)="dataHandler.Delete(row.Id)">
           <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-button>
-        <ion-button size="small" (click)="UpdateItem(row, fields)">
+        <ion-button size="small" (click)="dataHandler.UpdateItem(row, fields)">
           <ion-icon slot="icon-only" name="open"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-col>
   </ion-row>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="dataHandler.LoadData($event)">
     <ion-infinite-scroll-content
             loadingSpinner="bubbles"
             loadingText="Loading more data...">

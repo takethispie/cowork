@@ -6,6 +6,7 @@ import List from 'linqts/dist/src/list';
 import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 import {ModalController} from '@ionic/angular';
 import {MealBooking} from '../../../models/MealBooking';
+import {TableDataHandler} from '../TableDataHandler';
 
 @Component({
   selector: 'app-staff-location-list',
@@ -14,8 +15,8 @@ import {MealBooking} from '../../../models/MealBooking';
 })
 export class StaffLocationListComponent implements OnInit {
 
-  data: StaffLocation[];
   fields: Field[];
+  private dataHandler: TableDataHandler<StaffLocation>;
 
   constructor(private staffLocationService: StaffLocationService, public modalCtrl: ModalController) {
     this.fields = [
@@ -23,10 +24,11 @@ export class StaffLocationListComponent implements OnInit {
       new Field(FieldType.Number, "UserId", "Id utilisateur", -1),
       new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1)
     ];
+    this.dataHandler = new TableDataHandler<StaffLocation>(this.staffLocationService, this.modalCtrl, this.fields, this.CreateModelFromFields);
   }
 
   ngOnInit() {
-    this.staffLocationService.GetAll().subscribe(res => this.data = res);
+    this.dataHandler.Refresh();
   }
 
   CreateModelFromFields(fields: Field[]) {
@@ -36,41 +38,5 @@ export class StaffLocationListComponent implements OnInit {
     model.UserId = fieldDic["UserId"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     return model;
-  }
-
-  async UpdateItem(model: MealBooking, fields: Field[]) {
-    const fieldList = new List(fields).Select(field => {
-      field.Value = model[field.Name];
-      return field;
-    });
-    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
-  }
-
-  async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields });
-  }
-
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
-    const modal = await this.modalCtrl.create({
-      component: DynamicFormModalComponent,
-      componentProps
-    });
-    modal.onDidDismiss().then(res => {
-      if(res.data == null) return;
-      const user = this.CreateModelFromFields(this.fields);
-      const observer = {
-        next: value => this.ngOnInit(),
-        error: err => console.log(err)
-      };
-      mode === "Update" ? this.staffLocationService.Update(user).subscribe(observer) : this.staffLocationService.Create(user).subscribe(observer);
-    });
-    await modal.present();
-  }
-
-  async Delete(id: number) {
-    this.staffLocationService.Delete(id).subscribe({
-      next: value => this.ngOnInit(),
-      error: err => {}
-    });
   }
 }

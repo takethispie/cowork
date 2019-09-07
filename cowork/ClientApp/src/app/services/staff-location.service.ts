@@ -8,11 +8,17 @@ import {CONTENTJSON} from "../Utils";
 })
 export class StaffLocationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   GetAll() {
     return this.http.get<StaffLocation[]>("api/StaffLocation");
   }
+
+
+  AllWithPaging(page: number, amount: number) {
+    return this.http.get<StaffLocation[]>("api/StaffLocation/AllWithPaging/" + page + "/" + amount);
+  }
+
   
   Create(staffLocation: StaffLocation) {
     return this.http.post<number>("api/StaffLocation", staffLocation, CONTENTJSON);

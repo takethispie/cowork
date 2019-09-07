@@ -16,6 +16,11 @@ export class RoomService {
   }
 
 
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<Room[]>("api/Rool/AllWithPaging/" + page + "/" + amount);
+  }
+
+
   public Create(room: Room) {
     return this.http.post<number>("api/Room", room, CONTENTJSON);
   }

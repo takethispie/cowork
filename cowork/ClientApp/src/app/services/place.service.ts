@@ -25,7 +25,7 @@ export class PlaceService {
   }
 
 
-  public DeleteById(id: number) {
+  public Delete(id: number) {
     return this.http.delete("api/Place/ById/" + id);
   }
 
