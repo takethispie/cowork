@@ -5,6 +5,7 @@ import {Field, FieldType} from '../../dynamic-form-builder/Field';
 import List from 'linqts/dist/src/list';
 import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 import {ModalController} from '@ionic/angular';
+import {TableDataHandler} from '../TableDataHandler';
 
 @Component({
   selector: 'app-subscription-type-list',
@@ -13,8 +14,8 @@ import {ModalController} from '@ionic/angular';
 })
 export class SubscriptionTypeListComponent implements OnInit {
 
-  data: SubscriptionType[];
   fields: Field[];
+  dataHandler: TableDataHandler<SubscriptionType>;
 
   constructor(private subscriptionTypeService: SubscriptionTypeService, public modalCtrl: ModalController) {
     this.fields = [
@@ -28,14 +29,15 @@ export class SubscriptionTypeListComponent implements OnInit {
       new Field(FieldType.Number, "PriceDayStudent", "Prix journée étudiant", -1),
       new Field(FieldType.Number, "PriceFirstHour", "Prix première heure", -1),
       new Field(FieldType.Number, "PriceNextHalfHour", "Prix demi-heure suivante", -1),
-    ]
+    ];
+    this.dataHandler = new TableDataHandler<SubscriptionType>(this.subscriptionTypeService, this.modalCtrl, this.fields, this.CreateModelFromFields);
   }
-    
   
 
   ngOnInit() {
-    this.subscriptionTypeService.All().subscribe(res => this.data = res);
+    this.dataHandler.Refresh();
   }
+
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
@@ -52,41 +54,4 @@ export class SubscriptionTypeListComponent implements OnInit {
     model.PriceNextHalfHour = fieldDic["PriceNextHalfHour"][0].Value as number;
     return model;
   }
-
-  async UpdateItem(model: SubscriptionType, fields: Field[]) {
-    const fieldList = new List(fields).Select(field => {
-      field.Value = model[field.Name];
-      return field;
-    });
-    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
-  }
-
-  async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields });
-  }
-
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
-    const modal = await this.modalCtrl.create({
-      component: DynamicFormModalComponent,
-      componentProps
-    });
-    modal.onDidDismiss().then(res => {
-      if(res.data == null) return;
-      const user = this.CreateModelFromFields(this.fields);
-      const observer = {
-        next: value => this.ngOnInit(),
-        error: err => console.log(err)
-      };
-      mode === "Update" ? this.subscriptionTypeService.Update(user).subscribe(observer) : this.subscriptionTypeService.Create(user).subscribe(observer);
-    });
-    await modal.present();
-  }
-
-  async Delete(id: number) {
-    this.subscriptionTypeService.Delete(id).subscribe({
-      next: value => this.ngOnInit(),
-      error: err => {}
-    });
-  }
-
 }

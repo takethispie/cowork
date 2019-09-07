@@ -23,6 +23,11 @@ export class TicketAttributionService {
   public All() {
     return this.http.get<TicketAttribution[]>("api/Ticket/AllAttributions");
   }
+
+
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<TicketAttribution[]>("api/Ticket/AttributionsWithPaging/" + page + "/" + amount);
+  }
   
   
   public Update(attribution: TicketAttribution) {

@@ -16,7 +16,7 @@ export class UserService {
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<User[]>("api/User/AllWithPaging/" + page + "/" + amount);
+    return this.http.get<User[]>("api/User/WithPaging/" + page + "/" + amount);
   }
   
   public Create(user: User) {

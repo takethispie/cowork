@@ -65,6 +65,12 @@ namespace cowork.Controllers.InventoryManagement {
             var res = repository.GetAllFromPlaceWithPaging(placeId, amount, page);
             return Ok(res);
         }
+        
+        [HttpGet("WithPaging/{page}/{amount}")]
+        public IActionResult AllWithPaging(int page, int amount) {
+            var result = repository.GetAllWithPaging(page, amount);
+            return Ok(result);
+        }
 
     }
 

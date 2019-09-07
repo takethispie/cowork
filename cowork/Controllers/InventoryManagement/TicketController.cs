@@ -172,6 +172,25 @@ namespace cowork.Controllers.InventoryManagement {
             return Ok();
         }
         
+        
+        [HttpGet("WithPaging/{page}/{amount}")]
+        public IActionResult WithPaging(int page, int amount) {
+            var result = repository.GetAllByPaging(page, amount);
+            return Ok(result);
+        }
+        
+        [HttpGet("CommentsWithPaging/{page}/{amount}")]
+        public IActionResult CommentsWithPaging(int page, int amount) {
+            var result = ticketCommentRepository.GetAllWithPaging(page, amount);
+            return Ok(result);
+        }
+        
+        
+        [HttpGet("AttributionsWithPaging/{page}/{amount}")]
+        public IActionResult AttributionsWithPaging(int page, int amount) {
+            var result = repository.GetAllByPaging(page, amount);
+            return Ok(result);
+        }
     }
 
 }

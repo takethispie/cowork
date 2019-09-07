@@ -6,7 +6,7 @@ import {Field, FieldType} from '../../dynamic-form-builder/Field';
 import {ModalController} from '@ionic/angular';
 import List from 'linqts/dist/src/list';
 import {DateTime} from 'luxon';
-import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {TableDataHandler} from '../TableDataHandler';
 
 @Component({
   selector: 'app-time-slot-list',
@@ -15,8 +15,8 @@ import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-moda
 })
 export class TimeSlotListComponent implements OnInit {
 
-  data: TimeSlot[];
   fields: Field[];
+  dataHandler: TableDataHandler<TimeSlot>;
 
   constructor(private  timeSlotService: TimeSlotService, public modalCtrl: ModalController) {
     this.fields = [
@@ -34,11 +34,12 @@ export class TimeSlotListComponent implements OnInit {
           { Label: WeekDay[0], Value: WeekDay.Sunday},
         ]
       )
-    ]
+    ];
+    this.dataHandler = new TableDataHandler<TimeSlot>(this.timeSlotService, this.modalCtrl, this.fields, this.CreateModelFromFields);
   }
 
   ngOnInit() {
-    this.timeSlotService.All().subscribe(res => this.data = res);
+    this.dataHandler.Refresh();
   }
 
   GetWeekDay(ind: number) {
@@ -51,7 +52,7 @@ export class TimeSlotListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new TimeSlot();
+    const model = new TimeSlot();
     model.Id = fieldDic["Id"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     const start = DateTime.fromFormat(fieldDic["Start"][0].Value as string, "HH:mm");
@@ -63,41 +64,4 @@ export class TimeSlotListComponent implements OnInit {
     model.Day = fieldDic["Day"][0].Value as number;
     return model;
   }
-
-  async UpdateItem(model: TimeSlot, fields: Field[]) {
-    const fieldList = new List(fields).Select(field => {
-      field.Value = model[field.Name];
-      return field;
-    });
-    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
-  }
-
-  async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields });
-  }
-
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
-    const modal = await this.modalCtrl.create({
-      component: DynamicFormModalComponent,
-      componentProps
-    });
-    modal.onDidDismiss().then(res => {
-      if(res.data == null) return;
-      const user = this.CreateModelFromFields(this.fields);
-      const observer = {
-        next: value => this.ngOnInit(),
-        error: err => console.log(err)
-      };
-      mode === "Update" ? this.timeSlotService.Update(user).subscribe(observer) : this.timeSlotService.Create(user).subscribe(observer);
-    });
-    await modal.present();
-  }
-
-  async Delete(id: number) {
-    this.timeSlotService.Delete(id).subscribe({
-      next: value => this.ngOnInit(),
-      error: err => {}
-    });
-  }
-
 }

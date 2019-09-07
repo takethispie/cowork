@@ -89,6 +89,16 @@ namespace coworkpersistence.Repositories {
             return dataMapper.NoQueryCommand(sql, parameters);
         }
 
+
+        public List<SubscriptionType> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"SubscriptionType\" ORDER BY \"Id\" LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", amount * page)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
     }
 
 }

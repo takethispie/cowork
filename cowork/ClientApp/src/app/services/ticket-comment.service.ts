@@ -23,9 +23,14 @@ export class TicketCommentService {
   public All() {
     return this.http.get<TicketComment[]>("api/Ticket/AllComments");
   }
+
+
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<TicketComment[]>("api/Ticket/CommentsWithPaging/" + page + "/" + amount);
+  }
   
   
   public Update(comment: TicketComment) {
-    return this.http.put("api/Ticket/Comment", comment, CONTENTJSON);
+    return this.http.put<number>("api/Ticket/Comment", comment, CONTENTJSON);
   }
 }

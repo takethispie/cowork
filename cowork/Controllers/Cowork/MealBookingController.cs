@@ -68,9 +68,9 @@ namespace cowork.Controllers.Cowork {
         }
 
 
-        [HttpGet("WithPaging/{page}/{amount}/{byDateAsc}")]
-        public IActionResult WithPaging(int page, int amount, bool byDateAsc) {
-            var result = Repository.GetAllWithPaging(page, amount, byDateAsc);
+        [HttpGet("WithPaging/{page}/{amount}")]
+        public IActionResult WithPaging(int page, int amount) {
+            var result = Repository.GetAllWithPaging(page, amount, true);
             return Ok(result);
         }
 

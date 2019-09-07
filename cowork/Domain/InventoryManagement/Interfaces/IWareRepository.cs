@@ -10,6 +10,8 @@ namespace coworkdomain.InventoryManagement.Interfaces {
 
         List<Ware> GetAllFromPlaceWithPaging(long id, int amount, int page);
 
+        List<Ware> GetAllWithPaging(int page, int amount);
+
         Ware GetById(long id);
 
         bool Delete(long id);

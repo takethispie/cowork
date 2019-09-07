@@ -6,6 +6,7 @@ import {ModalController} from '@ionic/angular';
 import List from 'linqts/dist/src/list';
 import {WareBooking} from '../../../models/WareBooking';
 import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {TableDataHandler} from '../TableDataHandler';
 
 @Component({
   selector: 'app-ware-list',
@@ -16,6 +17,7 @@ export class WareListComponent implements OnInit {
 
   data: Ware[];
   fields: Field[];
+  dataHandler: TableDataHandler<Ware>;
 
   constructor(private wareService: WareService, public modalCtrl: ModalController) {
     this.fields = [
@@ -25,8 +27,8 @@ export class WareListComponent implements OnInit {
       new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
       new Field(FieldType.Text, "SerialNumber", "Numéro de série", ""),
       new Field(FieldType.CheckBox, "InStorage", "En réserve", false)
-    ]
-    
+    ];
+    this.dataHandler = new TableDataHandler<Ware>(this.wareService, this.modalCtrl, this.fields, this.CreateModelFromFields);
   }
 
   ngOnInit() {
@@ -44,41 +46,4 @@ export class WareListComponent implements OnInit {
     model.InStorage = fieldDic["InStorage"][0].Value as boolean;
     return model;
   }
-
-  async UpdateItem(model: WareBooking, fields: Field[]) {
-    const fieldList = new List(fields).Select(field => {
-      field.Value = model[field.Name];
-      return field;
-    });
-    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
-  }
-
-  async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields });
-  }
-
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
-    const modal = await this.modalCtrl.create({
-      component: DynamicFormModalComponent,
-      componentProps
-    });
-    modal.onDidDismiss().then(res => {
-      if(res.data == null) return;
-      const user = this.CreateModelFromFields(this.fields);
-      const observer = {
-        next: value => this.ngOnInit(),
-        error: err => console.log(err)
-      };
-      mode === "Update" ? this.wareService.Update(user).subscribe(observer) : this.wareService.Create(user).subscribe(observer);
-    });
-    await modal.present();
-  }
-
-  async Delete(id: number) {
-    this.wareService.Delete(id).subscribe({
-      next: value => this.ngOnInit(),
-      error: err => {}
-    });
-  }
-
 }

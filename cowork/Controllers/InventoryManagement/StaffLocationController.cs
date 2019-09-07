@@ -36,6 +36,12 @@ namespace cowork.Controllers.InventoryManagement {
             if (result == -1) return Conflict();
             return Ok(result);
         }
+        
+        [HttpGet("WithPaging/{page}/{amount}")]
+        public IActionResult AllWithPaging(int page, int amount) {
+            var result = repository.GetAllWithPaging(page, amount);
+            return Ok(result);
+        }
 
     }
 

@@ -90,6 +90,13 @@ namespace cowork.Controllers.InventoryManagement {
         }
 
 
+        [HttpGet("WithPaging/{page}/{amount}")]
+        public IActionResult AllWithPaging(int page, int amount) {
+            var result = bookingRepository.GetWithPaging(page, amount);
+            return Ok(result);
+        }
+
+
         [HttpPost("FromGivenDate")]
         public IActionResult FromGivenDate([FromBody] DateTime start) {
             var result = bookingRepository.GetAllFromDate(start);

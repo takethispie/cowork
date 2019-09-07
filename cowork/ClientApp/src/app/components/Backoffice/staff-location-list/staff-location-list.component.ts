@@ -3,9 +3,7 @@ import {StaffLocationService} from '../../../services/staff-location.service';
 import {StaffLocation} from '../../../models/StaffLocation';
 import {Field, FieldType} from '../../dynamic-form-builder/Field';
 import List from 'linqts/dist/src/list';
-import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 import {ModalController} from '@ionic/angular';
-import {MealBooking} from '../../../models/MealBooking';
 import {TableDataHandler} from '../TableDataHandler';
 
 @Component({

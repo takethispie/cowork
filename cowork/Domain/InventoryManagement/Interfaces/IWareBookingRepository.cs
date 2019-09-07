@@ -27,6 +27,8 @@ namespace coworkdomain.InventoryManagement.Interfaces {
 
         List<WareBooking> GetWithPaging(int page, int size, DateTime startingAt);
 
+        List<WareBooking> GetWithPaging(int page, int size);
+
 
     }
 

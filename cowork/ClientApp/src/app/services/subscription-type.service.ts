@@ -15,6 +15,11 @@ export class SubscriptionTypeService {
   }
 
 
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<SubscriptionType[]>("api/SubscriptionType/WithPaging/" + page + "/" + amount);
+  }
+
+
   public Create(sub: SubscriptionType) {
     return this.http.post<number>("api/SubscriptionType", sub, CONTENTJSON);
   }

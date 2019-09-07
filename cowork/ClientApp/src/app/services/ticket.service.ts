@@ -29,6 +29,11 @@ export class TicketService {
   }
 
 
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<Ticket[]>("api/Ticket/WithPaging/" + page + "/" + amount);
+  }
+
+
   public Create(ticket: Ticket) {
     return this.http.post<number>("api/Ticket", ticket, CONTENTJSON);
   }

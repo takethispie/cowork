@@ -11,7 +11,7 @@ import {map} from 'rxjs/operators';
 })
 export class WareBookingService {
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   private ParseDateTimeInArray = (bookings: WareBooking[]) => {
     return bookings.map(this.ParseDateTime);
@@ -51,8 +51,13 @@ export class WareBookingService {
         .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
   }
 
-  public WithPaging(page: number, size: number, dateTime: DateTime) {
+  public AllWithPagingStartingAt(page: number, size: number, dateTime: DateTime) {
     return this.http.post<WareBooking[]>("api/WareBooking/WithPaging/" + page + "/" + size, dateTime, CONTENTJSON)
+        .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
+  }
+
+  public AllWithPaging(page: number, size: number) {
+    return this.http.get<WareBooking[]>("api/WareBooking/WithPaging/" + page + "/" + size)
         .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
   }
 

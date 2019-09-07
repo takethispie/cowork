@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {TicketState} from '../../../models/TicketState';
 import {Field, FieldType} from '../../dynamic-form-builder/Field';
 import List from 'linqts/dist/src/list';
-import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 import {TicketWareService} from '../../../services/ticket-ware.service';
 import {ModalController} from '@ionic/angular';
 import {TicketWare} from '../../../models/TicketWare';
+import {TableDataHandler} from '../TableDataHandler';
 
 @Component({
   selector: 'app-ticket-ware-list',
@@ -14,20 +14,21 @@ import {TicketWare} from '../../../models/TicketWare';
 })
 export class TicketWareListComponent implements OnInit {
 
-  data: TicketWare[];
   fields: Field[];
+  dataHandler: TableDataHandler<TicketWare>;
 
   constructor(public ticketWareService: TicketWareService, public modalCtrl: ModalController) {
     this.fields = [
       new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
       new Field(FieldType.Number, "TicketId", "Id du ticket", -1),
       new Field(FieldType.Number, "WareId", "Id du matériel", -1)
-    ]
+    ];
+    this.dataHandler = new TableDataHandler<TicketWare>(this.ticketWareService, this.modalCtrl, this.fields, this.CreateModelFromFields);
   }
 
 
   ngOnInit() {
-    this.ticketWareService.All().subscribe(res => this.data = res);
+    this.dataHandler.Refresh();
   }
 
   GetTicketState(ind: number) {
@@ -42,41 +43,4 @@ export class TicketWareListComponent implements OnInit {
     model.WareId = fieldDic["WareId"][0].Value as number;
     return model;
   }
-
-  async UpdateItem(model: TicketWare, fields: Field[]) {
-    const fieldList = new List(fields).Select(field => {
-      field.Value = model[field.Name];
-      return field;
-    });
-    await this.OpenModal("Update", { Fields: fieldList.ToArray()});
-  }
-
-  async AddItem() {
-    await this.OpenModal("Create", { Fields: this.fields });
-  }
-
-  async OpenModal(mode: "Update" | "Create" ,componentProps: any) {
-    const modal = await this.modalCtrl.create({
-      component: DynamicFormModalComponent,
-      componentProps
-    });
-    modal.onDidDismiss().then(res => {
-      if(res.data == null) return;
-      const user = this.CreateModelFromFields(this.fields);
-      const observer = {
-        next: value => this.ngOnInit(),
-        error: err => console.log(err)
-      };
-      mode === "Update" ? this.ticketWareService.Update(user).subscribe(observer) : this.ticketWareService.Create(user).subscribe(observer);
-    });
-    await modal.present();
-  }
-
-  async Delete(id: number) {
-    this.ticketWareService.Delete(id).subscribe({
-      next: value => this.ngOnInit(),
-      error: err => {}
-    });
-  }
-
 }

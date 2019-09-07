@@ -16,6 +16,11 @@ export class WareService {
     }
 
 
+    public AllWithPaging(page: number, amount: number) {
+        return this.http.get<Ware[]>("api/Ware/WithPaging/" + page + "/" + amount)
+    }
+
+
     public Create(ware: Ware): Observable<number> {
         return this.http.post<number>("api/ware", ware, CONTENTJSON);
     }

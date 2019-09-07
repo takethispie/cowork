@@ -126,6 +126,16 @@ namespace coworkpersistence.Repositories {
             return dataMapper.MultiItemCommand(sql, par);
         }
 
+
+        public List<WareBooking> GetWithPaging(int page, int size) {
+            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin + " ORDER BY \"WareBooking\".\"Start\" ASC LIMIT @amount OFFSET @skip";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", size),
+                new NpgsqlParameter("skip", page * size)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
     }
 
 }

@@ -14,6 +14,12 @@ export class TimeSlotService {
     return this.http.get<TimeSlot[]>("api/TimeSlot");
   }
 
+
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<TimeSlot[]>("api/TimeSlot/WithPaging/" + page + "/" + amount);
+  }
+
+
   public AllFromPlace(placeId: number) {
     return this.http.get<TimeSlot[]>("api/TimeSlot/OfPlace/" + placeId);
   }

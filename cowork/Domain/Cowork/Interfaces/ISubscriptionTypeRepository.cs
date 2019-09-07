@@ -16,6 +16,8 @@ namespace coworkdomain.Cowork.Interfaces {
 
         long Update(SubscriptionType type);
 
+        List<SubscriptionType> GetAllWithPaging(int page, int amount);
+
     }
 
 }
