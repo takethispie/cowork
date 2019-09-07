@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RoomBooking} from '../../../models/RoomBooking';
 import {RoomBookingService} from '../../../services/room-booking.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {DateTime} from "luxon";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {DateTime} from 'luxon';
 
 @Component({
   selector: 'app-room-booking-list',
@@ -17,24 +16,26 @@ export class RoomBookingListComponent implements OnInit {
 
   data: RoomBooking[];
   fields: Field[];
+  private page: number;
+  private amount: number;
 
   constructor(public roomBookingService: RoomBookingService, public modalCtrl: ModalController) { 
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Number", Name: "ClientId", Label: "Id utilisateur", Value: null},
-      { Type: "Number", Name: "RoomId", Label: "Id de la salle", Value: null},
-      { Type: "DateTimePicker", Name: "Start", Label: "Début de la réservation", Value: ""},
-      { Type: "DateTimePicker", Name: "End", Label: "Fin de la réservation", Value: ""}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "ClientId", "Id de l'utilisateur", -1),
+      new Field(FieldType.Number, "RoomId", "Id de la salle", -1),
+      new Field(FieldType.DateTimePicker, "Start", "Début de la réservation", DateTime.local().toISO()),
+      new Field(FieldType.DateTimePicker, "End", "Fin de la réservation", DateTime.local().plus({ minutes: 30}).toISO()),
     ];
   }
 
   ngOnInit() {
-    this.roomBookingService.All().subscribe(res => this.data = res);
+    this.Refresh();
   }
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new RoomBooking();
+    const model = new RoomBooking();
     model.Id = fieldDic["Id"][0].Value as number;
     model.ClientId = fieldDic["ClientId"][0].Value as number;
     model.RoomId = fieldDic["RoomId"][0].Value as number;
@@ -76,6 +77,29 @@ export class RoomBookingListComponent implements OnInit {
     this.roomBookingService.Delete(id).subscribe({
       next: value => this.ngOnInit(),
       error: err => {}
+    });
+  }
+
+
+  Refresh() {
+    this.page = 0;
+    this.data = [];
+    this.loadData(null);
+  }
+
+
+  loadData(event: any) {
+    this.roomBookingService.AllWithPaging(this.page, this.amount).subscribe({
+      next: value => {
+        if(value.length === 0) return;
+        this.data = this.data.concat(value);
+        this.page++;
+      },
+      error: err => {
+        console.log(err);
+        if(event != null)  event.target.complete();
+      },
+      complete: () => { if(event != null)  event.target.complete(); }
     });
   }
 

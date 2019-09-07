@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Subscription} from '../../../models/Subscription';
 import {SubscriptionService} from '../../../services/subscription.service';
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {StaffLocation} from "../../../models/StaffLocation";
-import {DateTime} from "luxon";
-import {SubscriptionTypeService} from "../../../services/subscription-type.service";
-import {PlaceService} from "../../../services/place.service";
-import {flatMap, map} from "rxjs/operators";
-import {MealBooking} from "../../../models/MealBooking";
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DateTime} from 'luxon';
+import {SubscriptionTypeService} from '../../../services/subscription-type.service';
+import {PlaceService} from '../../../services/place.service';
+import {flatMap, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-subscription-list',
@@ -30,11 +28,11 @@ export class SubscriptionListComponent implements OnInit {
         const placeOptions = value.Places.map(place => ({ Label: place.Name, Value: place.Id }) );
         const typeOptions = value.Types.map(type => ({ Label: type.Name, Value: type.Id }) );
         this.fields = [
-          { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-          { Type: "Number", Name: "UserId", Label: "Id de l'utilisateur", Value: null},
-          { Type: "Checkbox", Name: "FixedContract", Label: "Contrat avec engagement", Value: false},
-          { Type: "Select", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: "0" , Options: placeOptions },
-          { Type: "Select", Name: "TypeId", Label: "Id du type d'abonnement", Value: "0", Options: typeOptions}
+          new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+          new Field(FieldType.Number, "UserId", "Id de l'utilisateur",-1),
+          new Field(FieldType.CheckBox, "FixedContract", "Contrat avec engagement", false),
+          new Field(FieldType.Select, "PlaceId", "Espace de coworking", 0, placeOptions),
+          new Field(FieldType.Select, "TypeId", "Type d'abonnement", 0, typeOptions)
         ];
       }
     });

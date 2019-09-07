@@ -45,6 +45,9 @@ export class MealBookingService {
   public AllFromDateAndPlace(date: DateTime, placeId: number) {
     return this.http.post<MealBooking[]>("api/MealBooking/FromDateAndPlace", { Date: date, PlaceId: placeId }, CONTENTJSON);
   }
-  
-  
+
+
+  AllWithPaging(page: number, amount: number) {
+      return this.http.get<MealBooking[]>("api/MealBooking/AllWithPaging/" + page + "/" + amount);
+  }
 }

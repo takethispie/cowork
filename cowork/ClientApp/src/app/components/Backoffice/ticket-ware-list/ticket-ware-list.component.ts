@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TicketState} from '../../../models/TicketState';
-import {Field} from '../../dynamic-form-builder/Field';
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
 import List from 'linqts/dist/src/list';
-import {Ticket} from '../../../models/Ticket';
-import {DateTime} from 'luxon';
 import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 import {TicketWareService} from '../../../services/ticket-ware.service';
 import {ModalController} from '@ionic/angular';
@@ -21,9 +19,9 @@ export class TicketWareListComponent implements OnInit {
 
   constructor(public ticketWareService: TicketWareService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: 'ReadonlyText', Name: "Id", Label: "Id", Value: -1 },
-      { Type: 'Number', Name: "TicketId", Label: "Id du Ticket", Value: -1},
-      { Type: 'Number', Name: "WareId", Label: "Id du matériel", Value: -1}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "TicketId", "Id du ticket", -1),
+      new Field(FieldType.Number, "WareId", "Id du matériel", -1)
     ]
   }
 

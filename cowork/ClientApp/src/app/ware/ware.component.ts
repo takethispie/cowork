@@ -28,7 +28,7 @@ export class WareComponent implements OnInit {
   refresh: Subject<any> = new Subject();
 
   constructor(private modalCtrl: ModalController, private loading: LoadingService,
-              private toast: ToastService, private auth: AuthService, private wareBooking: WareBookingService) { }
+              private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) { }
 
   ngOnInit() {}
 

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ticket} from '../../../models/Ticket';
 import {TicketService} from '../../../services/ticket.service';
 import {TicketState} from '../../../models/TicketState';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
+import List from 'linqts/dist/src/list';
+import {DateTime} from 'luxon';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
 
 @Component({
   selector: 'app-ticket-list',
@@ -20,22 +20,22 @@ export class TicketListComponent implements OnInit {
 
   constructor(private ticketService: TicketService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Text", Name: "Title", Label: "Titre", Value: null},
-      { Type: "Text", Name: "Description", Label: "Description", Value: ""},
-      { Type: 'Number', Name: "AttributedToId", Label: "Id du personnel auquel est attribué le ticket", Value: -1},
-      { Type: 'DateTimePicker', Name: "Created", Label: "Date de création du ticket", Value: DateTime.local().toISO()},
-      { Type: "Number", Name: "UserId", Label: "Auteur du ticket", Value: -1},
-      { Type: "Number", Name: "PlaceId", Label: "Espace de coworking de l'auteur", Value: -1},
-      { Type: 'DateTimePicker', Name: "PlanifiedResolution", Label: "Date planifiée de résolution du ticket", Value: DateTime.local().toISO()},
-      { Type: "Select", Name: "State", Label: "Status du ticket", Value: 0, Options: [
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Text, "Title", "Titre", ""),
+      new Field(FieldType.Text, "Description", "Description", ""),
+      new Field(FieldType.Number, "AttributedToId", "Id du personnel auquel est attribué le ticket", -1),
+      new Field(FieldType.DateTimePicker, "Created", "Date de création du ticket", DateTime.local().toISO()),
+      new Field(FieldType.Number, "UserId", "Id utilisateur", -1),
+      new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
+      new Field(FieldType.DateTimePicker, "PlanifiedResolution", "Date planifiée de résolution du ticket", DateTime.local().toISO()),
+      new Field(FieldType.Select, "State", "Status du ticket", 0,  [
           { Label: TicketState[0], Value: 0},
           { Label: TicketState[1], Value: 1},
           { Label: TicketState[2], Value: 2},
           { Label: TicketState[3], Value: 3},
           { Label: TicketState[4], Value: 4}
         ]
-      }
+      )
     ];
   }
 

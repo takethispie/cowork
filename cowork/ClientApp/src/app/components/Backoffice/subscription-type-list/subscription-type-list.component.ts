@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SubscriptionType} from '../../../models/SubscriptionType';
 import {SubscriptionTypeService} from '../../../services/subscription-type.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {Subscription} from "../../../models/Subscription";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-subscription-type-list',
@@ -21,16 +18,16 @@ export class SubscriptionTypeListComponent implements OnInit {
 
   constructor(private subscriptionTypeService: SubscriptionTypeService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Text", Name: "Name", Label: "Nom", Value: null},
-      { Type: "Text", Name: "Description", Label: "Description", Value: null },
-      { Type: "Number", Name: "FixedContractDurationMonth", Label: "Durée Contrat avec engagement", Value: null},
-      { Type: "Number", Name: "MonthlyFeeContractFree", Label: "Coût mensuel abonnement contrat sans engagement", Value: null},
-      { Type: "Number", Name: "MonthlyFeeFixedContract", Label: "Coût mensuel abonnement contrat avec engagement", Value: null},
-      { Type: "Number", Name: "PriceDay", Label: "Prix journée (5heures et plus)", Value: null},
-      { Type: "Number", Name: "PriceDayStudent", Label: "Prix journée étudiant", Value: null},
-      { Type: "Number", Name: "PriceFirstHour", Label: "Prix première heure", Value: null},
-      { Type: "Number", Name: "PriceNextHalfHour", Label: "Prix demi-heure suivante", Value: null}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Text, "Name", "Nom", ""),
+      new Field(FieldType.Text, "Description", "Description", ""),
+      new Field(FieldType.Number, "FixedContractDurationMonth", "Durée Contrat avec engagement", -1),
+      new Field(FieldType.Number, "MonthlyFeeContractFree", "Coût mensuel abonnement contrat sans engagement", -1),
+      new Field(FieldType.Number, "MonthlyFeeFixedContract", "Coût mensuel abonnement contrat avec engagement", -1),
+      new Field(FieldType.Number, "PriceDay", "Prix journée (5heures et plus)", -1),
+      new Field(FieldType.Number, "PriceDayStudent", "Prix journée étudiant", -1),
+      new Field(FieldType.Number, "PriceFirstHour", "Prix première heure", -1),
+      new Field(FieldType.Number, "PriceNextHalfHour", "Prix demi-heure suivante", -1),
     ]
   }
     
@@ -42,7 +39,7 @@ export class SubscriptionTypeListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new SubscriptionType();
+    const model = new SubscriptionType();
     model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.Description = fieldDic["Description"][0].Value as string;

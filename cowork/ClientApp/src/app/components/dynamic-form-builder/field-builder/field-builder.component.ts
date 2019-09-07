@@ -1,11 +1,11 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import {Field} from "../Field";
+import {Field, FieldType} from '../Field';
 import {DateTime} from "luxon";
 
 @Component({
   selector: 'field-builder',
   template: `
-    <div style="margin-bottom: 10px;" [ngSwitch]="field.Type">
+    <div style="margin-bottom: 10px;" [ngSwitch]="GetTypeName(field.Type)">
       <app-select *ngSwitchCase="'Select'" [field]="field" (value)="SetValue($event)"></app-select>
       <ion-item *ngSwitchCase="'Text'">
         <ion-label position="floating">{{ field.Label }}</ion-label>
@@ -37,6 +37,10 @@ import {DateTime} from "luxon";
         <ion-label position="floating">{{ field.Label }}</ion-label>
         <ion-input [name]="field.Name" readonly [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
+      <ion-item *ngSwitchCase="'ReadonlyNumber'">
+        <ion-label position="floating">{{ field.Label }}</ion-label>
+        <ion-input type="number" [name]="field.Name" readonly [(ngModel)]="field.Value" ngModel></ion-input>
+      </ion-item>
     </div>    `
 })
 export class FieldBuilderComponent implements OnInit {
@@ -49,6 +53,10 @@ export class FieldBuilderComponent implements OnInit {
 
   SetValue(event: string) {
     this.field.Value = event;
+  }
+
+  GetTypeName(id: number) {
+    return FieldType[id];
   }
   
   MaxYear() {

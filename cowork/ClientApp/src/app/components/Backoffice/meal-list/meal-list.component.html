@@ -5,9 +5,14 @@
     <ion-col>Description</ion-col>
     <ion-col>Id espace de coworking</ion-col>
     <ion-col>
-      <ion-button size="small" expand="full" (click)="AddItem()">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
+      <ion-buttons>
+        <ion-button size="small" (click)="AddItem()">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+        <ion-button size="small" (click)="Refresh()">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of data">
@@ -26,4 +31,10 @@
       </ion-buttons>
     </ion-col>
   </ion-row>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-grid>

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StaffLocationService} from '../../../services/staff-location.service';
 import {StaffLocation} from '../../../models/StaffLocation';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {MealBooking} from '../../../models/MealBooking';
 
 @Component({
   selector: 'app-staff-location-list',
@@ -19,9 +19,9 @@ export class StaffLocationListComponent implements OnInit {
 
   constructor(private staffLocationService: StaffLocationService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Number", Name: "UserId", Label: "Id utilisateur", Value: null},
-      { Type: "Number", Name: "PlaceId", Label: "Id espace de coworking", Value: null}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "UserId", "Id utilisateur", -1),
+      new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1)
     ];
   }
 
@@ -31,7 +31,7 @@ export class StaffLocationListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new StaffLocation();
+    const model = new StaffLocation();
     model.Id = fieldDic["Id"][0].Value as number;
     model.UserId = fieldDic["UserId"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;

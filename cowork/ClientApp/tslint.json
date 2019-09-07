@@ -91,6 +91,7 @@
     "curly": false,
     "comment-format": false,
     "semicolon": false,
-    "no-string-literal": false
+    "no-string-literal": false,
+    "align": false
   }
 }

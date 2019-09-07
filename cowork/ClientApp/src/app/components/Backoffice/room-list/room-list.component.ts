@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Room} from '../../../models/Room';
 import {RoomType} from '../../../models/RoomType';
-import {Field} from "../../dynamic-form-builder/Field";
-import {RoomService} from "../../../services/room.service";
-import List from "linqts/dist/src/list";
-import {RoomBooking} from "../../../models/RoomBooking";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import {RoomService} from '../../../services/room.service';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-room-list',
@@ -21,14 +18,13 @@ export class RoomListComponent implements OnInit {
 
   constructor(private roomService: RoomService, private modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "Name", Label: "Nom", Value: null},
-      { Type: "Number", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
-      { Type: "Select", Name: "Type", Label: "Type de salle", Value: "Call", Options: [
-          { Label: RoomType[0], Value: 0},
-          { Label: RoomType[1], Value: 1}
-        ]
-      }
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Text, "Name", "Nom", ""),
+      new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
+      new Field(FieldType.Select, "Type", "Type de salle", 0, [
+        { Label: RoomType[0], Value: 0},
+        { Label: RoomType[1], Value: 1}
+      ])
     ]
   }
 

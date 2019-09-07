@@ -43,4 +43,9 @@ export class PlaceService {
   public ByName(name: string) {
     return this.http.get<Place>("api/Place/ByName/" + name);
   }
+
+
+  public AllWithPaging(page: number, amount: number) {
+      return this.http.get<Place[]>("api/Place/AllWithPaging/" + page + "/" + amount);
+  }
 }

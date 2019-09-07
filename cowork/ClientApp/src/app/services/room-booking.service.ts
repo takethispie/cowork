@@ -69,4 +69,9 @@ export class RoomBookingService {
     return this.http.post<RoomBooking[]>("api/RoomBooking/GetAllOfRoomStartingAtDate/" + roomId, date, CONTENTJSON)
         .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
   }
+
+
+  public AllWithPaging(page: number, amount: number) {
+      return this.http.get<RoomBooking[]>("api/RoomBooking/AllWithPaging/" + page + "/" + amount);
+  }
 }

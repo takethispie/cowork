@@ -10,7 +10,7 @@ import {UserType} from '../models/UserType';
 })
 export class TabsPage {
 
-  constructor(private alertCtrl: AlertController, private navCtrl: NavController, private auth: AuthService) {}
+  constructor(private alertCtrl: AlertController, private navCtrl: NavController, public auth: AuthService) {}
 
   Disconnect() {
       this.alertCtrl.create({

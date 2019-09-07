@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TimeSlot} from '../../../models/TimeSlot';
 import {TimeSlotService} from '../../../services/time-slot.service';
 import {WeekDay} from '@angular/common';
-import {Field} from "../../dynamic-form-builder/Field";
-import {ModalController} from "@ionic/angular";
-import List from "linqts/dist/src/list";
-import {Ticket} from "../../../models/Ticket";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import {ModalController} from '@ionic/angular';
+import List from 'linqts/dist/src/list';
+import {DateTime} from 'luxon';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 
 @Component({
   selector: 'app-time-slot-list',
@@ -22,11 +20,11 @@ export class TimeSlotListComponent implements OnInit {
 
   constructor(private  timeSlotService: TimeSlotService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Number", Name: "PlaceId", Label: "Id de l'espace de corworking", Value: null},
-      { Type: "TimePicker", Name: "Start", Label: "Heure d'ouverture", Value: "08:00"},
-      { Type: "TimePicker", Name: "End", Label: "Heure de fermeture", Value: "20:00"},
-      { Type: "Select", Name: "Day", Label: "Jour", Value: 0, Options: [
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
+      new Field(FieldType.TimePicker,"Start", "Heure d'ouverture", "08:00"),
+      new Field(FieldType.TimePicker, "End", "Heure de fermeture", "20:00"),
+      new Field(FieldType.Select, "Day", "Jour", 0, [
           { Label: WeekDay[1], Value: WeekDay.Monday},
           { Label: WeekDay[2], Value: WeekDay.Tuesday},
           { Label: WeekDay[3], Value: WeekDay.Wednesday},
@@ -35,7 +33,7 @@ export class TimeSlotListComponent implements OnInit {
           { Label: WeekDay[6], Value: WeekDay.Saturday},
           { Label: WeekDay[0], Value: WeekDay.Sunday},
         ]
-      }
+      )
     ]
   }
 

@@ -16,10 +16,12 @@ export class MealService {
     return meals.map(meal => MealService.ParseDateTime(meal));
   }
 
+
   private static ParseDateTime(meal: Meal) {
     meal.Date = DateTime.fromISO(meal.Date as unknown as string);
     return meal;
   }
+
 
   public All() {
     return this.http.get<Meal[]>("api/meal").pipe(map(this.ParseDateTimeArray));
@@ -56,8 +58,14 @@ export class MealService {
         .pipe(map(this.ParseDateTimeArray));
   }
 
+
   public FromPlaceAndStartingAtDate(date: DateTime, placeId: number) {
     return this.http.post<Meal[]>("api/meal/FromPlaceAndStartingAtDate", { Date: date, PlaceId: placeId }, CONTENTJSON)
         .pipe(map(this.ParseDateTimeArray));
+  }
+
+
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<Meal[]>("api/Meal/AllWithPaging/" + page + "/" + amount);
   }
 }

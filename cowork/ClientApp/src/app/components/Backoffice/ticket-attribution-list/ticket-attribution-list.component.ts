@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TicketAttribution} from '../../../models/TicketAttribution';
-import {TicketService} from '../../../services/ticket.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {Subscription} from "../../../models/Subscription";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {Ticket} from "../../../models/Ticket";
-import {MealBooking} from "../../../models/MealBooking";
-import {TicketAttributionService} from "../../../services/ticket-attribution.service";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {TicketAttributionService} from '../../../services/ticket-attribution.service';
 
 @Component({
   selector: 'app-ticket-attribution-list',
@@ -23,9 +18,9 @@ export class TicketAttributionListComponent implements OnInit {
   
   constructor(public ApiService: TicketAttributionService, public modalCtrl: ModalController) { 
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Number", Name: "StaffId", Label: "Id du personnel", Value: null},
-      { Type: "Number", Name: "TicketId", Label: "Id du ticket", Value: null}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "StaffId", "Id du personnel", -1),
+      new Field(FieldType.Number, "TicketId", "Id du ticket", -1)
     ];
   }
 

@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Place} from '../../../models/Place';
 import {PlaceService} from '../../../services/place.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {Meal} from "../../../models/Meal";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-place-list',
@@ -17,27 +14,29 @@ import {MealBooking} from "../../../models/MealBooking";
 export class PlaceListComponent implements OnInit {
   data: Place[];
   fields: Field[];
+  private page: number;
+  private amount: number;
 
   constructor(private placeService: PlaceService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: "-1"},
-      { Type: "Text", Name: "Name", Label: "Nom", Value: ''},
-      { Type: "Number", Name: "CosyRoomAmount", Label: "Nombre de salons cosy", Value: 0},
-      { Type: "Checkbox", Name: "HighBandwidthWifi", Label: "Wifi très haut débit", Value: false},
-      { Type: "Number", Name: "LaptopAmount", Label: "Nombre d'ordinateurs portables", Value: 0},
-      { Type: "Checkbox", Name: "MembersOnlyArea", Label: "Espace membres", Value: false},
-      { Type: "Checkbox", Name: "UnlimitedBeverages", Label: "Snack & boissons illimitées", Value: false},
-      { Type: "Number", Name: "PrinterAmount", Label: "Nombre d'imprimantes", Value: 0}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Text, "Name", "Nom", ""),
+      new Field(FieldType.Number, "CosyRoomAmount", "Nombre de salons cosy", 0),
+      new Field(FieldType.CheckBox, "HighBandwidthWifi", "Wifi très haut débit", false),
+      new Field(FieldType.Number, "LaptopAmount", "Nombre d'ordinateurs portables", 0),
+      new Field(FieldType.CheckBox, "MembersOnlyArea", "Espace réservé aux membres", false),
+      new Field(FieldType.CheckBox, "UnlimitedBeverages", "Snack & boissons illimitées", false),
+      new Field(FieldType.Number, "PrinterAmount", "Nombre d'imprimantes", 0)
     ];
   }
 
   ngOnInit() {
-    this.placeService.All().subscribe(res => this.data = res);
+    this.Refresh();
   }
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new Place();
+    const model = new Place();
     model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.CosyRoomAmount = fieldDic["CosyRoomAmount"][0].Value as number;
@@ -82,6 +81,28 @@ export class PlaceListComponent implements OnInit {
     this.placeService.DeleteById(id).subscribe({
       next: value => this.ngOnInit(),
       error: err => {}
+    });
+  }
+
+  Refresh() {
+    this.page = 0;
+    this.data = [];
+    this.loadData(null);
+  }
+
+
+  loadData(event: any) {
+    this.placeService.AllWithPaging(this.page, this.amount).subscribe({
+      next: value => {
+        if(value.length === 0) return;
+        this.data = this.data.concat(value);
+        this.page++;
+      },
+      error: err => {
+        console.log(err);
+        if(event != null)  event.target.complete();
+      },
+      complete: () => { if(event != null)  event.target.complete(); }
     });
   }
 

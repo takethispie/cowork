@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ware} from '../../../models/Ware';
 import {WareService} from '../../../services/ware.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import {ModalController} from "@ionic/angular";
-import List from "linqts/dist/src/list";
-import {WareBooking} from "../../../models/WareBooking";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {MealBooking} from "../../../models/MealBooking";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import {ModalController} from '@ionic/angular';
+import List from 'linqts/dist/src/list';
+import {WareBooking} from '../../../models/WareBooking';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
 
 @Component({
   selector: 'app-ware-list',
@@ -21,12 +19,12 @@ export class WareListComponent implements OnInit {
 
   constructor(private wareService: WareService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Text", Name: "Name", Label: "Nom", Value: null},
-      { Type: "Text", Name: "Description", Label: "Description", Value: null},
-      { Type: "Number", Name: "PlaceId", Label: "Id de l'espace de coworking", Value: null},
-      { Type: "Text", Name: "SerialNumber", Label: "Numéro de série", Value: null},
-      { Type: "Checkbox", Name: "InStorage", Label: "En réserve", Value: null}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Text, "Name", "Nom", ""),
+      new Field(FieldType.Text, "Description", "Description", ""),
+      new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
+      new Field(FieldType.Text, "SerialNumber", "Numéro de série", ""),
+      new Field(FieldType.CheckBox, "InStorage", "En réserve", false)
     ]
     
   }
@@ -37,7 +35,7 @@ export class WareListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new Ware();
+    const model = new Ware();
     model.Id = fieldDic["Id"][0].Value as number;
     model.Name = fieldDic["Name"][0].Value as string;
     model.Description = fieldDic["Description"][0].Value as string;

@@ -26,12 +26,12 @@ import {TicketWareListComponent} from "../components/Backoffice/ticket-ware-list
 })
 export class BackofficeComponent implements OnInit {
 
-    private definitions: DynamicRowDefinition[] = [];
-    private selectedDefinition: Table = "User";
-    private Refresher: Subject<any>;
+    public Definitions: DynamicRowDefinition[] = [];
+    public SelectedDefinition: Table = "User";
+    public Refresher: Subject<any>;
 
     constructor() {
-        this.definitions = [
+        this.Definitions = [
             new DynamicRowDefinition(UserListComponent, {}, "User"),
             new DynamicRowDefinition(SubscriptionListComponent, {}, "Subscription"),
             new DynamicRowDefinition(SubscriptionTypeListComponent, {}, "SubscriptionType"),
@@ -59,7 +59,7 @@ export class BackofficeComponent implements OnInit {
     }
 
     LoadDataTable(name: Table) {
-        this.selectedDefinition = name;
+        this.SelectedDefinition = name;
         this.Refresher.next(null);
     }
 }

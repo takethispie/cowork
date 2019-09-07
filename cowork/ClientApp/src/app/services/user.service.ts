@@ -13,6 +13,11 @@ export class UserService {
   public All() {
     return this.http.get<User[]>("api/User/ALL");
   }
+
+
+  public AllWithPaging(page: number, amount: number) {
+    return this.http.get<User[]>("api/User/AllWithPaging/" + page + "/" + amount);
+  }
   
   public Create(user: User) {
     return this.http.post<number>("api/User", user, CONTENTJSON);

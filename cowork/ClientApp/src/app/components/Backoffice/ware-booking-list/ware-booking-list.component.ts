@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WareBooking} from '../../../models/WareBooking';
 import {WareBookingService} from '../../../services/ware-booking.service';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {Meal} from "../../../models/Meal";
-import {DateTime} from "luxon";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {MealBooking} from "../../../models/MealBooking";
-import {Ware} from "../../../models/Ware";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DateTime} from 'luxon';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {Ware} from '../../../models/Ware';
 
 @Component({
   selector: 'app-ware-booking-list',
@@ -22,11 +20,11 @@ export class WareBookingListComponent implements OnInit {
   
   constructor(private wareBookingService: WareBookingService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Number", Name: "UserId", Label: "Id de l'utilisateur", Value: null},
-      { Type: "Number", Name: "WareId", Label: "Id du matériel", Value: null},
-      { Type: "DateTimePicker", Name: "Start", Label: "Début", Value: DateTime.local().toISO()},
-      { Type: "DateTimePicker", Name: "End", Label: "Fin", Value: DateTime.local().plus({minutes: 30}).toISO()}
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "UserId", "Id de l'utilisateur", -1),
+      new Field(FieldType.Number, "WareId", "Id du matériel", -1),
+      new Field(FieldType.DateTimePicker, "Start", "Début", DateTime.local().toISO()),
+      new Field(FieldType.DateTimePicker, "End", "Fin", DateTime.local().plus({minutes: 30}).toISO()),
     ];
   }
 

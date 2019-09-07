@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TicketComment} from '../../../models/TicketComment';
-import {Field} from "../../dynamic-form-builder/Field";
-import List from "linqts/dist/src/list";
-import {DynamicFormModalComponent} from "../dynamic-form-modal/dynamic-form-modal.component";
-import {ModalController} from "@ionic/angular";
-import {DateTime} from "luxon";
-import {TicketCommentService} from "../../../services/ticket-comment.service";
+import {Field, FieldType} from '../../dynamic-form-builder/Field';
+import List from 'linqts/dist/src/list';
+import {DynamicFormModalComponent} from '../dynamic-form-modal/dynamic-form-modal.component';
+import {ModalController} from '@ionic/angular';
+import {DateTime} from 'luxon';
+import {TicketCommentService} from '../../../services/ticket-comment.service';
 
 @Component({
   selector: 'app-ticket-comment-list',
@@ -19,10 +19,10 @@ export class TicketCommentListComponent implements OnInit {
 
   constructor(private ApiService: TicketCommentService, public modalCtrl: ModalController) {
     this.fields = [
-      { Type: "ReadonlyText", Name: "Id", Label: "Id", Value: -1},
-      { Type: "Number", Name: 'UserId', Label: "Id de l'utilisateur", Value: null},
-      { Type: "Number", Name: "TicketId", Label: "Id du ticket", Value: null},
-      { Type: "Text", Name: "Content", Label: "Texte du commentaire", Value: null},
+      new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
+      new Field(FieldType.Number, "UserId", "Id utilisateur", -1),
+      new Field(FieldType.Number, "TicketId", "Id du ticket", -1),
+      new Field(FieldType.Text, "Content", "Texte du commentaire", "")
     ];
   }
 
@@ -32,7 +32,7 @@ export class TicketCommentListComponent implements OnInit {
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
-    let model = new TicketComment();
+    const model = new TicketComment();
     model.Id = fieldDic["Id"][0].Value as number;
     model.AuthorId = fieldDic["UserId"][0].Value as number;
     model.TicketId = fieldDic["TicketId"][0].Value as number;
