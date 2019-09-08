@@ -16,8 +16,8 @@ import {TableDataHandler} from '../TableDataHandler';
   styleUrls: ['./subscription-list.component.scss'],
 })
 export class SubscriptionListComponent implements OnInit {
-    fields: Field[];
-  private dataHandler: TableDataHandler<Subscription>;
+  fields: Field[];
+  dataHandler: TableDataHandler<Subscription>;
 
   constructor(private  subscriptionService: SubscriptionService, public modalCtrl: ModalController, 
               public subTypeService: SubscriptionTypeService, public placeService: PlaceService) {
@@ -35,14 +35,13 @@ export class SubscriptionListComponent implements OnInit {
           new Field(FieldType.Select, "TypeId", "Type d'abonnement", 0, typeOptions)
         ];
         this.dataHandler = new TableDataHandler<Subscription>(this.subscriptionService, this.modalCtrl, this.fields, this.CreateModelFromFields);
+        this.dataHandler.Refresh();
       }
     });
     
   }
 
-  ngOnInit() {
-    this.dataHandler.Refresh();
-  }
+  ngOnInit() {}
 
   CreateModelFromFields(fields: Field[]) {
     const fieldDic = new List(fields).GroupBy(f => f.Name);

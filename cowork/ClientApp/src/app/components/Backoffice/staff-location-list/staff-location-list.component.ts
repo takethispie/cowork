@@ -14,7 +14,7 @@ import {TableDataHandler} from '../TableDataHandler';
 export class StaffLocationListComponent implements OnInit {
 
   fields: Field[];
-  private dataHandler: TableDataHandler<StaffLocation>;
+  dataHandler: TableDataHandler<StaffLocation>;
 
   constructor(private staffLocationService: StaffLocationService, public modalCtrl: ModalController) {
     this.fields = [
