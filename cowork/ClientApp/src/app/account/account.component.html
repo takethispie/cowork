@@ -8,8 +8,8 @@
 
 <ion-content color="dark" padding>
   <ion-grid>
-    <ion-row>
-      <ion-col *ngIf="userSub?.Type != null && auth.User.Type == 0" size="2">
+    <ion-row *ngIf="auth.User.Type == 0">
+      <ion-col *ngIf="userSub?.Type != null" size="2">
         <ion-card>
           <ion-card-header color="primary">
             <ion-label>Votre Abonnement</ion-label>
@@ -45,7 +45,7 @@
           </ion-list>
         </ion-card>
       </ion-col>
-      <ion-col *ngIf="auth.User.Type == 0" size="4">
+      <ion-col size="4">
         <ion-card>
           <ion-card-header color="primary">
             <ion-label>Votre Profil</ion-label>
@@ -109,7 +109,7 @@
           </ion-list>
         </ion-card>
       </ion-col>
-      <ion-col *ngIf="userSub?.Type != null && auth.User.Type == 0" size="3">
+      <ion-col *ngIf="userSub?.Type != null" size="3">
         <ion-card>
           <ion-card-header color="primary">
             <ion-label>Vos Réservations plateaux repas</ion-label>
@@ -118,7 +118,7 @@
         </ion-card>
 
       </ion-col>
-      <ion-col *ngIf="userSub?.Type != null && auth.User.Type == 0" size="3">
+      <ion-col *ngIf="userSub?.Type != null" size="3">
         <ion-card>
           <ion-card-header color="primary">
             <ion-label>Vos Réservations de salles</ion-label>

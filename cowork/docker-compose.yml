@@ -28,8 +28,8 @@ services:
       - db_volume:/var/lib/postgresql/data
       - ./dbscripts/db.sql :/docker-entrypoint-initdb.d/db.sql
     environment:
-      POSTGRES_USER: "coworkuser"
-      POSTGRES_PASSWORD: "coworkuser"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "ariba1"
       POSTGRES_DB: "cowork"
     networks:
       - dockerapi-dev

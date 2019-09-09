@@ -24,8 +24,8 @@ export class TicketComponent implements OnInit {
   placeId: number;
   userId: number;
 
-  constructor(private auth: AuthService, private ticketService: TicketService, private toast: ToastService,
-              private pageModal: ModalController, private subService: SubscriptionService, private  load: LoadingService) {
+  constructor(public auth: AuthService, private ticketService: TicketService, public toast: ToastService,
+              private pageModal: ModalController, private subService: SubscriptionService, public load: LoadingService) {
     this.Tickets = [];
   }
 

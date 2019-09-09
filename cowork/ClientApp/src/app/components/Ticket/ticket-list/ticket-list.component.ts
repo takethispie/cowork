@@ -17,7 +17,7 @@ export class TicketListComponent implements OnInit {
   @Input() Tickets: Ticket[];
   User: User;
 
-  constructor(private auth: AuthService, private ticketService: TicketService, private  toastService: ToastService, private  loadbar: LoadingService) {
+  constructor(public auth: AuthService, public ticketService: TicketService, public  toastService: ToastService, public  loadbar: LoadingService) {
     this.User = auth.User;
   }
 
@@ -27,7 +27,7 @@ export class TicketListComponent implements OnInit {
     this.loadbar.Loading = true;
     this.ticketService.Delete(ticketId).subscribe({
       next: value => {
-        this.Tickets = this.Tickets.filter(ticket => ticket.Id != ticketId);
+        this.Tickets = this.Tickets.filter(ticket => ticket.Id !== ticketId);
         console.log("success !");
       },
       error: (err: HttpErrorResponse) => {
