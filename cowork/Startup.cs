@@ -1,6 +1,10 @@
+using System;
+using System.Linq;
 using coworkdomain;
+using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement.Interfaces;
+using coworkpersistence;
 using coworkpersistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +29,7 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
+            if(Configuration["Environement"] == "Prod") conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             var DoFakeDataGeneration = Configuration["Options:FakeDataGeneration"];
             services
                 .AddMvc()
@@ -33,7 +38,9 @@ namespace cowork {
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            
+
+            var userRepo = new UserRepository(conn);
+            var loginRepo = new LoginRepository(conn);
             //instancing all repositories 
             services.AddSingleton<IMealRepository>(ctx => new MealRepository(conn));
             services.AddSingleton<IMealBookingRepository>(ctx => new MealBookingRepository(conn));
@@ -43,20 +50,29 @@ namespace cowork {
             services.AddSingleton<ISubscriptionRepository>(ctx => new SubscriptionRepository(conn));
             services.AddSingleton<ISubscriptionTypeRepository>(ctx => new SubscriptionTypeRepository(conn));
             services.AddSingleton<ITimeSlotRepository>(ctx => new TimeSlotRepository(conn));
-            services.AddSingleton<IUserRepository>(ctx => new UserRepository(conn));
+            services.AddSingleton<IUserRepository>(ctx => userRepo);
             services.AddSingleton<ITicketRepository>(ctx => new TicketRepository(conn));
             services.AddSingleton<IWareRepository>(ctx => new WareRepository(conn));
             services.AddSingleton<ITicketAttributionRepository>(ctx => new TicketAttributionRepository(conn));
-            services.AddSingleton<ILoginRepository>(ctx => new LoginRepository(conn));
+            services.AddSingleton<ILoginRepository>(ctx => loginRepo);
             services.AddSingleton<ITicketCommentRepository>(ctx => new TicketCommentRepository(conn));
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
+
+            var adminEmail = Configuration["AdminAccount:Email"];
+            var adminPassword = Configuration["AdminAccount:Password"];
+            var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
+            if(!hasAdmin) {
+                var result = CreateAdmin(loginRepo, userRepo, new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
+                if(result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
+            }
+            
             if (DoFakeDataGeneration == "True") {
+                
                 //TODO add bogus and generate fake data
             }
         }
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
@@ -78,13 +94,21 @@ namespace cowork {
             });
 
             app.UseSpa(spa => {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
+        }
+
+        
+        public int CreateAdmin(ILoginRepository loginRepository, IUserRepository userRepository, User user, string email, string password) {
+            var result = userRepository.Create(user);
+            if (result == -1) return -1;
+            user.Id = result;
+            PasswordHashing.CreatePasswordHash(password, out var hash, out var salt);
+            result = loginRepository.Create(new Login(-1, hash, salt, email, result));
+            if (result > -1) return 0;
+            userRepository.DeleteById(user.Id);
+            return -1;
         }
 
     }

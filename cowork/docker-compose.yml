@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:80"     
     environment:
-      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=cowork;username=coworkuser;password=coworkuser"
+      DB_CONNECTION_STRING: "server=postgres_image;database=cowork;username=postgres;password=ariba1"
     networks:
       - dockerapi-dev  
   
@@ -26,7 +26,7 @@ services:
     restart: always
     volumes:
       - db_volume:/var/lib/postgresql/data
-      - ./dbscripts/db.sql :/docker-entrypoint-initdb.d/db.sql
+      - ./dbscripts/db.sql :/docker-entrypoint-initdb.d/seed.sql
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "ariba1"
