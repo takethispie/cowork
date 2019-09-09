@@ -11,6 +11,19 @@ namespace coworktest {
     [TestFixture]
     public class TicketAttributionDbTest {
 
+        [SetUp]
+        public void Setup() {
+            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
+            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
+        }
+
+
+        [TearDown]
+        public void TearDown() {
+            ticketAttributionRepository.Delete(ticketAttrId);
+        }
+
+
         private string connection;
         private long ticketId, staffId, userId, placeId, wareId, ticketAttrId;
         private ITicketRepository ticketRepository;
@@ -21,12 +34,6 @@ namespace coworktest {
         private User user;
         private User staff;
 
-        [SetUp]
-        public void Setup() {
-            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
-            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
-        }
-
 
         [OneTimeSetUp]
         public void OneTimeSetup() {
@@ -36,7 +43,7 @@ namespace coworktest {
             userRepository = new UserRepository(connection);
             wareRepository = new WareRepository(connection);
             placeRepository = new PlaceRepository(connection);
-            
+
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepository.Create(place);
             staff = new User(-1, "alexandre", "felix", "test@test.com", false, UserType.Staff);
@@ -47,7 +54,16 @@ namespace coworktest {
             wareId = wareRepository.Create(ware);
             var ticket = new Ticket(-1, userId, TicketState.New, "", placeId, "test", DateTime.Now);
             ticketId = ticketRepository.Create(ticket);
-            
+        }
+
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown() {
+            ticketRepository.Delete(ticketId);
+            wareRepository.Delete(wareId);
+            userRepository.DeleteById(userId);
+            userRepository.DeleteById(staffId);
+            placeRepository.DeleteById(placeId);
         }
 
 
@@ -72,19 +88,6 @@ namespace coworktest {
 
 
         [Test]
-        public void Update() {
-            
-        }
-
-
-        [Test]
-        public void GetById() {
-            var result = ticketAttributionRepository.GetById(ticketAttrId);
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
         public void GetAll() {
             var result = ticketAttributionRepository.GetAll();
             Assert.Greater(result.Count, 0);
@@ -98,20 +101,15 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            ticketAttributionRepository.Delete(ticketAttrId);
+        [Test]
+        public void GetById() {
+            var result = ticketAttributionRepository.GetById(ticketAttrId);
+            Assert.NotNull(result);
         }
 
 
-        [OneTimeTearDown]
-        public void OneTimeTearDown() {
-            ticketRepository.Delete(ticketId);
-            wareRepository.Delete(wareId);
-            userRepository.DeleteById(userId);
-            userRepository.DeleteById(staffId);
-            placeRepository.DeleteById(placeId);
-        }
+        [Test]
+        public void Update() { }
 
     }
 

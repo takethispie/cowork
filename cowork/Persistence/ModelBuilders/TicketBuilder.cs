@@ -9,7 +9,8 @@ namespace coworkpersistence.DomainBuilders {
         public Ticket CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex, out int nextStartingIndex) {
             var placeBuilder = new PlaceBuilder();
             var userBuilder = new UserBuilder();
-            var successParsing = Enum.TryParse<TicketState>(dbHandler.GetValue<long>(2 + startingIndex).ToString(), out var state);
+            var successParsing =
+                Enum.TryParse<TicketState>(dbHandler.GetValue<long>(2 + startingIndex).ToString(), out var state);
             if (!successParsing) throw new Exception("Error parsing TicketState");
             var ticket = new Ticket();
             ticket.Id = dbHandler.GetValue<long>(0 + startingIndex);
@@ -23,6 +24,7 @@ namespace coworkpersistence.DomainBuilders {
             ticket.Place = placeBuilder.CreateDomainModel(dbHandler, nextStartingIndex, out nextStartingIndex);
             return ticket;
         }
+
     }
 
 }

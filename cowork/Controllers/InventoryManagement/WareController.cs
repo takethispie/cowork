@@ -7,13 +7,14 @@ namespace cowork.Controllers.InventoryManagement {
     [Route("api/[controller]")]
     public class WareController : ControllerBase {
 
-        private IWareRepository repository;
+        private readonly IWareRepository repository;
 
 
         public WareController(IWareRepository wareRepository) {
             repository = wareRepository;
         }
-        
+
+
         [HttpGet]
         public IActionResult All() {
             var res = repository.GetAll();
@@ -43,8 +44,8 @@ namespace cowork.Controllers.InventoryManagement {
             if (!result) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
             var result = repository.GetById(id);
@@ -65,7 +66,8 @@ namespace cowork.Controllers.InventoryManagement {
             var res = repository.GetAllFromPlaceWithPaging(placeId, amount, page);
             return Ok(res);
         }
-        
+
+
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
             var result = repository.GetAllWithPaging(page, amount);

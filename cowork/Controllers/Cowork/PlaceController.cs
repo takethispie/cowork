@@ -67,8 +67,8 @@ namespace cowork.Controllers.Cowork {
             result.OpenedTimes = TimeSlotRepository.GetAllOfPlace(result.Id);
             return Ok(result);
         }
-        
-        
+
+
         [HttpGet("ByName/{name}")]
         public IActionResult ByName(string name) {
             var result = Repository.GetByName(name);

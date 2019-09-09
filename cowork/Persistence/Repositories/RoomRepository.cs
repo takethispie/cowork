@@ -11,8 +11,10 @@ namespace coworkpersistence.Repositories {
 
     public class RoomRepository : IRoomRepository {
 
-        private readonly SqlDataMapper<Room> datamapper;
         private const string innerJoin = " INNER JOIN \"Place\" P on \"Room\".\"PlaceId\" = P.\"Id\" ";
+
+        private readonly SqlDataMapper<Room> datamapper;
+
 
         public RoomRepository(string connection) {
             datamapper = new SqlDataMapper<Room>(SqlDbType.Postgresql, connection, new RoomBuilder());
@@ -53,7 +55,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Room> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Room\"" + innerJoin + " ORDER BY \"Room\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"Room\"" + innerJoin +
+                               " ORDER BY \"Room\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)

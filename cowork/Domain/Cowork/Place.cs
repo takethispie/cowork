@@ -5,7 +5,7 @@ namespace coworkdomain.Cowork {
     public class Place {
 
         public Place(long id, string name, bool highBandwidthWifi, bool unlimitedBeverages, bool membersOnlyArea,
-            int cosyRoomAmount, int printerAmount, int laptopAmount) {
+                     int cosyRoomAmount, int printerAmount, int laptopAmount) {
             Id = id;
             Name = name;
             HighBandwidthWifi = highBandwidthWifi;
@@ -17,9 +17,6 @@ namespace coworkdomain.Cowork {
             OpenedTimes = null;
             BookableRooms = null;
         }
-
-
-        
 
 
         public Place() { }

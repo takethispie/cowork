@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using coworkdomain.Cowork;
@@ -75,6 +74,7 @@ namespace coworkpersistence.Repositories {
             };
             return datamapper.NoQueryCommand(sql, parameters);
         }
+
     }
 
 }

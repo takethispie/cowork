@@ -56,7 +56,7 @@ export class RoomBookingService {
 
   public AllOfRoom(id: number) {
     return this.http.get<RoomBooking[]>("api/RoomBooking/OfRoom/" + id)
-        .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));;
+        .pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
   }
 
 

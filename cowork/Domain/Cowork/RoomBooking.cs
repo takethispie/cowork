@@ -21,9 +21,10 @@ namespace coworkdomain.Cowork {
         public DateTime End { get; set; }
         public long RoomId { get; set; }
         public long ClientId { get; set; }
-        
+
         public User Client { get; set; }
         public Room Room { get; set; }
+
     }
 
 }

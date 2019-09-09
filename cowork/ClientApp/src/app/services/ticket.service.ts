@@ -25,7 +25,7 @@ export class TicketService {
   }
 
   public All() {
-    return this.http.get<Ticket[]>("api/Ticket").pipe(map(this.ParseDateTimeArray));;
+      return this.http.get<Ticket[]>("api/Ticket").pipe(map(this.ParseDateTimeArray));
   }
 
 

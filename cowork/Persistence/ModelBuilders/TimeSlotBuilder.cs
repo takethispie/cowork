@@ -8,7 +8,8 @@ namespace coworkpersistence.DomainBuilders {
 
         public TimeSlot CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex, out int nextStartingIndex) {
             var placeBuilder = new PlaceBuilder();
-            var successParsing = Enum.TryParse<DayOfWeek>(dbHandler.GetValue<long>(1 + startingIndex).ToString(), out var day);
+            var successParsing =
+                Enum.TryParse<DayOfWeek>(dbHandler.GetValue<long>(1 + startingIndex).ToString(), out var day);
             if (!successParsing) throw new Exception("Error parsing RoomType");
             var timeslot = new TimeSlot {
                 Id = dbHandler.GetValue<long>(0 + startingIndex),
@@ -22,6 +23,7 @@ namespace coworkpersistence.DomainBuilders {
             timeslot.Place = placeBuilder.CreateDomainModel(dbHandler, 7 + startingIndex, out nextStartingIndex);
             return timeslot;
         }
+
     }
 
 }

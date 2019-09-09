@@ -1,29 +1,29 @@
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using coworkdomain;
 using coworkdomain.Cowork;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Datamappers;
 using coworkpersistence.DomainBuilders;
+using coworkpersistence.Handlers;
 using Npgsql;
-using SqlDbType = coworkpersistence.Handlers.SqlDbType;
 
 namespace coworkpersistence.Repositories {
 
     public class TicketRepository : ITicketRepository {
 
-        private SqlDataMapper<Ticket> dataMapper;
+        private const string innerJoin =
+            " inner join \"Users\" U on \"Tickets\".\"OpenedBy\" = U.\"Id\" inner join \"Place\" P on \"Tickets\".\"PlaceId\" = P.\"Id\" ";
+
+        private readonly SqlDataMapper<Ticket> dataMapper;
         private SqlDataMapper<TicketWare> ticketWareDataMapper;
-        private const string innerJoin = " inner join \"Users\" U on \"Tickets\".\"OpenedBy\" = U.\"Id\" inner join \"Place\" P on \"Tickets\".\"PlaceId\" = P.\"Id\" ";
+
 
         public TicketRepository(string connection) {
             dataMapper = new SqlDataMapper<Ticket>(SqlDbType.Postgresql, connection, new TicketBuilder());
         }
-        
-        
+
+
         public List<Ticket> GetAll() {
             const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
@@ -58,7 +58,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAllByPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Ticket\"" + innerJoin + " ORDER BY \"Ticket\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"Ticket\"" + innerJoin +
+                               " ORDER BY \"Ticket\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
@@ -77,31 +78,31 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(Ticket ticket) {
-            var sql = "UPDATE public.\"Tickets\" SET \"Id\"= @id, \"OpenedBy\"= @openedby, \"State\"= @state, \"Description\"= @description, \"PlaceId\"= @placeId, \"Title\"= @title, \"Created\"= @created WHERE \"Tickets\".\"Id\"= @id RETURNING \"Tickets\".\"Id\";";
+            var sql =
+                "UPDATE public.\"Tickets\" SET \"Id\"= @id, \"OpenedBy\"= @openedby, \"State\"= @state, \"Description\"= @description, \"PlaceId\"= @placeId, \"Title\"= @title, \"Created\"= @created WHERE \"Tickets\".\"Id\"= @id RETURNING \"Tickets\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", ticket.Id),
                 new NpgsqlParameter("openedBy", ticket.OpenedById),
-                new NpgsqlParameter("state", (short)ticket.State),
+                new NpgsqlParameter("state", (short) ticket.State),
                 new NpgsqlParameter("description", ticket.Description),
                 new NpgsqlParameter("placeId", ticket.PlaceId),
                 new NpgsqlParameter("title", ticket.Title),
-                new NpgsqlParameter("created", ticket.Created),
+                new NpgsqlParameter("created", ticket.Created)
             };
             return dataMapper.NoQueryCommand(sql, par);
         }
 
 
         public long Create(Ticket ticket) {
-            
-            var sql = "INSERT INTO public.\"Tickets\"(\"Id\", \"OpenedBy\", \"State\", \"Description\", \"PlaceId\", \"Title\", \"Created\")VALUES (DEFAULT, @openedBy, @state, @description, @placeId, @title, @created) RETURNING \"Tickets\".\"Id\";";
+            var sql =
+                "INSERT INTO public.\"Tickets\"(\"Id\", \"OpenedBy\", \"State\", \"Description\", \"PlaceId\", \"Title\", \"Created\")VALUES (DEFAULT, @openedBy, @state, @description, @placeId, @title, @created) RETURNING \"Tickets\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("openedBy", ticket.OpenedById),
-                new NpgsqlParameter("state", (short)ticket.State),
+                new NpgsqlParameter("state", (short) ticket.State),
                 new NpgsqlParameter("description", ticket.Description),
                 new NpgsqlParameter("placeId", ticket.PlaceId),
                 new NpgsqlParameter("title", ticket.Title),
-                new NpgsqlParameter("created", ticket.Created),
-
+                new NpgsqlParameter("created", ticket.Created)
             };
             return dataMapper.NoQueryCommand(sql, par);
         }

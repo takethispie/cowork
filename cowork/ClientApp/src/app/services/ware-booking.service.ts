@@ -39,7 +39,7 @@ export class WareBookingService {
   }
 
   public AllOfUser(userId: number): Observable<WareBooking[]> {
-    return this.http.get<WareBooking[]>("api/WareBooking").pipe(map(bookings => this.ParseDateTimeInArray(bookings)));;
+      return this.http.get<WareBooking[]>("api/WareBooking").pipe(map(bookings => this.ParseDateTimeInArray(bookings)));
   }
 
   public ById(id: number) {

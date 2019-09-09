@@ -19,6 +19,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         long Update(Ware ware);
 
         long Create(Ware ware);
+
     }
 
 }

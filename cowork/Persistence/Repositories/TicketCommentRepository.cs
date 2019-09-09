@@ -11,8 +11,9 @@ namespace coworkpersistence.Repositories {
 
     public class TicketCommentRepository : ITicketCommentRepository {
 
-        private SqlDataMapper<TicketComment> dataMapper;
         private const string innerJoin = " INNER JOIN \"Users\" U on \"TicketComment\".\"AuthorId\" = U.\"Id\" ";
+
+        private readonly SqlDataMapper<TicketComment> dataMapper;
 
 
         public TicketCommentRepository(string conn) {
@@ -21,7 +22,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(TicketComment ticketComment) {
-            const string sql = "INSERT INTO public.\"TicketComment\"(\"Id\", \"Content\", \"TicketId\", \"AuthorId\", \"Created\") VALUES (DEFAULT, @content, @ticketId, @authorId, @created) returning \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"TicketComment\"(\"Id\", \"Content\", \"TicketId\", \"AuthorId\", \"Created\") VALUES (DEFAULT, @content, @ticketId, @authorId, @created) returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("content", ticketComment.Content),
                 new NpgsqlParameter("ticketId", ticketComment.TicketId),
@@ -62,7 +64,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TicketComment> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TicketComment\"" + innerJoin + " ORDER BY \"TicketComment\".\"Created\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"TicketComment\"" + innerJoin +
+                               " ORDER BY \"TicketComment\".\"Created\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)

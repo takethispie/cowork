@@ -10,15 +10,17 @@ namespace coworkpersistence.Repositories {
 
     public class LoginRepository : ILoginRepository {
 
-        private SqlDataMapper<Login> dataMapper;
+        private readonly SqlDataMapper<Login> dataMapper;
 
 
         public LoginRepository(string conn) {
             dataMapper = new SqlDataMapper<Login>(SqlDbType.Postgresql, conn, new LoginBuilder());
         }
 
+
         public long Create(Login login) {
-            const string sql = "INSERT INTO public.\"Login\"(\"Id\", \"PasswordHash\", \"PasswordSalt\", \"UserId\", \"Email\") VALUES (DEFAULT, @passwordHash, @passwordSalt, @userId, @email) RETURNING \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"Login\"(\"Id\", \"PasswordHash\", \"PasswordSalt\", \"UserId\", \"Email\") VALUES (DEFAULT, @passwordHash, @passwordSalt, @userId, @email) RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", login.Id),
                 new NpgsqlParameter("passwordHash", login.PasswordHash),

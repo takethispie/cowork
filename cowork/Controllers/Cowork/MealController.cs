@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace cowork.Controllers.Cowork {
 
     [Route("api/[controller]")]
-    public class MealController : ControllerBase{
+    public class MealController : ControllerBase {
 
         public IMealRepository Repository;
 
@@ -16,7 +16,7 @@ namespace cowork.Controllers.Cowork {
         }
 
 
-        [HttpGet()]
+        [HttpGet]
         public IActionResult All() {
             var result = Repository.GetAll();
             return Ok(result);
@@ -59,7 +59,8 @@ namespace cowork.Controllers.Cowork {
             var result = Repository.GetAllFromDateAndPlace(mealArgument.Date, mealArgument.PlaceId);
             return Ok(result);
         }
-        
+
+
         [HttpPost("FromPlaceAndStartingAtDate")]
         public IActionResult FromPlaceStartingAtDate([FromBody] MealArgument mealArgument) {
             var result = Repository.GetAllFromPlaceStartingAtDate(mealArgument.PlaceId, mealArgument.Date);

@@ -11,16 +11,20 @@ namespace coworkpersistence.Repositories {
 
     public class TicketWareRepository : ITicketWareRepository {
 
-        private SqlDataMapper<TicketWare> dataMapper;
-        private const string innerJoin = " INNER JOIN \"Ware\" W on \"TicketWare\".\"WareId\" = W.\"Id\" inner join \"Place\" P on W.\"PlaceId\" = P.\"Id\" ";
+        private const string innerJoin =
+            " INNER JOIN \"Ware\" W on \"TicketWare\".\"WareId\" = W.\"Id\" inner join \"Place\" P on W.\"PlaceId\" = P.\"Id\" ";
+
+        private readonly SqlDataMapper<TicketWare> dataMapper;
 
 
         public TicketWareRepository(string conn) {
             dataMapper = new SqlDataMapper<TicketWare>(SqlDbType.Postgresql, conn, new TicketWareBuilder());
         }
 
+
         public long Create(TicketWare ticketWare) {
-            const string sql = "INSERT INTO public.\"TicketWare\"(\"Id\", \"TicketId\", \"WareId\") VALUES (DEFAULT, @ticketId, @wareId) returning \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"TicketWare\"(\"Id\", \"TicketId\", \"WareId\") VALUES (DEFAULT, @ticketId, @wareId) returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("ticketId", ticketWare.TicketId),
                 new NpgsqlParameter("wareId", ticketWare.WareId)
@@ -39,7 +43,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(TicketWare ticketWare) {
-            const string sql = "UPDATE public.\"TicketWare\" SET \"Id\"= @id, \"TicketId\"= @ticketId, \"WareId\"= @wareId WHERE \"Id\"= @id returning \"Id\";";
+            const string sql =
+                "UPDATE public.\"TicketWare\" SET \"Id\"= @id, \"TicketId\"= @ticketId, \"WareId\"= @wareId WHERE \"Id\"= @id returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", ticketWare.Id),
                 new NpgsqlParameter("ticketId", ticketWare.TicketId),
@@ -56,7 +61,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TicketWare> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin + " ORDER BY \"TicketWare\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin +
+                               " ORDER BY \"TicketWare\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)

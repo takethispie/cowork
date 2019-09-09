@@ -4,11 +4,12 @@ using coworkdomain.Cowork.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.Cowork {
-    
+
     [Route("api/[controller]")]
     public class MealBookingController : ControllerBase {
 
         public IMealBookingRepository Repository;
+
 
         public MealBookingController(IMealBookingRepository repository) {
             Repository = repository;

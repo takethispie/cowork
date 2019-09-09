@@ -5,7 +5,7 @@ namespace coworkdomain {
         long Create(Login login);
 
         bool Delete(long id);
-        
+
         long Auth(string email, string password);
 
     }

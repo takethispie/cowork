@@ -1,8 +1,5 @@
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
-using coworkpersistence.Datamappers;
-using coworkpersistence.DomainBuilders;
-using coworkpersistence.Handlers;
 using coworkpersistence.Repositories;
 using NUnit.Framework;
 
@@ -10,10 +7,6 @@ namespace coworktest {
 
     [TestFixture]
     public class PlaceDbTest {
-        
-        private IPlaceRepository repo;
-        private string connection;
-        private long placeId;
 
         [SetUp]
         public void Setup() {
@@ -21,17 +14,21 @@ namespace coworktest {
         }
 
 
+        [TearDown]
+        public void TearDown() {
+            repo.DeleteById(placeId);
+        }
+
+
+        private IPlaceRepository repo;
+        private string connection;
+        private long placeId;
+
+
         [OneTimeSetUp]
         public void OneTimeSetUp() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
             repo = new PlaceRepository(connection);
-        }
-
-
-        [Test]
-        public void GetAll() {
-            var result = repo.GetAll();
-            Assert.NotNull(result);
         }
 
 
@@ -53,6 +50,13 @@ namespace coworktest {
 
 
         [Test]
+        public void GetAll() {
+            var result = repo.GetAll();
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
         public void GetByName() {
             var result = repo.GetByName("test");
             Assert.NotNull(result);
@@ -70,11 +74,6 @@ namespace coworktest {
             Assert.AreEqual(true, result);
         }
 
-
-        [TearDown]
-        public void TearDown() {
-            repo.DeleteById(placeId);
-        }
     }
 
 }

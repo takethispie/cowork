@@ -13,7 +13,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
 
         List<Ticket> GetAllOpenedBy(User user);
         List<Ticket> GetAllByPaging(int page, int amount);
-        
+
         bool Delete(long id);
 
         long Update(Ticket ticket);

@@ -6,7 +6,7 @@ namespace coworkpersistence.DomainBuilders {
     public class TicketWareBuilder : IModelBuilderSql<TicketWare> {
 
         public TicketWare CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex,
-            out int nextStartingIndex) {
+                                            out int nextStartingIndex) {
             var wareBuilder = new WareBuilder();
             var ticketWare = new TicketWare();
             ticketWare.Id = dbHandler.GetValue<long>(0 + startingIndex);

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Data.Common;
-using Bogus.DataSets;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Datamappers;
@@ -12,14 +11,16 @@ namespace coworkpersistence.Repositories {
 
     public class WareRepository : IWareRepository {
 
-        private SqlDataMapper<Ware> dataMapper;
         private const string innerJoin = " INNER JOIN \"Place\" P on \"Ware\".\"PlaceId\" = P.\"Id\" ";
+
+        private readonly SqlDataMapper<Ware> dataMapper;
 
 
         public WareRepository(string connection) {
             dataMapper = new SqlDataMapper<Ware>(SqlDbType.Postgresql, connection, new WareBuilder());
         }
-        
+
+
         public List<Ware> GetAll() {
             const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
@@ -36,7 +37,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ware> GetAllFromPlaceWithPaging(long id, int amount, int page) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + "WHERE \"Ware\".\"PlaceId\"= @id ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
+            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin +
+                               "WHERE \"Ware\".\"PlaceId\"= @id ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id),
                 new NpgsqlParameter("amount", amount),
@@ -47,7 +49,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ware> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + " ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
+            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin +
+                               " ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", amount * page)
@@ -75,7 +78,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(Ware ware) {
-            const string sql = "UPDATE public.\"Ware\" SET \"Id\"= @id, \"Name\"= @name, \"Description\"= @description, \"SerialNumber\"= @serialNumber, \"PlaceId\"= @placeId, \"InStorage\"= @inStorage WHERE \"Id\"= @id RETURNING \"Ware\".\"Id\";";
+            const string sql =
+                "UPDATE public.\"Ware\" SET \"Id\"= @id, \"Name\"= @name, \"Description\"= @description, \"SerialNumber\"= @serialNumber, \"PlaceId\"= @placeId, \"InStorage\"= @inStorage WHERE \"Id\"= @id RETURNING \"Ware\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", ware.Id),
                 new NpgsqlParameter("name", ware.Name),
@@ -89,7 +93,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(Ware ware) {
-            const string sql = "INSERT INTO public.\"Ware\"(\"Id\", \"Name\", \"Description\", \"SerialNumber\", \"PlaceId\", \"InStorage\")VALUES (DEFAULT, @name, @description, @serialNumber, @placeId, @inStorage) RETURNING \"Ware\".\"Id\";";
+            const string sql =
+                "INSERT INTO public.\"Ware\"(\"Id\", \"Name\", \"Description\", \"SerialNumber\", \"PlaceId\", \"InStorage\")VALUES (DEFAULT, @name, @description, @serialNumber, @placeId, @inStorage) RETURNING \"Ware\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("name", ware.Name),
                 new NpgsqlParameter("description", ware.Description),

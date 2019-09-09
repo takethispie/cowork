@@ -13,7 +13,8 @@ namespace cowork.Controllers.Cowork {
         public TimeSlotController(ITimeSlotRepository repository) {
             Repository = repository;
         }
-        
+
+
         [HttpGet]
         public IActionResult All() {
             var res = Repository.GetAll();
@@ -50,15 +51,16 @@ namespace cowork.Controllers.Cowork {
             if (!result) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
             var result = Repository.GetById(id);
             if (result == null) return NotFound();
             return Ok(result);
         }
-        
+
+
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
             var result = Repository.GetAllByPaging(page, amount);

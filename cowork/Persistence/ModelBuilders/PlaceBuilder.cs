@@ -18,6 +18,7 @@ namespace coworkpersistence.DomainBuilders {
             nextStartingIndex = 8 + startingIndex;
             return result;
         }
+
     }
 
 }

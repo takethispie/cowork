@@ -8,12 +8,6 @@ namespace coworktest {
 
     [TestFixture]
     public class TimeSlotDbTest {
-        
-        private ITimeSlotRepository repo;
-        private IPlaceRepository placeRepo;
-        private string connection;
-        private long slotId, placeId;
-        
 
         [SetUp]
         public void Setup() {
@@ -28,6 +22,12 @@ namespace coworktest {
             repo.Delete(slotId);
             placeRepo.DeleteById(placeId);
         }
+
+
+        private ITimeSlotRepository repo;
+        private IPlaceRepository placeRepo;
+        private string connection;
+        private long slotId, placeId;
 
 
         [OneTimeSetUp]

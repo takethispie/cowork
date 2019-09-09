@@ -9,6 +9,25 @@ namespace coworktest {
     [TestFixture]
     public class MealBookingDbTest {
 
+        [SetUp]
+        public void Setup() {
+            placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
+            date = DateTime.Today;
+            mealId = mealRepo.Create(new Meal(-1, date, "salade tomate", placeId));
+            userId = userRepo.Create(new User(-1, "Alexandre", "Felix", "test@test.com", false, UserType.User));
+            mealResId = repo.Create(new MealBooking(-1, mealId, userId, ""));
+        }
+
+
+        [TearDown]
+        public void TearDown() {
+            repo.Delete(mealResId);
+            mealRepo.Delete(mealId);
+            userRepo.DeleteById(userId);
+            placeRepo.DeleteById(placeId);
+        }
+
+
         private long mealResId, mealId, userId, placeId;
         private IMealBookingRepository repo;
         private IMealRepository mealRepo;
@@ -28,16 +47,6 @@ namespace coworktest {
         }
 
 
-        [SetUp]
-        public void Setup() {
-            placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
-            date = DateTime.Today;
-            mealId = mealRepo.Create(new Meal(-1, date, "salade tomate", placeId));
-            userId = userRepo.Create(new User(-1, "Alexandre", "Felix", "test@test.com", false, UserType.User));
-            mealResId = repo.Create(new MealBooking(-1, mealId, userId, ""));
-        }
-
-
         [Test]
         public void Create() {
             var id = repo.Create(new MealBooking(-1, mealId, userId, ""));
@@ -45,19 +54,6 @@ namespace coworktest {
             var result = repo.GetById(id);
             Assert.NotNull(result);
             repo.Delete(id);
-        }
-
-
-        [Test]
-        public void Update() {
-            var current = repo.GetById(mealResId);
-            Assert.NotNull(current);
-            current.Note = "testtest";
-            var id = repo.Update(current);
-            Assert.Greater(id, -1);
-            var modified = repo.GetById(id);
-            Assert.NotNull(modified);
-            Assert.AreEqual("testtest", modified.Note);
         }
 
 
@@ -78,15 +74,15 @@ namespace coworktest {
 
 
         [Test]
-        public void GetAllFromUser() {
-            var result = repo.GetAllFromUser(userId);
+        public void GetAllFromDateAndPlace() {
+            var result = repo.GetAllFromDateAndPlace(date, placeId);
             Assert.NotNull(result);
         }
 
 
         [Test]
-        public void GetAllFromDateAndPlace() {
-            var result = repo.GetAllFromDateAndPlace(date, placeId);
+        public void GetAllFromUser() {
+            var result = repo.GetAllFromUser(userId);
             Assert.NotNull(result);
         }
 
@@ -98,13 +94,18 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(mealResId);
-            mealRepo.Delete(mealId);
-            userRepo.DeleteById(userId);
-            placeRepo.DeleteById(placeId);
+        [Test]
+        public void Update() {
+            var current = repo.GetById(mealResId);
+            Assert.NotNull(current);
+            current.Note = "testtest";
+            var id = repo.Update(current);
+            Assert.Greater(id, -1);
+            var modified = repo.GetById(id);
+            Assert.NotNull(modified);
+            Assert.AreEqual("testtest", modified.Note);
         }
+
     }
 
 }

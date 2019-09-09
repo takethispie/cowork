@@ -4,7 +4,8 @@ namespace coworkdomain.Cowork {
 
     public class TimeSlot {
 
-        public TimeSlot(long id, DayOfWeek day, short startHour, short startMinutes, short endHour, short endMinutes, long placeId) {
+        public TimeSlot(long id, DayOfWeek day, short startHour, short startMinutes, short endHour, short endMinutes,
+                        long placeId) {
             Id = id;
             Day = day;
             StartHour = startHour;
@@ -13,8 +14,9 @@ namespace coworkdomain.Cowork {
             EndMinutes = endMinutes;
             PlaceId = placeId;
         }
-        
-        public  TimeSlot() {}
+
+
+        public TimeSlot() { }
 
         public long Id { get; set; }
         public short StartHour { get; set; }

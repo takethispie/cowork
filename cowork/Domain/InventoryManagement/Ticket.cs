@@ -8,10 +8,11 @@ namespace coworkdomain.InventoryManagement {
 
         public Ticket() {
             Comments = new List<TicketComment>();
-
         }
 
-        public Ticket(long id, long openedById, TicketState state, string description, long placeId, string title, DateTime created) {
+
+        public Ticket(long id, long openedById, TicketState state, string description, long placeId, string title,
+                      DateTime created) {
             Id = id;
             OpenedById = openedById;
             State = state;
@@ -20,12 +21,12 @@ namespace coworkdomain.InventoryManagement {
             Title = title;
             Created = created;
             Comments = new List<TicketComment>();
-
         }
+
 
         public long Id { get; set; }
         public long OpenedById { get; set; }
-        public TicketState State { get; set;  }
+        public TicketState State { get; set; }
         public string Description { get; set; }
         public TimeSpan? PlanifiedResolution { get; set; }
         public long PlaceId { get; set; }
@@ -38,4 +39,5 @@ namespace coworkdomain.InventoryManagement {
         public List<TicketComment> Comments { get; set; }
 
     }
+
 }

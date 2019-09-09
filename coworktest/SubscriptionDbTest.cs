@@ -9,24 +9,6 @@ namespace coworktest {
     [TestFixture]
     public class SubscriptionDbTest {
 
-        private ISubscriptionRepository repo;
-        private ISubscriptionTypeRepository typeRepo;
-        private IUserRepository userRepo;
-        private IPlaceRepository placeRepo;
-        private long subId, subTypeId, placeId, userId;
-        private string connection;
-        
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new SubscriptionRepository(connection);
-            typeRepo = new SubscriptionTypeRepository(connection);
-            userRepo = new UserRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-        }
-
-
         [SetUp]
         public void Setup() {
             var subType = new SubscriptionType(-1, "test", -1, 5, 2, 20, 18, -1, 200, "test description");
@@ -42,6 +24,33 @@ namespace coworktest {
         }
 
 
+        [TearDown]
+        public void Teardown() {
+            repo.Delete(subId);
+            typeRepo.Delete(subTypeId);
+            placeRepo.DeleteById(placeId);
+            userRepo.DeleteById(userId);
+        }
+
+
+        private ISubscriptionRepository repo;
+        private ISubscriptionTypeRepository typeRepo;
+        private IUserRepository userRepo;
+        private IPlaceRepository placeRepo;
+        private long subId, subTypeId, placeId, userId;
+        private string connection;
+
+
+        [OneTimeSetUp]
+        public void OneTimeSetup() {
+            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
+            repo = new SubscriptionRepository(connection);
+            typeRepo = new SubscriptionTypeRepository(connection);
+            userRepo = new UserRepository(connection);
+            placeRepo = new PlaceRepository(connection);
+        }
+
+
         [Test]
         public void Create() {
             var user = new User(-1, "jean", "jean", "jean@jean.com", true, UserType.User);
@@ -51,21 +60,6 @@ namespace coworktest {
             Assert.Greater(result, -1);
             repo.Delete(result);
             userRepo.DeleteById(userid);
-        }
-
-
-        [Test]
-        public void Update() {
-            var current = repo.GetById(subId);
-            Assert.NotNull(current);
-            //DateTime.Now.Date avoid milliseconds mismatch between equals date
-            var newDate = DateTime.Now.Date;
-            Assert.AreNotEqual(current.LatestRenewal, newDate);
-            current.LatestRenewal = newDate;
-            var result = repo.Update(current);
-            Assert.Greater(result, -1);
-            var modified = repo.GetById(result);
-            Assert.AreEqual(newDate.Date, modified.LatestRenewal.Date);
         }
 
 
@@ -98,12 +92,18 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void Teardown() {
-            repo.Delete(subId);
-            typeRepo.Delete(subTypeId);
-            placeRepo.DeleteById(placeId);
-            userRepo.DeleteById(userId);
+        [Test]
+        public void Update() {
+            var current = repo.GetById(subId);
+            Assert.NotNull(current);
+            //DateTime.Now.Date avoid milliseconds mismatch between equals date
+            var newDate = DateTime.Now.Date;
+            Assert.AreNotEqual(current.LatestRenewal, newDate);
+            current.LatestRenewal = newDate;
+            var result = repo.Update(current);
+            Assert.Greater(result, -1);
+            var modified = repo.GetById(result);
+            Assert.AreEqual(newDate.Date, modified.LatestRenewal.Date);
         }
 
     }

@@ -18,6 +18,7 @@ namespace coworkdomain.Cowork {
         public RoomType Type { get; set; }
 
         public Place Place { get; set; }
+
     }
 
 }

@@ -12,8 +12,10 @@ namespace coworkpersistence.Repositories {
 
     public class RoomBookingRepository : IRoomBookingRepository {
 
+        private const string innerJoin =
+            " INNER JOIN \"Users\" U on \"RoomBooking\".\"UserId\" = U.\"Id\" INNER JOIN \"Room\" R on \"RoomBooking\".\"RoomId\" = R.\"Id\" INNER JOIN \"Place\" P on R.\"PlaceId\" = P.\"Id\" ";
+
         private readonly SqlDataMapper<RoomBooking> datamapper;
-        private const string innerJoin = " INNER JOIN \"Users\" U on \"RoomBooking\".\"UserId\" = U.\"Id\" INNER JOIN \"Room\" R on \"RoomBooking\".\"RoomId\" = R.\"Id\" INNER JOIN \"Place\" P on R.\"PlaceId\" = P.\"Id\" ";
 
 
         public RoomBookingRepository(string connection) {
@@ -28,7 +30,8 @@ namespace coworkpersistence.Repositories {
 
 
         public RoomBooking GetById(long id) {
-            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin + "WHERE \"RoomBooking\".\"Id\"= @id;";
+            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin +
+                               "WHERE \"RoomBooking\".\"Id\"= @id;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -55,7 +58,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<RoomBooking> GetAllOfRoomStartingAtDate(long roomId, DateTime date) {
-            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin + "WHERE \"Start\"::DATE >= @date::DATE AND \"RoomId\"= @id;";
+            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin +
+                               "WHERE \"Start\"::DATE >= @date::DATE AND \"RoomId\"= @id;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("date", date),
                 new NpgsqlParameter("id", roomId)
@@ -65,7 +69,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<RoomBooking> GetAllFromGivenDate(DateTime date) {
-            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin + "WHERE \"Start\"::DATE= @date::DATE;";
+            const string sql = "SELECT * FROM public.\"RoomBooking\"" + innerJoin +
+                               "WHERE \"Start\"::DATE= @date::DATE;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("date", date)
             };
@@ -74,7 +79,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<RoomBooking> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"RoomBooking\"" + innerJoin + " ORDER BY \"RoomBooking\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"RoomBooking\"" + innerJoin +
+                               " ORDER BY \"RoomBooking\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)

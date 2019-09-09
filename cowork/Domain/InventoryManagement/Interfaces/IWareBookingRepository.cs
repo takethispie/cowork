@@ -20,7 +20,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         List<WareBooking> GetStartingAt(DateTime dateTime);
 
         List<WareBooking> GetAllByWareId(long id);
-        
+
         List<WareBooking> GetAllByWareIdStartingAt(long id, DateTime dateTime);
 
         List<WareBooking> GetAllFromDate(DateTime dateTime);
@@ -28,7 +28,6 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         List<WareBooking> GetWithPaging(int page, int size, DateTime startingAt);
 
         List<WareBooking> GetWithPaging(int page, int size);
-
 
     }
 

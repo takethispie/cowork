@@ -57,6 +57,13 @@ namespace coworktest {
 
 
         [Test]
+        public void GetAll() {
+            var result = repo.GetAll();
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
         public void GetById() {
             var result = repo.GetById(roomId);
             Assert.NotNull(result);
@@ -66,13 +73,6 @@ namespace coworktest {
         [Test]
         public void GetByName() {
             var result = repo.GetByName("Room1");
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetAll() {
-            var result = repo.GetAll();
             Assert.NotNull(result);
         }
 

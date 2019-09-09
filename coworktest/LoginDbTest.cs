@@ -10,6 +10,14 @@ namespace coworktest {
     [TestFixture]
     public class LoginDbTest {
 
+        [SetUp]
+        public void Setup() { }
+
+
+        [TearDown]
+        public void TearDown() { }
+
+
         private ILoginRepository loginRepository;
         private IUserRepository userRepository;
         private long loginId, userId;
@@ -28,18 +36,6 @@ namespace coworktest {
         [OneTimeTearDown]
         public void OneTimeTearDown() {
             userRepository.DeleteById(userId);
-        }
-
-
-        [SetUp]
-        public void Setup() {
-            
-        }
-
-
-        [TearDown]
-        public void TearDown() {
-            
         }
 
 

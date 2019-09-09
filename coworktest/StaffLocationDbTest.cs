@@ -3,29 +3,12 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 
 namespace coworktest {
 
     [TestFixture]
     public class StaffLocationDbTest {
-
-        private IStaffLocationRepository staffLocationRepository;
-        private IUserRepository userRepository;
-        private IPlaceRepository placeRepository;
-        private long userId, placeId, staffLocationId;
-        private string connection;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            userRepository = new UserRepository(connection);
-            staffLocationRepository = new StaffLocationRepository(connection);
-            placeRepository = new PlaceRepository(connection);
-        }
-
 
         [SetUp]
         public void Setup() {
@@ -46,6 +29,22 @@ namespace coworktest {
         }
 
 
+        private IStaffLocationRepository staffLocationRepository;
+        private IUserRepository userRepository;
+        private IPlaceRepository placeRepository;
+        private long userId, placeId, staffLocationId;
+        private string connection;
+
+
+        [OneTimeSetUp]
+        public void OneTimeSetup() {
+            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
+            userRepository = new UserRepository(connection);
+            staffLocationRepository = new StaffLocationRepository(connection);
+            placeRepository = new PlaceRepository(connection);
+        }
+
+
         [Test]
         public void Create() {
             var user = new User(-1, "staff2", "staff2", "staff2@staff.com", true, UserType.Staff);
@@ -54,23 +53,6 @@ namespace coworktest {
             var result = staffLocationRepository.Create(location);
             Assert.Greater(result, -1);
             staffLocationRepository.Delete(result);
-            userRepository.DeleteById(newUser);
-        }
-
-
-        [Test]
-        public void Update() {
-            var user = new User(-1, "staff3", "staff3", "staff3@staff.com", true, UserType.Staff);
-            var newUser = userRepository.Create(user);
-            var current = staffLocationRepository.GetById(staffLocationId);
-            Assert.AreEqual(userId, current.UserId);
-            
-            current.UserId = newUser;
-            var modifiedId = staffLocationRepository.Update(current);
-            Assert.AreEqual(current.Id, modifiedId);
-            var modified = staffLocationRepository.GetById(modifiedId);
-            Assert.AreEqual(newUser, modified.UserId);
-            staffLocationRepository.Delete(modifiedId);
             userRepository.DeleteById(newUser);
         }
 
@@ -88,7 +70,6 @@ namespace coworktest {
             Assert.NotNull(result);
             Assert.AreEqual(placeId, result.PlaceId);
             Assert.AreEqual(userId, result.UserId);
-
         }
 
 
@@ -100,6 +81,24 @@ namespace coworktest {
             Assert.AreEqual(placeId, result[0].PlaceId);
             Assert.AreEqual(userId, result[0].UserId);
         }
+
+
+        [Test]
+        public void Update() {
+            var user = new User(-1, "staff3", "staff3", "staff3@staff.com", true, UserType.Staff);
+            var newUser = userRepository.Create(user);
+            var current = staffLocationRepository.GetById(staffLocationId);
+            Assert.AreEqual(userId, current.UserId);
+
+            current.UserId = newUser;
+            var modifiedId = staffLocationRepository.Update(current);
+            Assert.AreEqual(current.Id, modifiedId);
+            var modified = staffLocationRepository.GetById(modifiedId);
+            Assert.AreEqual(newUser, modified.UserId);
+            staffLocationRepository.Delete(modifiedId);
+            userRepository.DeleteById(newUser);
+        }
+
     }
 
 }

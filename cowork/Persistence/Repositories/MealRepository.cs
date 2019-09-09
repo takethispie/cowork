@@ -12,12 +12,13 @@ namespace coworkpersistence.Repositories {
 
     public class MealRepository : IMealRepository {
 
-        private SqlDataMapper<Meal> dataMapper;
+        private readonly SqlDataMapper<Meal> dataMapper;
 
 
         public MealRepository(string connection) {
             dataMapper = new SqlDataMapper<Meal>(SqlDbType.Postgresql, connection, new MealBuilder());
         }
+
 
         public List<Meal> GetAll() {
             const string sql = "SELECT * FROM \"Meal\";";
@@ -83,7 +84,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(Meal meal) {
-            const string sql = "UPDATE public.\"Meal\" SET \"Id\"= @id, \"Date\"= @date, \"Description\"= @description, \"PlaceId\"= @placeId WHERE \"Id\"= @id RETURNING \"Id\";";
+            const string sql =
+                "UPDATE public.\"Meal\" SET \"Id\"= @id, \"Date\"= @date, \"Description\"= @description, \"PlaceId\"= @placeId WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", meal.Id),
                 new NpgsqlParameter("date", meal.Date),
@@ -95,7 +97,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(Meal meal) {
-            const string sql = "INSERT INTO public.\"Meal\"(\"Id\", \"Date\", \"Description\", \"PlaceId\")VALUES (DEFAULT, @date, @description, @placeId) RETURNING \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"Meal\"(\"Id\", \"Date\", \"Description\", \"PlaceId\")VALUES (DEFAULT, @date, @description, @placeId) RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("date", meal.Date),
                 new NpgsqlParameter("description", meal.Description),

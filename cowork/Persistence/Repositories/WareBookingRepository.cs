@@ -12,17 +12,20 @@ namespace coworkpersistence.Repositories {
 
     public class WareBookingRepository : IWareBookingRepository {
 
-        private SqlDataMapper<WareBooking> dataMapper;
-        private string innerJoin;
+        private readonly SqlDataMapper<WareBooking> dataMapper;
+        private readonly string innerJoin;
 
 
         public WareBookingRepository(string conn) {
             dataMapper = new SqlDataMapper<WareBooking>(SqlDbType.Postgresql, conn, new WareBookingBuilder());
-            innerJoin = " inner join \"Users\" U on \"WareBooking\".\"UserId\" = U.\"Id\" inner join \"Ware\" W on \"WareBooking\".\"WareId\" = W.\"Id\" inner join \"Place\" P on W.\"PlaceId\" = P.\"Id\" ";
+            innerJoin =
+                " inner join \"Users\" U on \"WareBooking\".\"UserId\" = U.\"Id\" inner join \"Ware\" W on \"WareBooking\".\"WareId\" = W.\"Id\" inner join \"Place\" P on W.\"PlaceId\" = P.\"Id\" ";
         }
 
+
         public long Create(WareBooking wareBooking) {
-            const string sql = "INSERT INTO public.\"WareBooking\"(\"Id\", \"WareId\", \"UserId\", \"Start\", \"End\") VALUES (DEFAULT, @wareId, @userId, @startDate, @endDate) returning \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"WareBooking\"(\"Id\", \"WareId\", \"UserId\", \"Start\", \"End\") VALUES (DEFAULT, @wareId, @userId, @startDate, @endDate) returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("wareId", wareBooking.WareId),
                 new NpgsqlParameter("userId", wareBooking.UserId),
@@ -43,7 +46,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(WareBooking wareBooking) {
-            const string sql = "UPDATE public.\"WareBooking\" SET \"Id\"= @id, \"WareId\"= @wareId, \"UserId\"= @userId, \"Start\"= @startDate, \"End\"= @endDate WHERE \"Id\"= @id RETURNING \"Id\";";
+            const string sql =
+                "UPDATE public.\"WareBooking\" SET \"Id\"= @id, \"WareId\"= @wareId, \"UserId\"= @userId, \"Start\"= @startDate, \"End\"= @endDate WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", wareBooking.Id),
                 new NpgsqlParameter("wareId", wareBooking.WareId),
@@ -98,7 +102,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<WareBooking> GetAllByWareIdStartingAt(long id, DateTime dateTime) {
-            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin + "WHERE \"WareId\"= @id AND \"Start\"::DATE >= @startDate;";
+            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin +
+                      "WHERE \"WareId\"= @id AND \"Start\"::DATE >= @startDate;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("startDate", dateTime.Date),
                 new NpgsqlParameter("id", id)
@@ -117,7 +122,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<WareBooking> GetWithPaging(int page, int size, DateTime startingAt) {
-            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin + "WHERE \"Start\"::date >= @startDate ORDER BY \"WareBooking\".\"Start\" ASC LIMIT @amount OFFSET @skip";
+            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin +
+                      "WHERE \"Start\"::date >= @startDate ORDER BY \"WareBooking\".\"Start\" ASC LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("startDate", startingAt.TimeOfDay),
                 new NpgsqlParameter("amount", size),
@@ -128,7 +134,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<WareBooking> GetWithPaging(int page, int size) {
-            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin + " ORDER BY \"WareBooking\".\"Start\" ASC LIMIT @amount OFFSET @skip";
+            var sql = "SELECT * FROM \"WareBooking\"" + innerJoin +
+                      " ORDER BY \"WareBooking\".\"Start\" ASC LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", size),
                 new NpgsqlParameter("skip", page * size)

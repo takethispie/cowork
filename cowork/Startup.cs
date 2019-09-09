@@ -29,7 +29,8 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
-            if(Configuration["Environement"] == "Prod") conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            if (Configuration["Environement"] == "Prod")
+                conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             var DoFakeDataGeneration = Configuration["Options:FakeDataGeneration"];
             services
                 .AddMvc()
@@ -61,13 +62,13 @@ namespace cowork {
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];
             var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
-            if(!hasAdmin) {
-                var result = CreateAdmin(loginRepo, userRepo, new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
-                if(result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
+            if (!hasAdmin) {
+                var result = CreateAdmin(loginRepo, userRepo,
+                    new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
+                if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
             }
-            
+
             if (DoFakeDataGeneration == "True") {
-                
                 //TODO add bogus and generate fake data
             }
         }
@@ -99,8 +100,9 @@ namespace cowork {
             });
         }
 
-        
-        public int CreateAdmin(ILoginRepository loginRepository, IUserRepository userRepository, User user, string email, string password) {
+
+        public int CreateAdmin(ILoginRepository loginRepository, IUserRepository userRepository, User user,
+                               string email, string password) {
             var result = userRepository.Create(user);
             if (result == -1) return -1;
             user.Id = result;

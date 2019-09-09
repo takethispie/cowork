@@ -8,7 +8,7 @@ namespace cowork.Controllers.InventoryManagement {
     [Route("api/[controller]")]
     public class WareBookingController : ControllerBase {
 
-        private IWareBookingRepository bookingRepository;
+        private readonly IWareBookingRepository bookingRepository;
 
 
         public WareBookingController(IWareBookingRepository repository) {
@@ -74,8 +74,8 @@ namespace cowork.Controllers.InventoryManagement {
             var result = bookingRepository.GetByUser(userId);
             return Ok(result);
         }
-        
-        
+
+
         [HttpPost("AllStartingAt")]
         public IActionResult AllStartingAt([FromBody] DateTime dateTime) {
             var result = bookingRepository.GetStartingAt(dateTime);

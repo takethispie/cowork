@@ -12,13 +12,16 @@ namespace coworkpersistence.Repositories {
 
     public class MealBookingRepository : IMealBookingRepository {
 
-        private SqlDataMapper<MealBooking> datamapper;
-        private const string InnerJoin = " INNER JOIN \"Meal\" M on \"MealReservation\".\"MealId\" = M.\"Id\" INNER JOIN \"Users\" U on \"MealReservation\".\"UserId\" = U.\"Id\" ";
+        private const string InnerJoin =
+            " INNER JOIN \"Meal\" M on \"MealReservation\".\"MealId\" = M.\"Id\" INNER JOIN \"Users\" U on \"MealReservation\".\"UserId\" = U.\"Id\" ";
+
+        private readonly SqlDataMapper<MealBooking> datamapper;
 
 
         public MealBookingRepository(string connection) {
             datamapper = new SqlDataMapper<MealBooking>(SqlDbType.Postgresql, connection, new MealBookingBuilder());
         }
+
 
         public List<MealBooking> GetAll() {
             const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin + ";";
@@ -27,13 +30,14 @@ namespace coworkpersistence.Repositories {
 
 
         public List<MealBooking> GetAllFromUser(long userId) {
-            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin + "WHERE \"MealReservation\".\"UserId\"= @userId;";
+            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin +
+                               "WHERE \"MealReservation\".\"UserId\"= @userId;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("userId", userId)
             };
             return datamapper.MultiItemCommand(sql, par);
         }
-        
+
 
         public List<MealBooking> GetAllFromDateAndPlace(DateTime date, long placeId) {
             const string sql =
@@ -45,12 +49,12 @@ namespace coworkpersistence.Repositories {
             return datamapper.MultiItemCommand(sql, par);
         }
 
-        public List<MealBooking> GetAllWithPaging(int page, int amount, bool byDateAscending)
-        {
-            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin + "ORDER BY \"Meal\".\"Date\" @order LIMIT @amount OFFSET @skip;";
 
-        var par = new List<DbParameter>
-            {
+        public List<MealBooking> GetAllWithPaging(int page, int amount, bool byDateAscending) {
+            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin +
+                               "ORDER BY \"Meal\".\"Date\" @order LIMIT @amount OFFSET @skip;";
+
+            var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", amount * page),
                 new NpgsqlParameter("order", byDateAscending ? "ASC" : "DESC")
@@ -60,7 +64,8 @@ namespace coworkpersistence.Repositories {
 
 
         public MealBooking GetById(long id) {
-            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin + "WHERE \"MealReservation\".\"Id\"= @id;";
+            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin +
+                               "WHERE \"MealReservation\".\"Id\"= @id;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -69,7 +74,8 @@ namespace coworkpersistence.Repositories {
 
 
         public bool Delete(long id) {
-            const string sql = "DELETE FROM \"MealReservation\" WHERE \"MealReservation\".\"Id\"= @id RETURNING \"MealReservation\".\"Id\";";
+            const string sql =
+                "DELETE FROM \"MealReservation\" WHERE \"MealReservation\".\"Id\"= @id RETURNING \"MealReservation\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -78,7 +84,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(MealBooking meal) {
-            const string sql = "UPDATE public.\"MealReservation\" SET \"Id\"= @id, \"MealId\"= @mealId, \"UserId\"= @userId, \"Note\"= @note WHERE \"Id\"= @id RETURNING \"MealReservation\".\"Id\";";
+            const string sql =
+                "UPDATE public.\"MealReservation\" SET \"Id\"= @id, \"MealId\"= @mealId, \"UserId\"= @userId, \"Note\"= @note WHERE \"Id\"= @id RETURNING \"MealReservation\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", meal.Id),
                 new NpgsqlParameter("mealId", meal.MealId),
@@ -90,7 +97,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(MealBooking meal) {
-            const string sql = "INSERT INTO public.\"MealReservation\"(\"Id\", \"MealId\", \"UserId\", \"Note\")VALUES (DEFAULT, @mealId, @userId, @note) RETURNING \"MealReservation\".\"Id\";";
+            const string sql =
+                "INSERT INTO public.\"MealReservation\"(\"Id\", \"MealId\", \"UserId\", \"Note\")VALUES (DEFAULT, @mealId, @userId, @note) RETURNING \"MealReservation\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("mealId", meal.MealId),
                 new NpgsqlParameter("userId", meal.UserId),

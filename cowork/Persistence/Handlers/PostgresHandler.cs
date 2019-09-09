@@ -28,21 +28,11 @@ namespace coworkpersistence.Handlers {
         private string connectionString { get; }
 
 
-        public void CloseHandler() {
-            if (reader != null) {
-                if (!reader.IsClosed) reader.Close();
-                reader.Dispose();
-            }
-
-            if (connection?.State != ConnectionState.Closed) connection?.Close();
-        }
-
-
         /// <inheritdoc />
         public void ExecuteCommand(string sql, List<DbParameter> parameters) {
             var cmd = new NpgsqlCommand(sql) {
                 Connection = connection,
-                CommandType = CommandType.Text,
+                CommandType = CommandType.Text
             };
             parameters.ForEach(param => cmd.Parameters.Add(param));
             reader = cmd.ExecuteReader();
@@ -77,6 +67,16 @@ namespace coworkpersistence.Handlers {
         /// <inheritdoc />
         public void EndCommand() {
             reader?.Close();
+        }
+
+
+        public void CloseHandler() {
+            if (reader != null) {
+                if (!reader.IsClosed) reader.Close();
+                reader.Dispose();
+            }
+
+            if (connection?.State != ConnectionState.Closed) connection?.Close();
         }
 
     }

@@ -19,6 +19,7 @@ namespace coworkpersistence.DomainBuilders {
             nextStartingIndex = 5 + startingIndex;
             return user;
         }
+
     }
 
 }

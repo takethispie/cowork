@@ -13,7 +13,8 @@ namespace cowork.Controllers.Cowork {
         public SubscriptionTypeController(ISubscriptionTypeRepository repository) {
             Repository = repository;
         }
-        
+
+
         [HttpGet]
         public IActionResult All() {
             var result = Repository.GetAll();
@@ -43,8 +44,8 @@ namespace cowork.Controllers.Cowork {
             if (!result) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("ById/{id}")]
         public IActionResult ById(long id) {
             var result = Repository.GetById(id);
@@ -59,7 +60,8 @@ namespace cowork.Controllers.Cowork {
             if (result == null) return NotFound();
             return Ok(result);
         }
-        
+
+
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
             var result = Repository.GetAllWithPaging(page, amount);

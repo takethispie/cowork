@@ -18,6 +18,7 @@ namespace coworkpersistence.DomainBuilders {
             ware.Place = placeBuilder.CreateDomainModel(dbHandler, 6 + startingIndex, out nextStartingIndex);
             return ware;
         }
+
     }
 
 }

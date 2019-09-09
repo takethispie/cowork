@@ -3,6 +3,7 @@ import {SubscriptionTypeService} from '../../../services/subscription-type.servi
 import {SubscriptionType} from '../../../models/SubscriptionType';
 import {AlertController, ModalController} from '@ionic/angular';
 import {ToastService} from '../../../services/toast.service';
+import {LoadingService} from "../../../services/loading.service";
 
 @Component({
   selector: 'app-subscription-picker',
@@ -18,7 +19,7 @@ export class SubscriptionPickerComponent implements OnInit {
   ChosenContratType: "FixedContract" | "ContractFree" = "FixedContract";
 
   constructor(public subType: SubscriptionTypeService, public modal: ModalController,
-              public alertController: AlertController, public toast: ToastService) { }
+              public alertController: AlertController, public toast: ToastService, public loading: LoadingService) { }
 
   ngOnInit() {
     this.subType.All().subscribe(res => this.SubscriptionTypeList = res);

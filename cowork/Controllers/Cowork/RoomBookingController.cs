@@ -9,11 +9,13 @@ namespace cowork.Controllers.Cowork {
     [Route("api/[controller]")]
     public class RoomBookingController : ControllerBase {
 
-        public ITimeSlotRepository TimeSlotRepository;
         public IRoomBookingRepository Repository;
 
+        public ITimeSlotRepository TimeSlotRepository;
 
-        public RoomBookingController(IRoomBookingRepository repository, IPlaceRepository placeRepository, ITimeSlotRepository timeSlotRepository) {
+
+        public RoomBookingController(IRoomBookingRepository repository, IPlaceRepository placeRepository,
+                                     ITimeSlotRepository timeSlotRepository) {
             TimeSlotRepository = timeSlotRepository;
             Repository = repository;
         }
@@ -30,12 +32,12 @@ namespace cowork.Controllers.Cowork {
         public IActionResult Create([FromBody] RoomBooking roomBooking) {
             var placeId = roomBooking.Room.Place.Id;
             var canBook = TimeSlotRepository
-                .GetAllOfPlace(placeId)
-                .Any(slot => slot.Day == roomBooking.Start.DayOfWeek
-                             && new TimeSpan(0, slot.EndHour, slot.EndMinutes, 0)
-                                 >= new TimeSpan(0, roomBooking.End.Hour, roomBooking.End.Minute, 0)
-                             && new TimeSpan(0, slot.StartHour, slot.StartMinutes, 0)
-                                 <= new TimeSpan(0, roomBooking.Start.Hour, roomBooking.Start.Minute, 0));
+                          .GetAllOfPlace(placeId)
+                          .Any(slot => slot.Day == roomBooking.Start.DayOfWeek
+                                       && new TimeSpan(0, slot.EndHour, slot.EndMinutes, 0)
+                                       >= new TimeSpan(0, roomBooking.End.Hour, roomBooking.End.Minute, 0)
+                                       && new TimeSpan(0, slot.StartHour, slot.StartMinutes, 0)
+                                       <= new TimeSpan(0, roomBooking.Start.Hour, roomBooking.Start.Minute, 0));
             if (!canBook) return Conflict();
             var result = Repository.Create(roomBooking);
             if (result == -1) return Conflict();
@@ -46,8 +48,9 @@ namespace cowork.Controllers.Cowork {
         [HttpPut]
         public IActionResult Update([FromBody] RoomBooking roomBooking) {
             var possibleConflicts = Repository.GetAllFromGivenDate(roomBooking.Start.Date)
-                .Where(rb => rb.Id != roomBooking.Id).ToList();
-            var hasNoConflict = possibleConflicts.All(booking => booking.End <= roomBooking.Start || booking.Start >= roomBooking.End);
+                                              .Where(rb => rb.Id != roomBooking.Id).ToList();
+            var hasNoConflict = possibleConflicts.All(booking =>
+                booking.End <= roomBooking.Start || booking.Start >= roomBooking.End);
             if (!hasNoConflict) return Conflict("Une réservation est déjà présente pour ces horaires");
             var result = Repository.Update(roomBooking);
             if (result == -1) return Conflict();
@@ -103,7 +106,7 @@ namespace cowork.Controllers.Cowork {
         public IActionResult AllWithPaging(int page, int amount) {
             var result = Repository.GetAllWithPaging(page, amount);
             return Ok(result);
-        } 
+        }
 
     }
 

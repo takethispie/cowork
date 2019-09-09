@@ -11,12 +11,41 @@ namespace coworktest {
     [TestFixture]
     public class TicketDbTest {
 
+        [SetUp]
+        public void Setup() {
+            var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
+            placeId = placeRepo.Create(place);
+            staff = new User(-1, "ticket1user", "t", "test@test.com", false, UserType.User);
+            persId = userRepo.Create(staff);
+            user = new User(-1, "ticket2user", "t", "test@test.com", false, UserType.User);
+            userId = userRepo.Create(user);
+            var ware = new Ware(-1, "Dell T1600", "Ordinateur de bureau", "132251573-13242142-n1235v", placeId, false);
+            wareId = wareRepo.Create(ware);
+            var ticket = new Ticket(-1, userId, TicketState.New, "", placeId, "test", DateTime.Now);
+            ticketId = repo.Create(ticket);
+            var ticketWare = new TicketWare(-1, ticketId, wareId);
+            ticketWareId = ticketWareRepository.Create(ticketWare);
+        }
+
+
+        [TearDown]
+        public void TearDown() {
+            ticketWareRepository.Delete(ticketWareId);
+            ticketCommentRepository.Delete(commentId);
+            repo.Delete(ticketId);
+            wareRepo.Delete(wareId);
+            userRepo.DeleteById(userId);
+            userRepo.DeleteById(persId);
+            placeRepo.DeleteById(placeId);
+        }
+
+
         private ITicketRepository repo;
         private IUserRepository userRepo;
         private IWareRepository wareRepo;
         private IPlaceRepository placeRepo;
         private ITicketWareRepository ticketWareRepository;
-        
+
         private string connection;
         private long ticketId, persId, userId, placeId, wareId, commentId, ticketWareId;
         private User user;
@@ -36,23 +65,6 @@ namespace coworktest {
         }
 
 
-        [SetUp]
-        public void Setup() {
-            var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
-            placeId = placeRepo.Create(place);
-            staff = new User(-1, "ticket1user", "t", "test@test.com", false, UserType.User);
-            persId = userRepo.Create(staff);
-            user = new User(-1, "ticket2user", "t", "test@test.com", false, UserType.User);
-            userId = userRepo.Create(user);
-            var ware = new Ware(-1, "Dell T1600", "Ordinateur de bureau", "132251573-13242142-n1235v", placeId, false);
-            wareId = wareRepo.Create(ware);
-            var ticket = new Ticket(-1, userId, TicketState.New, "", placeId, "test", DateTime.Now);
-            ticketId = repo.Create(ticket);
-            var ticketWare = new TicketWare(-1, ticketId, wareId);
-            ticketWareId = ticketWareRepository.Create(ticketWare);
-        }
-
-
         [Test]
         public void Create() {
             var ticket = new Ticket(-1, userId, TicketState.New, "test", placeId, "test", DateTime.Now);
@@ -61,68 +73,6 @@ namespace coworktest {
             var result = repo.GetById(id);
             Assert.NotNull(result);
             repo.Delete(id);
-        }
-
-
-        [Test]
-        public void Update() {
-            var current = repo.GetById(ticketId);
-            Assert.NotNull(current);
-            current.Description = "marche pas";
-            var id = repo.Update(current);
-            Assert.Greater(id, -1);
-            var modified = repo.GetById(id);
-            Assert.AreEqual(modified.Description, "marche pas");
-        }
-
-
-        [Test]
-        public void Delete() {
-            ticketWareRepository.Delete(ticketWareId);
-            var result = repo.Delete(ticketId);
-            Assert.IsTrue(result);
-        }
-
-
-        [Test]
-        public void GetAll() {
-            var result = repo.GetAll();
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetbyId() {
-            var result = repo.GetById(ticketId);
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetAllOpenedBy() {
-            var result = repo.GetAllOpenedBy(user);
-            Assert.NotNull(result);
-        }
-        
-
-        [Test]
-        public void GetAllOfPlace() {
-            var result = repo.GetAllOfPlace(placeId);
-            Assert.NotNull(result);
-        }
-        
-        [Test]
-        public void GetAllComments() {
-            var result = ticketCommentRepository.GetAll();
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void CreateComment() {
-            var comment = new TicketComment(-1, "test", ticketId, userId, DateTime.Now);
-            commentId = ticketCommentRepository.Create(comment);
-            Assert.Greater(commentId, -1);
         }
 
 
@@ -153,11 +103,45 @@ namespace coworktest {
 
 
         [Test]
-        public void GetCommentByTicketId() {
+        public void CreateComment() {
             var comment = new TicketComment(-1, "test", ticketId, userId, DateTime.Now);
             commentId = ticketCommentRepository.Create(comment);
             Assert.Greater(commentId, -1);
-            var result = ticketCommentRepository.GetByTicketId(ticketId);
+        }
+
+
+        [Test]
+        public void Delete() {
+            ticketWareRepository.Delete(ticketWareId);
+            var result = repo.Delete(ticketId);
+            Assert.IsTrue(result);
+        }
+
+
+        [Test]
+        public void GetAll() {
+            var result = repo.GetAll();
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
+        public void GetAllComments() {
+            var result = ticketCommentRepository.GetAll();
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
+        public void GetAllOfPlace() {
+            var result = repo.GetAllOfPlace(placeId);
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
+        public void GetAllOpenedBy() {
+            var result = repo.GetAllOpenedBy(user);
             Assert.NotNull(result);
         }
 
@@ -172,13 +156,20 @@ namespace coworktest {
 
 
         [Test]
+        public void GetbyId() {
+            var result = repo.GetById(ticketId);
+            Assert.NotNull(result);
+        }
+
+
+        [Test]
         public void GetByIdTicketWare() {
             var result = ticketWareRepository.GetById(ticketWareId);
             Assert.NotNull(result);
             Assert.AreEqual(result.Ware.Name, "Dell T1600");
         }
-        
-        
+
+
         [Test]
         public void GetByTicketIdTicketWare() {
             var result = ticketWareRepository.GetByTicketId(ticketId);
@@ -187,16 +178,25 @@ namespace coworktest {
         }
 
 
+        [Test]
+        public void GetCommentByTicketId() {
+            var comment = new TicketComment(-1, "test", ticketId, userId, DateTime.Now);
+            commentId = ticketCommentRepository.Create(comment);
+            Assert.Greater(commentId, -1);
+            var result = ticketCommentRepository.GetByTicketId(ticketId);
+            Assert.NotNull(result);
+        }
 
-        [TearDown]
-        public void TearDown() {
-            ticketWareRepository.Delete(ticketWareId);
-            ticketCommentRepository.Delete(commentId);
-            repo.Delete(ticketId);
-            wareRepo.Delete(wareId);
-            userRepo.DeleteById(userId);
-            userRepo.DeleteById(persId);
-            placeRepo.DeleteById(placeId);
+
+        [Test]
+        public void Update() {
+            var current = repo.GetById(ticketId);
+            Assert.NotNull(current);
+            current.Description = "marche pas";
+            var id = repo.Update(current);
+            Assert.Greater(id, -1);
+            var modified = repo.GetById(id);
+            Assert.AreEqual(modified.Description, "marche pas");
         }
 
     }

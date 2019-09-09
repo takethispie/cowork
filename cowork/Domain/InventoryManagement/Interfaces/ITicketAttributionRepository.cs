@@ -18,6 +18,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         long Create(TicketAttribution ticketAttribution);
 
         long Update(TicketAttribution ticketAttribution);
+
     }
 
 }

@@ -5,7 +5,7 @@ namespace coworkdomain.InventoryManagement {
 
     public class TicketComment {
 
-        public TicketComment() {}
+        public TicketComment() { }
 
 
         public TicketComment(long id, string content, long ticketId, long authorId, DateTime created) {
@@ -15,6 +15,7 @@ namespace coworkdomain.InventoryManagement {
             AuthorId = authorId;
             Created = created;
         }
+
 
         public long Id { get; set; }
         public string Content { get; set; }

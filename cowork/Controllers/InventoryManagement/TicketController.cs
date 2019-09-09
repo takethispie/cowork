@@ -1,9 +1,7 @@
 using System.Linq;
-using coworkdomain;
 using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
-using coworkpersistence.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.InventoryManagement {
@@ -11,25 +9,27 @@ namespace cowork.Controllers.InventoryManagement {
     [Route("api/[controller]")]
     public class TicketController : ControllerBase {
 
-        private ITicketRepository repository;
-        private IUserRepository userRepository;
-        private ITicketAttributionRepository ticketAttributionRepository;
-        private ITicketCommentRepository ticketCommentRepository;
+        private readonly ITicketRepository repository;
+        private readonly ITicketAttributionRepository ticketAttributionRepository;
+        private readonly ITicketCommentRepository ticketCommentRepository;
+        private readonly IUserRepository userRepository;
 
 
-        public TicketController(ITicketRepository ticketRepository, IUserRepository userRepository, 
-            ITicketAttributionRepository ticketAttributionRepository, ITicketCommentRepository ticketCommentRepository) {
+        public TicketController(ITicketRepository ticketRepository, IUserRepository userRepository,
+                                ITicketAttributionRepository ticketAttributionRepository,
+                                ITicketCommentRepository ticketCommentRepository) {
             repository = ticketRepository;
             this.userRepository = userRepository;
             this.ticketAttributionRepository = ticketAttributionRepository;
             this.ticketCommentRepository = ticketCommentRepository;
         }
-        
+
+
         [HttpGet]
         public IActionResult All() {
             var res = repository.GetAll().Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if(ticketAttribution != null) 
+                if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
@@ -62,14 +62,14 @@ namespace cowork.Controllers.InventoryManagement {
             if (!result) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
             var result = repository.GetById(id);
             if (result == null) return NotFound();
             var ticketAttribution = ticketAttributionRepository.GetFromTicket(result.Id);
-            if(ticketAttribution != null) 
+            if (ticketAttribution != null)
                 result.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
             result.Comments = ticketCommentRepository.GetByTicketId(result.Id);
             return Ok();
@@ -80,7 +80,7 @@ namespace cowork.Controllers.InventoryManagement {
         public IActionResult AllFromPlace(long placeId) {
             var res = repository.GetAllOfPlace(placeId).Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if(ticketAttribution != null) 
+                if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
@@ -95,7 +95,7 @@ namespace cowork.Controllers.InventoryManagement {
             if (user == null) return NotFound("Utilisateur introuvable");
             var res = repository.GetAllOpenedBy(user).Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if(ticketAttribution != null) 
+                if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
@@ -109,11 +109,12 @@ namespace cowork.Controllers.InventoryManagement {
             var personnal = userRepository.GetById(personnalId);
             if (personnal == null) return NotFound("Personnel introuvable");
             var res = ticketAttributionRepository.GetAllFromStaffId(personnalId)
-                .Select(ticketAttr => repository.GetById(ticketAttr.TicketId))
-                .Select(ticket => {
-                    ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                    return ticket;
-                });
+                                                 .Select(ticketAttr => repository.GetById(ticketAttr.TicketId))
+                                                 .Select(ticket => {
+                                                     ticket.Comments =
+                                                         ticketCommentRepository.GetByTicketId(ticket.Id);
+                                                     return ticket;
+                                                 });
             return Ok(res);
         }
 
@@ -171,26 +172,28 @@ namespace cowork.Controllers.InventoryManagement {
             if (result == false) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
             var result = repository.GetAllByPaging(page, amount);
             return Ok(result);
         }
-        
+
+
         [HttpGet("CommentsWithPaging/{page}/{amount}")]
         public IActionResult CommentsWithPaging(int page, int amount) {
             var result = ticketCommentRepository.GetAllWithPaging(page, amount);
             return Ok(result);
         }
-        
-        
+
+
         [HttpGet("AttributionsWithPaging/{page}/{amount}")]
         public IActionResult AttributionsWithPaging(int page, int amount) {
             var result = repository.GetAllByPaging(page, amount);
             return Ok(result);
         }
+
     }
 
 }

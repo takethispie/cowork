@@ -5,7 +5,8 @@ namespace coworkpersistence.DomainBuilders {
 
     public class SubscriptionTypeBuilder : IModelBuilderSql<SubscriptionType> {
 
-        public SubscriptionType CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex, out int nextStartingIndex) {
+        public SubscriptionType
+            CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex, out int nextStartingIndex) {
             var subType = new SubscriptionType {
                 Id = dbHandler.GetValue<long>(0 + startingIndex),
                 Name = dbHandler.GetValue<string>(1 + startingIndex),
@@ -16,11 +17,12 @@ namespace coworkpersistence.DomainBuilders {
                 PriceDayStudent = dbHandler.GetValue<double>(6 + startingIndex),
                 MonthlyFeeFixedContract = dbHandler.GetValue<double>(7 + startingIndex),
                 MonthlyFeeContractFree = dbHandler.GetValue<double>(8 + startingIndex),
-                Description =  dbHandler.GetValue<string>(9 + startingIndex)
+                Description = dbHandler.GetValue<string>(9 + startingIndex)
             };
             nextStartingIndex = 10 + startingIndex;
             return subType;
         }
+
     }
 
 }

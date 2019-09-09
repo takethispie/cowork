@@ -7,6 +7,7 @@ namespace coworkdomain.InventoryManagement {
 
         public WareBooking() { }
 
+
         public WareBooking(long id, long userId, long wareId, DateTime start, DateTime end) {
             Id = id;
             UserId = userId;
@@ -14,6 +15,7 @@ namespace coworkdomain.InventoryManagement {
             Start = start;
             End = end;
         }
+
 
         public long Id { get; set; }
         public long UserId { get; set; }

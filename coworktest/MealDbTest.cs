@@ -9,26 +9,33 @@ namespace coworktest {
     [TestFixture]
     public class MealDbTest {
 
-        private IMealRepository repo;
-        private IPlaceRepository placeRepo;
-        private long mealId, placeId;
-        private string connection;
-        private DateTime date;
-        
-        
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new MealRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-        }
-
-
         [SetUp]
         public void Setup() {
             placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
             date = DateTime.Today;
             mealId = repo.Create(new Meal(-1, date, "", placeId));
+        }
+
+
+        [TearDown]
+        public void TearDown() {
+            repo.Delete(mealId);
+            placeRepo.DeleteById(placeId);
+        }
+
+
+        private IMealRepository repo;
+        private IPlaceRepository placeRepo;
+        private long mealId, placeId;
+        private string connection;
+        private DateTime date;
+
+
+        [OneTimeSetUp]
+        public void OneTimeSetup() {
+            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
+            repo = new MealRepository(connection);
+            placeRepo = new PlaceRepository(connection);
         }
 
 
@@ -44,19 +51,6 @@ namespace coworktest {
 
 
         [Test]
-        public void Update() {
-            var current = repo.GetById(mealId);
-            Assert.NotNull(current);
-            var newDate = DateTime.Today.AddDays(1);
-            current.Date = newDate;
-            var id = repo.Update(current);
-            var modified = repo.GetById(id);
-            Assert.NotNull(modified);
-            Assert.AreEqual(newDate, modified.Date);
-        }
-
-
-        [Test]
         public void Delete() {
             var result = repo.Delete(mealId);
             Assert.IsTrue(result);
@@ -64,15 +58,8 @@ namespace coworktest {
 
 
         [Test]
-        public void GetById() {
-            var result = repo.GetById(mealId);
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetAllFromPlace() {
-            var result = repo.GetAllFromPlace(placeId);
+        public void GetAll() {
+            var result = repo.GetAll();
             Assert.NotNull(result);
         }
 
@@ -85,17 +72,31 @@ namespace coworktest {
 
 
         [Test]
-        public void GetAll() {
-            var result = repo.GetAll();
+        public void GetAllFromPlace() {
+            var result = repo.GetAllFromPlace(placeId);
             Assert.NotNull(result);
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(mealId);
-            placeRepo.DeleteById(placeId);
+        [Test]
+        public void GetById() {
+            var result = repo.GetById(mealId);
+            Assert.NotNull(result);
         }
+
+
+        [Test]
+        public void Update() {
+            var current = repo.GetById(mealId);
+            Assert.NotNull(current);
+            var newDate = DateTime.Today.AddDays(1);
+            current.Date = newDate;
+            var id = repo.Update(current);
+            var modified = repo.GetById(id);
+            Assert.NotNull(modified);
+            Assert.AreEqual(newDate, modified.Date);
+        }
+
     }
 
 }

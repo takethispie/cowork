@@ -13,10 +13,10 @@ namespace cowork {
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((builderContext, config) => {
-                    config.AddJsonFile("appsettings.json", false);
-                })
-                .UseStartup<Startup>();
+                          .ConfigureAppConfiguration((builderContext, config) => {
+                              config.AddJsonFile("appsettings.json", false);
+                          })
+                          .UseStartup<Startup>();
         }
 
     }

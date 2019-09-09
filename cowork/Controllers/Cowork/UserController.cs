@@ -1,5 +1,3 @@
-using System;
-using Bogus;
 using cowork.Controllers.RequestArguments;
 using coworkdomain;
 using coworkdomain.Cowork;
@@ -12,17 +10,17 @@ namespace cowork.Controllers.Cowork {
     [Route("api/[controller]")]
     public class UserController : ControllerBase {
 
-        public IUserRepository Repository;
         public ILoginRepository LoginRepository;
+
+        public IUserRepository Repository;
         public ISubscriptionRepository SubscriptionRepository;
 
 
         public UserController(IUserRepository repository, ILoginRepository loginRepository,
-            ISubscriptionRepository subscriptionRepository) 
-        {
+                              ISubscriptionRepository subscriptionRepository) {
             Repository = repository;
             LoginRepository = loginRepository;
-            this.SubscriptionRepository = subscriptionRepository;
+            SubscriptionRepository = subscriptionRepository;
         }
 
 
@@ -76,7 +74,7 @@ namespace cowork.Controllers.Cowork {
             var user = Repository.GetById(userId);
             if (user == null) return NotFound();
             var sub = SubscriptionRepository.GetOfUser(user.Id);
-            return Ok(new { user, sub});
+            return Ok(new {user, sub});
         }
 
 

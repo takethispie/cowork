@@ -21,9 +21,10 @@ namespace coworkdomain.InventoryManagement {
         public string Description { get; set; }
         public string SerialNumber { get; set; }
         public long PlaceId { get; set; }
-        public bool InStorage { get; set;  }
-        
+        public bool InStorage { get; set; }
+
         public Place Place { get; set; }
+
     }
 
 }

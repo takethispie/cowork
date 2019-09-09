@@ -4,7 +4,8 @@ namespace coworkdomain.Cowork {
 
     public class Subscription {
 
-        public Subscription(long id, long typeId, long clientId, DateTime latestRenewal, long placeId, bool fixedContract) {
+        public Subscription(long id, long typeId, long clientId, DateTime latestRenewal, long placeId,
+                            bool fixedContract) {
             Id = id;
             TypeId = typeId;
             ClientId = clientId;

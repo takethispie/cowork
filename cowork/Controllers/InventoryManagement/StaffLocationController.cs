@@ -7,7 +7,7 @@ namespace cowork.Controllers.InventoryManagement {
     [Route("api/[controller]")]
     public class StaffLocationController : ControllerBase {
 
-        private IStaffLocationRepository repository;
+        private readonly IStaffLocationRepository repository;
 
 
         public StaffLocationController(IStaffLocationRepository staffLocationRepository) {
@@ -36,7 +36,8 @@ namespace cowork.Controllers.InventoryManagement {
             if (result == -1) return Conflict();
             return Ok(result);
         }
-        
+
+
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
             var result = repository.GetAllWithPaging(page, amount);

@@ -20,6 +20,7 @@ namespace coworkpersistence.DomainBuilders {
             booking.Room = roomBuilder.CreateDomainModel(dbHandler, nextStartingIndex, out nextStartingIndex);
             return booking;
         }
+
     }
 
 }

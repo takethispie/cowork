@@ -11,12 +11,14 @@ namespace coworkpersistence.Repositories {
 
     public class TicketAttributionRepository : ITicketAttributionRepository {
 
-        private SqlDataMapper<TicketAttribution> dataMapper;
+        private readonly SqlDataMapper<TicketAttribution> dataMapper;
 
 
         public TicketAttributionRepository(string conn) {
-            dataMapper = new SqlDataMapper<TicketAttribution>(SqlDbType.Postgresql, conn, new TicketAttributionBuilder());
+            dataMapper =
+                new SqlDataMapper<TicketAttribution>(SqlDbType.Postgresql, conn, new TicketAttributionBuilder());
         }
+
 
         public List<TicketAttribution> GetAll() {
             const string sql = "SELECT * FROM \"TicketAttribution\";";
@@ -26,7 +28,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TicketAttribution> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TicketAttribution\" ORDER BY \"TicketAttribution\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql =
+                "SELECT * FROM \"TicketAttribution\" ORDER BY \"TicketAttribution\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
@@ -72,7 +75,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(TicketAttribution ticketAttribution) {
-            const string sql = "INSERT INTO public.\"TicketAttribution\"(\"Id\", \"StaffId\", \"TicketId\") VALUES (DEFAULT, @staffId, @ticketId) RETURNING \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"TicketAttribution\"(\"Id\", \"StaffId\", \"TicketId\") VALUES (DEFAULT, @staffId, @ticketId) RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("staffId", ticketAttribution.StaffId),
                 new NpgsqlParameter("ticketId", ticketAttribution.TicketId)
@@ -82,7 +86,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(TicketAttribution ticketAttribution) {
-            const string sql = "UPDATE public.\"TicketAttribution\" SET \"Id\"= @id, \"StaffId\"= @staffId, \"TicketId\"= @ticketId WHERE \"Id\"= @id RETURNING \"Id\";";
+            const string sql =
+                "UPDATE public.\"TicketAttribution\" SET \"Id\"= @id, \"StaffId\"= @staffId, \"TicketId\"= @ticketId WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("staffId", ticketAttribution.StaffId),
                 new NpgsqlParameter("ticketId", ticketAttribution.TicketId)

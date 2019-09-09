@@ -11,15 +11,17 @@ namespace coworkpersistence.Repositories {
 
     public class StaffLocationRepository : IStaffLocationRepository {
 
-        private SqlDataMapper<StaffLocation> dataMapper;
+        private readonly SqlDataMapper<StaffLocation> dataMapper;
 
 
         public StaffLocationRepository(string conn) {
             dataMapper = new SqlDataMapper<StaffLocation>(SqlDbType.Postgresql, conn, new StaffLocationBuilder());
         }
 
+
         public long Create(StaffLocation staffLocation) {
-            const string sql = "INSERT INTO public.\"StaffLocation\"(\"Id\", \"UserId\", \"PlaceId\") VALUES (DEFAULT, @userId, @placeId) RETURNING \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"StaffLocation\"(\"Id\", \"UserId\", \"PlaceId\") VALUES (DEFAULT, @userId, @placeId) RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("userId", staffLocation.UserId),
                 new NpgsqlParameter("placeId", staffLocation.PlaceId)
@@ -38,7 +40,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(StaffLocation staffLocation) {
-            const string sql = "UPDATE public.\"StaffLocation\" SET \"Id\"= @id, \"UserId\"= @userId, \"PlaceId\"= @placeId WHERE \"Id\"= @id returning \"Id\";";
+            const string sql =
+                "UPDATE public.\"StaffLocation\" SET \"Id\"= @id, \"UserId\"= @userId, \"PlaceId\"= @placeId WHERE \"Id\"= @id returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", staffLocation.Id),
                 new NpgsqlParameter("userId", staffLocation.UserId),

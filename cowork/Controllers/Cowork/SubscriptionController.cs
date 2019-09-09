@@ -1,7 +1,6 @@
 using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
-using coworkpersistence.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.Cowork {
@@ -51,8 +50,8 @@ namespace cowork.Controllers.Cowork {
             if (!result) return NotFound();
             return Ok();
         }
-        
-        
+
+
         [HttpGet("ById/{id}")]
         public IActionResult ById(long id) {
             var result = Repository.GetById(id);

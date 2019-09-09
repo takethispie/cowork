@@ -5,7 +5,8 @@ namespace coworkpersistence.DomainBuilders {
 
     public class TicketAttributionBuilder : IModelBuilderSql<TicketAttribution> {
 
-        public TicketAttribution CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex, out int nextStartingIndex) {
+        public TicketAttribution CreateDomainModel(ISqlDbHandler dbHandler, int startingIndex,
+                                                   out int nextStartingIndex) {
             var ticketAtt = new TicketAttribution();
             ticketAtt.Id = dbHandler.GetValue<long>(0);
             ticketAtt.StaffId = dbHandler.GetValue<long>(1);

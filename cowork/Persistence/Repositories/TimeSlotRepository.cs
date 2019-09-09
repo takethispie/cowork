@@ -11,8 +11,9 @@ namespace coworkpersistence.Repositories {
 
     public class TimeSlotRepository : ITimeSlotRepository {
 
-        private readonly SqlDataMapper<TimeSlot> datamapper;
         private const string innerJoin = " INNER JOIN \"Place\" P on \"TimeSlot\".\"PlaceId\" = P.\"Id\" ";
+
+        private readonly SqlDataMapper<TimeSlot> datamapper;
 
 
         public TimeSlotRepository(string connection) {
@@ -33,8 +34,8 @@ namespace coworkpersistence.Repositories {
             };
             return datamapper.OneItemCommand(sql, parameters);
         }
-        
-        
+
+
         public List<TimeSlot> GetAllOfPlace(long placeId) {
             const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin + "WHERE \"TimeSlot\".\"PlaceId\"= @id";
             var par = new List<DbParameter> {
@@ -45,7 +46,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TimeSlot> GetAllByPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin + " ORDER BY \"TimeSlot\".\"PlaceId\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin +
+                               " ORDER BY \"TimeSlot\".\"PlaceId\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)

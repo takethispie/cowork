@@ -9,12 +9,13 @@ namespace coworkdomain.Cowork.Interfaces {
         User GetById(long id);
 
         List<User> GetAllWithPaging(int page, int amount);
-        
+
         long Update(User user);
 
         bool DeleteById(long userId);
-        
+
         long Create(User user);
+
     }
 
 }

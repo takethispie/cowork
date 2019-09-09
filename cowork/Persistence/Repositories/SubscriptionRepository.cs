@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using coworkdomain.Cowork;
@@ -12,8 +11,10 @@ namespace coworkpersistence.Repositories {
 
     public class SubscriptionRepository : ISubscriptionRepository {
 
-        private SqlDataMapper<Subscription> dataMapper;
-        private const string innerJoin = " INNER JOIN \"SubscriptionType\" ST on \"Subscription\".\"TypeId\" = ST.\"Id\" INNER JOIN \"Place\" P on \"Subscription\".\"PlaceId\" = P.\"Id\" INNER JOIN \"Users\" U on \"Subscription\".\"UserId\" = U.\"Id\" ";
+        private const string innerJoin =
+            " INNER JOIN \"SubscriptionType\" ST on \"Subscription\".\"TypeId\" = ST.\"Id\" INNER JOIN \"Place\" P on \"Subscription\".\"PlaceId\" = P.\"Id\" INNER JOIN \"Users\" U on \"Subscription\".\"UserId\" = U.\"Id\" ";
+
+        private readonly SqlDataMapper<Subscription> dataMapper;
 
 
         public SubscriptionRepository(string connection) {
@@ -28,7 +29,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Subscription> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Subscription\"" + innerJoin + " ORDER BY \"Subscription\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM \"Subscription\"" + innerJoin +
+                               " ORDER BY \"Subscription\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
@@ -56,7 +58,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Update(Subscription sub) {
-            const string sql = "UPDATE public.\"Subscription\" SET \"Id\"= @id, \"TypeId\"= @typeId, \"LatestRenewal\"= @latestRenewal, \"UserId\"= @userId, \"PlaceId\"= @placeId, \"FixedContract\"= @fixedContract WHERE \"Subscription\".\"Id\"= @id RETURNING \"Id\";";
+            const string sql =
+                "UPDATE public.\"Subscription\" SET \"Id\"= @id, \"TypeId\"= @typeId, \"LatestRenewal\"= @latestRenewal, \"UserId\"= @userId, \"PlaceId\"= @placeId, \"FixedContract\"= @fixedContract WHERE \"Subscription\".\"Id\"= @id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", sub.Id),
                 new NpgsqlParameter("typeId", sub.TypeId),
@@ -79,7 +82,8 @@ namespace coworkpersistence.Repositories {
 
 
         public long Create(Subscription sub) {
-            const string sql = "INSERT INTO public.\"Subscription\"(\"Id\", \"TypeId\", \"LatestRenewal\", \"UserId\", \"PlaceId\", \"FixedContract\") VALUES (DEFAULT, @typeId, @latestRenewal, @userId, @placeId, @fixedContract) RETURNING \"Id\";";
+            const string sql =
+                "INSERT INTO public.\"Subscription\"(\"Id\", \"TypeId\", \"LatestRenewal\", \"UserId\", \"PlaceId\", \"FixedContract\") VALUES (DEFAULT, @typeId, @latestRenewal, @userId, @placeId, @fixedContract) RETURNING \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("typeId", sub.TypeId),
                 new NpgsqlParameter("latestRenewal", sub.LatestRenewal),

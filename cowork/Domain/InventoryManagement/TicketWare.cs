@@ -4,11 +4,13 @@ namespace coworkdomain.InventoryManagement {
 
         public TicketWare() { }
 
+
         public TicketWare(long id, long ticketId, long wareId) {
             Id = id;
             TicketId = ticketId;
             WareId = wareId;
         }
+
 
         public long Id { get; set; }
         public long TicketId { get; set; }
