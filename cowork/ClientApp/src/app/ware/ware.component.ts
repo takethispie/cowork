@@ -26,7 +26,7 @@ export class WareComponent implements OnInit {
   view: CalendarView = CalendarView.Week;
   refresh: Subject<any> = new Subject();
 
-  constructor(private modalCtrl: ModalController, private loading: LoadingService,
+  constructor(private modalCtrl: ModalController, public loading: LoadingService,
               private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) { }
 
   ngOnInit() {}
