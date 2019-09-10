@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Security.Claims;
 using cowork.Controllers.RequestArguments;
 using coworkdomain;
 using coworkdomain.Cowork;
@@ -15,13 +17,14 @@ namespace cowork.Controllers.Cowork {
 
         public IUserRepository Repository;
         public ISubscriptionRepository SubscriptionRepository;
-
+        public AuthTokenHandler AuthTokenHandler;
 
         public UserController(IUserRepository repository, ILoginRepository loginRepository,
-                              ISubscriptionRepository subscriptionRepository) {
+                              ISubscriptionRepository subscriptionRepository, AuthTokenHandler authTokenHandler) {
             Repository = repository;
             LoginRepository = loginRepository;
             SubscriptionRepository = subscriptionRepository;
+            AuthTokenHandler = authTokenHandler;
         }
 
 
@@ -78,7 +81,11 @@ namespace cowork.Controllers.Cowork {
             var user = Repository.GetById(userId);
             if (user == null) return NotFound();
             var sub = SubscriptionRepository.GetOfUser(user.Id);
-            return Ok(new {user, sub});
+            var auth_token = AuthTokenHandler.EncryptToken(new List<Claim> {
+                new Claim("Role", user.Type.ToString()),
+                new Claim("Id", user.Id.ToString())
+            });
+            return Ok(new {user, sub, auth_token});
         }
 
 

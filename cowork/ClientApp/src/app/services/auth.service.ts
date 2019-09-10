@@ -19,11 +19,12 @@ export class AuthService {
     }
 
     public Login(email: string, password: string): Observable<{user: User, sub: Subscription}> {
-        return this.http.post<{user: User, sub: Subscription}>("api/user/auth", { Email: email, Password: password}, CONTENTJSON).pipe(
+        return this.http.post<{user: User, sub: Subscription, auth_token: string}>("api/user/auth", { Email: email, Password: password}, CONTENTJSON).pipe(
             map(res => {
              if(res != null) {
                  this.User = res.user;
                  this.Subscription = res.sub;
+                 localStorage.setItem('auth_token', res.auth_token);
              }
              return res;
             })
