@@ -1,10 +1,12 @@
 using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.Cowork {
 
+    [Authorize]
     [Route("api/[controller]")]
     public class SubscriptionController : ControllerBase {
 
