@@ -17,6 +17,7 @@ import {RoomBookingService} from '../services/room-booking.service';
 import {TimeSlotService} from '../services/time-slot.service';
 import {TimeSlot} from '../models/TimeSlot';
 import {UserType} from '../models/UserType';
+import {LoadingService} from '../services/loading.service';
 
 @Component({
     selector: 'app-tab1',
@@ -31,18 +32,42 @@ export class AccountComponent {
 
     constructor(public auth: AuthService, public sub: SubscriptionService, public modal: ModalController, public toast: ToastService,
                 public mealReservationService: MealBookingService, public roomBookingService: RoomBookingService,
-                public timeSlotService: TimeSlotService) {
+                public timeSlotService: TimeSlotService, public loading: LoadingService) {
     }
 
     ionViewWillEnter() {
         if(this.auth.User.Type === UserType.User) {
             //recupere l'abonnement et le type d'abonnement de l'utilisateur ainsi que son espace de coworking
-            this.sub.OfUser(this.auth.User.Id).subscribe(res => this.userSub = res);
-            this.roomBookingService.AllOfUser(this.auth.User.Id).subscribe(res => {
-                this.roomBookings = res.filter(booking => booking.Start >= DateTime.local());
+            this.loading.Loading = true;
+            this.sub.OfUser(this.auth.User.Id).subscribe({
+                next: res => this.userSub = res,
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenue lors de la recuperation de l'abonnement de l'utilisateur");
+                    this.loading.Loading = false;
+                },
+                complete: () => this.loading.Loading = false
             });
-            this.mealReservationService.AllFromUser(this.auth.User.Id).subscribe(res => {
-                this.userMeals = res.filter(meal => meal.Meal.Date >= DateTime.local());
+            this.loading.Loading = true;
+            this.roomBookingService.AllOfUser(this.auth.User.Id).subscribe({
+                next: res => {
+                    this.roomBookings = res.filter(booking => booking.Start >= DateTime.local());
+                },
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenue lors de la récupération des réservations de salles");
+                    this.loading.Loading = false;
+                },
+                complete: () => this.loading.Loading = false
+            });
+            this.loading.Loading = true;
+            this.mealReservationService.AllFromUser(this.auth.User.Id).subscribe({
+                next: res => {
+                    this.userMeals = res.filter(meal => meal.Meal.Date >= DateTime.local());
+                },
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenue lors de la récupération des réservations de repas");
+                    this.loading.Loading = false;
+                },
+                complete: () => this.loading.Loading = false
             });
         }
     }
