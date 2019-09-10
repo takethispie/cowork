@@ -13,7 +13,6 @@ import {WareBooking} from '../models/WareBooking';
 import {CalendarBooking} from '../components/Ware/ware-booking-calendar/CalendarBooking';
 import {Ware} from '../models/Ware';
 import {colors} from '../components/Room/room-calendar/colors';
-import {RoomBooking} from '../models/RoomBooking';
 
 @Component({
   selector: 'app-ware',

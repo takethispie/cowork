@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {CommentComponent} from './comment/comment.component';
 import {CommentFormComponent} from './comment-form/comment-form.component';
 import {TicketComponent} from './ticket/ticket.component';
+import {PipesModule} from '../../pipes/pipes-components.module';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {TicketComponent} from './ticket/ticket.component';
         IonicModule,
         CommonModule,
         FormsModule,
+        PipesModule,
     ],
     exports: [
         TicketListComponent,

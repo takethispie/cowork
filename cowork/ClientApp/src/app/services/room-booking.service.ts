@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {RoomBooking} from "../models/RoomBooking";
-import {CONTENTJSON} from "../Utils";
+import {BookingToUtc, CONTENTJSON} from '../Utils';
 import {DateTime} from "luxon";
 import {map} from 'rxjs/operators';
+import {MealBooking} from '../models/MealBooking';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class RoomBookingService {
   };
 
   private ParseDateTime = booking => {
-    booking.Start = DateTime.fromISO(booking.Start as unknown as string);
-    booking.End = DateTime.fromISO(booking.End as unknown as string);
+    booking.Start = DateTime.fromISO(booking.Start as unknown as string, { zone: "utc" });
+    booking.End = DateTime.fromISO(booking.End as unknown as string, { zone: "utc" });
     return booking;
   };
   
@@ -29,11 +30,13 @@ export class RoomBookingService {
 
 
   public Create(roomBooking: RoomBooking) {
+    roomBooking = BookingToUtc<RoomBooking>(roomBooking);
     return this.http.post<number>("api/RoomBooking", roomBooking, CONTENTJSON);
   }
 
 
   public Update(roomBooking: RoomBooking) {
+    roomBooking = BookingToUtc<RoomBooking>(roomBooking);
     return this.http.put<number>("api/RoomBooking", roomBooking, CONTENTJSON);
   }
 

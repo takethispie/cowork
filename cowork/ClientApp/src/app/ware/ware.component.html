@@ -6,6 +6,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content color="dark">
+  <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
   <ion-grid>
     <ion-row class="calendar">
       <ion-col size="4">
@@ -14,6 +15,9 @@
       <ion-col size="8">
         <ion-header>
           <ion-toolbar color="primary">
+            <ion-title>
+              {{ SelectedWare?.Name }}
+            </ion-title>
             <ion-buttons slot="end">
               <ion-button color="dark" (click)="PreviousWeek()">
                 <ion-icon name="arrow-back"></ion-icon>

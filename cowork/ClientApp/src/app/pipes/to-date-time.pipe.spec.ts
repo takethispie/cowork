@@ -1,8 +1,8 @@
-import { ToFormatedDateTimePipePipe } from './to-date-time.pipe';
+import { ToDateTimePipe } from './to-date-time.pipe';
 
-describe('ToFormatedDateTimePipePipe', () => {
+describe('ToDateTimePipe', () => {
   it('create an instance', () => {
-    const pipe = new ToFormatedDateTimePipePipe();
+    const pipe = new ToDateTimePipe();
     expect(pipe).toBeTruthy();
   });
 });

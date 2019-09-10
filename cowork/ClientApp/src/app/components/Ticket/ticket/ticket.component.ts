@@ -59,8 +59,8 @@ export class TicketComponent implements OnInit {
     public GetCreatedDuration(subDate: DateTime) {
         const now = DateTime.local();
         const diffs = now.diff(subDate.setZone('local'),['months', 'days', 'hours', 'minutes']).toObject();
-        let result = diffs.months + " Mois";
-        if(diffs.months <= 0) result = diffs.days + " jours";
+        let result = diffs.months.toFixed(0) + " Mois";
+        if(diffs.months <= 0) result = diffs.days.toFixed(0) + " jours";
         if(diffs.months <= 0 && diffs.days <= 0) result = diffs.hours.toFixed(0) + " Heures";
         if(diffs.months <= 0 && diffs.days <= 0 && diffs.hours <= 0) result = diffs.minutes.toFixed(0) + " Minutes";
         return result;

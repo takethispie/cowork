@@ -2,12 +2,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {DateTime} from 'luxon';
 
 @Pipe({
-  name: 'ToFormatedDateTimePipe'
+  name: 'toDateTime'
 })
-export class ToFormatedDateTimePipePipe implements PipeTransform {
+export class ToDateTimePipe implements PipeTransform {
 
   transform(value: string, ...args: any[]): any {
-    return DateTime.fromISO(value).setLocale('fr').toLocaleString(DateTime.DATE_FULL);
+    return DateTime.fromISO(value,{zone: 'utc'});
   }
 
 }

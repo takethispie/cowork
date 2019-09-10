@@ -17,7 +17,7 @@ export class SubscriptionService {
   }
 
   private static ParseDateTime(sub: Subscription) {
-    sub.LatestRenewal = DateTime.fromISO(sub.LatestRenewal as unknown as string);
+    sub.LatestRenewal = DateTime.fromISO(sub.LatestRenewal as unknown as string, { zone: "utc" });
     return sub;
   }
 
