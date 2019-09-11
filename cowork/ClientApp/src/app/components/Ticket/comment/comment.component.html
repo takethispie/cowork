@@ -3,7 +3,7 @@
     <strong>{{ TicketComment.Author?.FirstName }} {{ TicketComment.Author?.LastName }}</strong>
     <h5>{{ TicketComment.Content }}</h5>
     <p>
-      {{ TicketComment.Created | date: "dd/MM/yyyy - hh:mm"}}
+      {{ TicketComment.Created | toDateTime | date: "dd/MM/yyyy HH:mm"}}
     </p>
   </ion-card-content>
 </ion-card>

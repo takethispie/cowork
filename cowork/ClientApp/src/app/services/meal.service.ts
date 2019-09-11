@@ -18,7 +18,7 @@ export class MealService {
 
 
   private static ParseDateTime(meal: Meal) {
-    meal.Date = DateTime.fromISO(meal.Date as unknown as string);
+    meal.Date = DateTime.fromISO(meal.Date as unknown as string, { zone: "utc" });
     return meal;
   }
 

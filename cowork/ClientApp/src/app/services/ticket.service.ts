@@ -20,7 +20,7 @@ export class TicketService {
   }
 
   private static ParseDateTime(prop: DateTime) {
-    prop = DateTime.fromISO(prop as unknown as string);
+    prop = DateTime.fromISO(prop as unknown as string, { zone: "utc" });
     return prop;
   }
 

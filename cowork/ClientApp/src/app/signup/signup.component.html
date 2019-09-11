@@ -1,4 +1,5 @@
 <ion-content color="dark" padding>
+    <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
     <form #form="ngForm" (ngSubmit)="register(form)">
       <ion-grid>
         <ion-row color="primary" justify-content-center>

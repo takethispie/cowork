@@ -3,7 +3,7 @@
         <ion-col offset="3" size="5">
             <ion-card color="light">
                 <ion-card-header color="primary">
-                    <ion-label>{{ item.Date | ToFormatedDateTimePipe }}</ion-label>
+                    <ion-label>{{ item.Date.toFormat("dd/MM/yyyy") }}</ion-label>
                 </ion-card-header>
                 <ion-card-content>
                     <ion-label>

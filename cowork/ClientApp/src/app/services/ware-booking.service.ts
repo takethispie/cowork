@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {WareBooking} from '../models/WareBooking';
 import {DateTime} from 'luxon';
-import {CONTENTJSON} from '../Utils';
+import {BookingToUtc, CONTENTJSON} from '../Utils';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -18,8 +18,8 @@ export class WareBookingService {
   };
 
   private ParseDateTime = booking => {
-    booking.Start = DateTime.fromISO(booking.Start as unknown as string);
-    booking.End = DateTime.fromISO(booking.End as unknown as string);
+    booking.Start = DateTime.fromISO(booking.Start as unknown as string, { zone: "utc" });
+    booking.End = DateTime.fromISO(booking.End as unknown as string, { zone: "utc" });
     return booking;
   };
 
@@ -62,6 +62,7 @@ export class WareBookingService {
   }
 
   public Update(wareBooking: WareBooking) {
+    wareBooking = BookingToUtc<WareBooking>(wareBooking);
     return this.http.put<number>("api/WareBooking", wareBooking, CONTENTJSON);
   }
 
@@ -70,6 +71,7 @@ export class WareBookingService {
   }
 
   public Create(wareBooking: WareBooking) {
+    wareBooking = BookingToUtc<WareBooking>(wareBooking);
     return this.http.post<number>("api/WareBooking", wareBooking, CONTENTJSON);
   }
 
