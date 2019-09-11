@@ -5,25 +5,22 @@
         </ion-title>
     </ion-toolbar>
 </ion-header>
-
-<ion-content color="dark" padding>
-    <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
-    <ion-grid>
-        <ion-row *ngIf="auth.User.Type == 0">
-            <ion-col *ngIf="userSub?.Type != null" size="2">
-                <ion-card>
-                    <ion-card-header color="primary">
-                        <ion-label>Votre Abonnement</ion-label>
-                    </ion-card-header>
-                    <ion-list lines="none">
-                        <ion-item-divider>
-                            <ion-label> Coût mensuel</ion-label>
-                        </ion-item-divider>
-                        <ion-item *ngIf="!userSub.FixedContract"> {{ userSub.Type.MonthlyFeeContractFree }}Euros/mois
-                        </ion-item>
-                        <ion-item *ngIf="userSub.FixedContract"> {{ userSub.Type.MonthlyFeeFixedContract }}Euros/mois
-                        </ion-item>
-                        <span *ngIf="userSub.FixedContract">
+<ion-content color="dark">
+  <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
+  <ion-grid>
+    <ion-row *ngIf="auth.UserType == 0">
+      <ion-col *ngIf="userSub?.Type != null" size="2">
+        <ion-card>
+          <ion-card-header color="primary">
+            <ion-label>Votre Abonnement</ion-label>
+          </ion-card-header>
+          <ion-list lines="none">
+            <ion-item-divider>
+              <ion-label> Coût mensuel </ion-label>
+            </ion-item-divider>
+            <ion-item *ngIf="!userSub.FixedContract"> {{ userSub.Type.MonthlyFeeContractFree }} Euros/mois</ion-item>
+            <ion-item *ngIf="userSub.FixedContract"> {{ userSub.Type.MonthlyFeeFixedContract }} Euros/mois</ion-item>
+            <span *ngIf="userSub.FixedContract">
                 <ion-item-divider>
                   <ion-label> Durée d'abonnement</ion-label>
                 </ion-item-divider>

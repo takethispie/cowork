@@ -39,7 +39,7 @@ export class RoomCalendarComponent implements OnInit {
         this.roomBookingService.AllOfRoomStartingAtDate(this.room.Id, date).pipe(
             map((data: RoomBooking[]) => data.map(roomBooking => {
                 const ret: CalendarBooking & CalendarEvent = CalendarBooking.FromRoomBooking(roomBooking);
-                if(roomBooking.ClientId === this.auth.User.Id) return this.AddEditionProperties(ret);
+                if(roomBooking.ClientId === this.auth.UserId) return this.AddEditionProperties(ret);
                 ret.color = colors.blue;
                 return ret;
             })),
@@ -87,7 +87,7 @@ export class RoomCalendarComponent implements OnInit {
         const newEvent = this.CreateBaseCalendarEvent(ev);
         const roomBooking = this.InitRoomBooking(newEvent);
         this.loading.Loading = true;
-        this.OverlappingBookingFromOtherRooms(this.auth.User.Id, roomBooking).subscribe((otherBookings: CalendarBooking[]) => {
+        this.OverlappingBookingFromOtherRooms(this.auth.UserId, roomBooking).subscribe((otherBookings: CalendarBooking[]) => {
             if (otherBookings.length > 0) {
                 this.toast.PresentToast("Vous avez déjà réservé la salle " + otherBookings[0].Room.Name + " pour cet horaire");
                 this.loading.Loading = false;
@@ -111,7 +111,7 @@ export class RoomCalendarComponent implements OnInit {
     private InitRoomBooking(newEvent) {
         const roomBooking = newEvent.ToRoomBooking();
         roomBooking.Client = this.auth.User;
-        roomBooking.ClientId = this.auth.User.Id;
+        roomBooking.ClientId = this.auth.UserId;
         roomBooking.Room = this.room;
         roomBooking.RoomId = this.room.Id;
         return roomBooking;
@@ -199,7 +199,7 @@ export class RoomCalendarComponent implements OnInit {
         const roomBooking = this.InitRoomBooking(event);
         this.loading.Loading = true;
         //TODO remove sub inside sub
-        this.OverlappingBookingFromOtherRooms(this.auth.User.Id, roomBooking).subscribe(otherBookings => {
+        this.OverlappingBookingFromOtherRooms(this.auth.UserId, roomBooking).subscribe(otherBookings => {
             if (otherBookings.length > 0) {
                 this.toast.PresentToast("Vous avez déjà réservé la salle " + otherBookings[0].Room.Name + " pour cet horaire");
                 this.loading.Loading = false;

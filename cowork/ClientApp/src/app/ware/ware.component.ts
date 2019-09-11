@@ -41,7 +41,7 @@ export class WareComponent implements OnInit {
     this.wareBooking.AllByWareIdStartingAt(wareId, dateTime).pipe(
         map((data: WareBooking[]) => data.map(wareBooking => {
           const ret: CalendarBooking & CalendarEvent = CalendarBooking.FromWareBooking(wareBooking);
-          if(wareBooking.UserId === this.auth.User.Id) return this.AddEditionProperties(ret);
+          if(wareBooking.UserId === this.auth.UserId) return this.AddEditionProperties(ret);
           ret.color = colors.blue;
           return ret;
         })),
@@ -64,7 +64,7 @@ export class WareComponent implements OnInit {
     const newEvent = this.CreateBaseCalendarEvent(ev);
     const wareBooking = this.InitWareBooking(newEvent);
     this.loading.Loading = true;
-    this.OverlappingBookingFromOtherBooking(this.auth.User.Id, wareBooking).subscribe((otherBookings: CalendarBooking[]) => {
+    this.OverlappingBookingFromOtherBooking(this.auth.UserId, wareBooking).subscribe((otherBookings: CalendarBooking[]) => {
       if (otherBookings.length > 0) {
         this.toast.PresentToast("Vous avez déjà réservé " + otherBookings[0].Ware.Name + " pour cet horaire");
         this.loading.Loading = false;
@@ -127,7 +127,7 @@ export class WareComponent implements OnInit {
     const newWareBooking = this.InitWareBooking(event);
     this.loading.Loading = true;
     //TODO remove sub inside sub
-    this.OverlappingBookingFromOtherBooking(this.auth.User.Id, newWareBooking).subscribe(otherBookings => {
+    this.OverlappingBookingFromOtherBooking(this.auth.UserId, newWareBooking).subscribe(otherBookings => {
       if (otherBookings.length > 0) {
         this.toast.PresentToast("Vous avez déjà réservé " + otherBookings[0].Ware.Name + " pour cet horaire");
         this.loading.Loading = false;
@@ -151,7 +151,7 @@ export class WareComponent implements OnInit {
     wareBooking.WareId = this.SelectedWare.Id;
     wareBooking.Ware = this.SelectedWare;
     wareBooking.User = this.auth.User;
-    wareBooking.UserId = this.auth.User.Id;
+    wareBooking.UserId = this.auth.UserId;
     return wareBooking;
   }
 

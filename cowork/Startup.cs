@@ -1,17 +1,20 @@
 using System;
 using System.Linq;
+using System.Text;
 using coworkdomain;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence;
 using coworkpersistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 
 namespace cowork {
@@ -32,6 +35,21 @@ namespace cowork {
             if (Configuration["Environement"] == "Prod")
                 conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             var DoFakeDataGeneration = Configuration["Options:FakeDataGeneration"];
+            var secretKey = Configuration["Secret"];
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = "http://localhost:5001",
+                        ValidAudience = "http://localhost:5001",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    };
+                });
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -58,6 +76,7 @@ namespace cowork {
             services.AddSingleton<ILoginRepository>(ctx => loginRepo);
             services.AddSingleton<ITicketCommentRepository>(ctx => new TicketCommentRepository(conn));
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
+            services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
 
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];
@@ -87,6 +106,7 @@ namespace cowork {
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes => {
                 routes.MapRoute(

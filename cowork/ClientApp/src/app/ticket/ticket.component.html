@@ -8,7 +8,7 @@
 <ion-content color="dark">
   <ion-grid>
     <ion-row>
-      <ion-col size="5" *ngIf="auth.User.Type == 0">
+      <ion-col size="5" *ngIf="auth.UserType == 0">
         <form #form="ngForm" (ngSubmit)="CreateTicket(form)">
           <ion-list>
             <ion-item>

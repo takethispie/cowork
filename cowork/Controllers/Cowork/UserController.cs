@@ -1,8 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using cowork.Controllers.RequestArguments;
 using coworkdomain;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.Cowork {
@@ -14,13 +18,14 @@ namespace cowork.Controllers.Cowork {
 
         public IUserRepository Repository;
         public ISubscriptionRepository SubscriptionRepository;
-
+        public AuthTokenHandler AuthTokenHandler;
 
         public UserController(IUserRepository repository, ILoginRepository loginRepository,
-                              ISubscriptionRepository subscriptionRepository) {
+                              ISubscriptionRepository subscriptionRepository, AuthTokenHandler authTokenHandler) {
             Repository = repository;
             LoginRepository = loginRepository;
             SubscriptionRepository = subscriptionRepository;
+            AuthTokenHandler = authTokenHandler;
         }
 
 
@@ -42,15 +47,19 @@ namespace cowork.Controllers.Cowork {
             return Conflict();
         }
 
-
+        
+        [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] User user) {
+            if (!User.Claims.Any(claim => claim.Type == "Role" && claim.Value == UserType.Admin.ToString()))
+                return Unauthorized();
             var result = Repository.Create(user);
             if (result == -1) return Conflict();
             return Ok(result);
         }
 
 
+        [Authorize]
         [HttpPut]
         public IActionResult Update([FromBody] User user) {
             var result = Repository.Update(user);
@@ -59,6 +68,7 @@ namespace cowork.Controllers.Cowork {
         }
 
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
             var result = Repository.DeleteById(id);
@@ -74,10 +84,15 @@ namespace cowork.Controllers.Cowork {
             var user = Repository.GetById(userId);
             if (user == null) return NotFound();
             var sub = SubscriptionRepository.GetOfUser(user.Id);
-            return Ok(new {user, sub});
+            var auth_token = AuthTokenHandler.EncryptToken(new List<Claim> {
+                new Claim("Role", user.Type.ToString()),
+                new Claim("Id", user.Id.ToString())
+            });
+            return Ok(new {user, sub, auth_token});
         }
 
 
+        [Authorize]
         [HttpGet("all")]
         public IActionResult All() {
             var result = Repository.GetAll();
@@ -85,6 +100,7 @@ namespace cowork.Controllers.Cowork {
         }
 
 
+        [Authorize]
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
             var result = Repository.GetAllWithPaging(page, amount);

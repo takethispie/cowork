@@ -2,10 +2,12 @@ using System.Linq;
 using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers.InventoryManagement {
 
+    [Authorize]
     [Route("api/[controller]")]
     public class TicketController : ControllerBase {
 

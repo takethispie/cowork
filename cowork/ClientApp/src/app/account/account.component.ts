@@ -36,40 +36,38 @@ export class AccountComponent {
     }
 
     ionViewWillEnter() {
-        if(this.auth.User.Type === UserType.User) {
-            this.loading.Loading = true;
+        if(this.auth.UserType === UserType.User) {
             //recupere l'abonnement et le type d'abonnement de l'utilisateur ainsi que son espace de coworking
-            this.sub.OfUser(this.auth.User.Id).subscribe({
-                next: res => {
-                    this.userSub = res;
+            this.loading.Loading = true;
+            this.sub.OfUser(this.auth.UserId).subscribe({
+                next: res => this.userSub = res,
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenue lors de la recuperation de l'abonnement de l'utilisateur");
                     this.loading.Loading = false;
                 },
-                error: err => {
-                    this.toast.PresentToast("Erreur lors du chargement de l'abonnement");
-                    this.loading.Loading = false;
-                }
+                complete: () => this.loading.Loading = false
             });
             this.loading.Loading = true;
-            this.roomBookingService.AllOfUser(this.auth.User.Id).subscribe({
+            this.roomBookingService.AllOfUser(this.auth.UserId).subscribe({
                 next: res => {
                     this.roomBookings = res.filter(booking => booking.Start >= DateTime.local());
-                    this.loading.Loading = false;
                 },
                 error: err => {
-                    this.toast.PresentToast("Erreur lors du chargement des réservations de salles");
+                    this.toast.PresentToast("Une erreur est survenue lors de la récupération des réservations de salles");
                     this.loading.Loading = false;
-                }
+                },
+                complete: () => this.loading.Loading = false
             });
             this.loading.Loading = true;
-            this.mealReservationService.AllFromUser(this.auth.User.Id).subscribe({
+            this.mealReservationService.AllFromUser(this.auth.UserId).subscribe({
                 next: res => {
                     this.userMeals = res.filter(meal => meal.Meal.Date >= DateTime.local());
-                    this.loading.Loading = false;
                 },
                 error: err => {
-                    this.toast.PresentToast("Erreur lors du chargement des réservations de repas");
+                    this.toast.PresentToast("Une erreur est survenue lors de la récupération des réservations de repas");
                     this.loading.Loading = false;
-                }
+                },
+                complete: () => this.loading.Loading = false
             });
         }
     }
@@ -128,7 +126,7 @@ export class AccountComponent {
         const modal = await this.modal.create({component: SubscriptionCreatorComponent, backdropDismiss: false});
         modal.onDidDismiss().then((res: {data: { Place: Place, SubscriptionType: SubscriptionType, ContractType: "FixedContract" | "ContractFree" }}) => {
             if(res.data == null) return;
-            this.userSub = new Subscription(-1, res.data.SubscriptionType.Id, this.auth.User.Id, res.data.Place.Id,
+            this.userSub = new Subscription(-1, res.data.SubscriptionType.Id, this.auth.UserId, res.data.Place.Id,
                 DateTime.local(), res.data.ContractType === "FixedContract", res.data.Place, this.auth.User, res.data.SubscriptionType);
             this.sub.Create(this.userSub).subscribe(subId => {
                 if(subId !== -1) {

@@ -29,6 +29,7 @@
     "angular-calendar": "^0.27.15",
     "core-js": "^2.5.4",
     "date-fns": "^1.30.1",
+    "jwt-decode": "^2.2.0",
     "linqts": "^1.12.6",
     "luxon": "^1.17.2",
     "rxjs": "~6.5.1",
