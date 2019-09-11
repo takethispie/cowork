@@ -18,6 +18,9 @@ import {TimeSlotService} from '../services/time-slot.service';
 import {TimeSlot} from '../models/TimeSlot';
 import {UserType} from '../models/UserType';
 import {LoadingService} from '../services/loading.service';
+import {Ticket} from '../models/Ticket';
+import {TicketService} from '../services/ticket.service';
+import {TicketState} from '../models/TicketState';
 
 @Component({
     selector: 'app-tab1',
@@ -29,10 +32,11 @@ export class AccountComponent {
     public userSub: Subscription;
     public userMeals: MealBooking[];
     public roomBookings: RoomBooking[];
+    public Tickets: Ticket[];
 
     constructor(public auth: AuthService, public sub: SubscriptionService, public modal: ModalController, public toast: ToastService,
                 public mealReservationService: MealBookingService, public roomBookingService: RoomBookingService,
-                public timeSlotService: TimeSlotService, public loading: LoadingService) {
+                public timeSlotService: TimeSlotService, public loading: LoadingService, public ticketService: TicketService) {
     }
 
     ionViewWillEnter() {
@@ -68,6 +72,18 @@ export class AccountComponent {
                     this.loading.Loading = false;
                 },
                 complete: () => this.loading.Loading = false
+            });
+        } else if(this.auth.UserType === UserType.Staff) {
+            this.loading.Loading = true;
+            this.ticketService.AllWithState(TicketState.New).subscribe({
+                next: res => {
+                    this.Tickets = res;
+                    this.loading.Loading = false;
+                },
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenu lors du chargement des tickets ouverts");
+                    this.loading.Loading = false;
+                }
             });
         }
     }

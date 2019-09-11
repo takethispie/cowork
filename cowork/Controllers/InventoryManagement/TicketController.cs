@@ -196,6 +196,13 @@ namespace cowork.Controllers.InventoryManagement {
             return Ok(result);
         }
 
+
+        [HttpGet("WithState/{state}")]
+        public IActionResult AllWithState(int state) {
+            var result = repository.GetAllWithState(state);
+            return Ok(result);
+        }
+
     }
 
 }

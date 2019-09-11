@@ -10,6 +10,7 @@ import {MealComponentsModule} from '../components/Meal/meal-components.module';
 import {RoomComponentsModule} from '../components/Room/room-components.module';
 import {PipesModule} from '../pipes/pipes-components.module';
 import {WareComponentsModule} from '../components/Ware/WareComponents.module';
+import {TicketComponentsModule} from '../components/Ticket/TicketComponents.module';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import {WareComponentsModule} from '../components/Ware/WareComponents.module';
         RoomComponentsModule,
         PipesModule,
         RouterModule.forChild([{path: '', component: AccountComponent}]),
-        WareComponentsModule
+        WareComponentsModule,
+        TicketComponentsModule
     ],
     declarations: [AccountComponent]
 })

@@ -68,6 +68,15 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public List<Ticket> GetAllWithState(int state) {
+            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"State\"= @state;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("state", state)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
+
         public bool Delete(long id) {
             const string sql = "DELETE FROM public.\"Tickets\" WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {

@@ -8,6 +8,7 @@
 <ion-content color="dark">
     <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
     <ion-grid>
+        <!-- Account view with a user account -->
         <ion-row *ngIf="auth.UserType == 0">
             <ion-col *ngIf="userSub?.Type != null" size="2">
                 <ion-card>
@@ -138,6 +139,10 @@
                     <room-booking-list [RoomBookings]="roomBookings"></room-booking-list>
                 </ion-card>
             </ion-col>
+        </ion-row>
+        <!-- Account view with a staff account -->
+        <ion-row *ngIf="auth.UserType == 1">
+            <ticket-list [Tickets]="Tickets"></ticket-list>
         </ion-row>
     </ion-grid>
 </ion-content>

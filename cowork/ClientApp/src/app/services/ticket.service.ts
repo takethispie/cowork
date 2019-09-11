@@ -4,6 +4,7 @@ import {CONTENTJSON} from "../Utils";
 import {Ticket} from "../models/Ticket";
 import {DateTime} from 'luxon';
 import {map} from 'rxjs/operators';
+import {TicketState} from '../models/TicketState';
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +65,10 @@ export class TicketService {
   
   public AttributedTo(personnalId: number) {
     return this.http.get<Ticket[]>("api/Ticket/AttributedTo/" + personnalId).pipe(map(this.ParseDateTimeArray));
+  }
+
+
+  public AllWithState(state: TicketState) {
+    return this.http.get<Ticket[]>("api/Ticket/WithState/" + state);
   }
 }
