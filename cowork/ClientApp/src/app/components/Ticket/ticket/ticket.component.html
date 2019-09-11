@@ -5,10 +5,10 @@
     </ion-card-title>
     <ion-card-subtitle>
       <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>
-      <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ GetCreatedDuration(Ticket.Created) }}</i>
+      <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }}</i>
     </ion-card-subtitle>
   </ion-card-header>
-  <ion-card-content>
+  <ion-card-content padding>
     <ion-label>{{ Ticket.Description  }}</ion-label>
   </ion-card-content>
   <ion-toolbar color="light">

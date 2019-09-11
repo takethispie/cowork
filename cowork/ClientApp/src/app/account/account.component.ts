@@ -104,9 +104,17 @@ export class AccountComponent {
                 this.userSub.TypeId = res.data.SubscriptionType.Id;
                 this.userSub.Type = res.data.SubscriptionType;
                 this.userSub.FixedContract = res.data.ContractType === "FixedContract";
-                this.sub.Update(this.userSub).subscribe(subId => {
-                    if(subId !== -1) this.toast.PresentToast("Abonnement enrengistré avec succès");
-                    else this.toast.PresentToast("Erreur lors de l'abonnement");
+                this.loading.Loading = true;
+                this.sub.Update(this.userSub).subscribe({
+                    next: subId => {
+                        if(subId !== -1) this.toast.PresentToast("Abonnement enrengistré avec succès");
+                        else this.toast.PresentToast("Erreur lors de l'abonnement");
+                        this.loading.Loading = false;
+                    },
+                    error: err => {
+                        this.toast.PresentToast("Erreur lors de la communication avec le serveur");
+                        this.loading.Loading = false;
+                    }
                 });
             } else this.toast.PresentToast("Erreur: il n'y aucun abonnement à votre nom !");
         });

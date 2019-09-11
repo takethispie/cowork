@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MealBooking} from "../models/MealBooking";
-import {CONTENTJSON} from "../Utils";
+import {BookingToUtc, CONTENTJSON} from '../Utils';
 import {DateTime} from "luxon";
+import {WareBooking} from '../models/WareBooking';
 
 @Injectable({
   providedIn: 'root'
