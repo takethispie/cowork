@@ -40,9 +40,7 @@ export class UserLoggedInGuard implements CanActivate {
 
     getTokenExpirationDate(token: string): Date {
         const decoded = jwt_decode(token);
-
         if (decoded.exp === undefined) return null;
-
         const date = new Date(0);
         date.setUTCSeconds(decoded.exp);
         return date;
