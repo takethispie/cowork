@@ -49,6 +49,6 @@ export class MealBookingService {
 
 
   AllWithPaging(page: number, amount: number) {
-      return this.http.get<MealBooking[]>("api/MealBooking/AllWithPaging/" + page + "/" + amount);
+      return this.http.get<MealBooking[]>("api/MealBooking/WithPaging/" + page + "/" + amount);
   }
 }

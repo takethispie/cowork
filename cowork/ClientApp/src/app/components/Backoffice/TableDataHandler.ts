@@ -20,7 +20,6 @@ export class TableDataHandler<T> {
         this.EmptyFields = tempFields.ToArray();
         this.Page = 0;
         this.Amount = 30;
-        console.log(this.Fields);
     }
 
 
