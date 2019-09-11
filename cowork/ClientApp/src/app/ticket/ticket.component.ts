@@ -30,14 +30,16 @@ export class TicketComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.load.Loading = true;
-    this.ticketService.OpenedBy(this.auth.User.Id).subscribe(res => {
-      this.Tickets = res;
-      this.load.Loading = false;
-    });
-    this.placeId = this.auth.Subscription.Place.Id;
-    this.userId = this.auth.User.Id;
+      this.load.Loading = true;
+      this.userId = this.auth.UserId;
+      this.ticketService.OpenedBy(this.auth.UserId).subscribe(res => {
+          this.Tickets = res;
+          this.load.Loading = false;
+      });
+
+      this.placeId = this.auth.PlaceId;
   }
+
 
   ionViewWillEnter() {
     this.ngOnInit();
@@ -55,8 +57,8 @@ export class TicketComponent implements OnInit {
   OpenNewTicket(ticket: Ticket) {
       if(ticket == null) return;
       ticket.OpendedBy = this.auth.User;
-      ticket.OpenedById = this.auth.User.Id;
-      this.subService.OfUser(this.auth.User.Id).pipe(
+      ticket.OpenedById = this.auth.UserId;
+      this.subService.OfUser(this.auth.UserId).pipe(
           flatMap(sub => {
             if (sub == null) return of(null);
             ticket.Place = sub.Place;

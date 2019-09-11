@@ -9,7 +9,7 @@
 <ion-content color="dark">
   <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
   <ion-grid>
-    <ion-row *ngIf="auth.User.Type == 0">
+    <ion-row *ngIf="auth.UserType == 0">
       <ion-col *ngIf="userSub?.Type != null" size="2">
         <ion-card>
           <ion-card-header color="primary">

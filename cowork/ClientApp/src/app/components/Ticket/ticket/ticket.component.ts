@@ -37,8 +37,9 @@ export class TicketComponent implements OnInit {
     CommentSent(commentContent: string) {
         const comment = new TicketComment();
         comment.AuthorId = this.authUser.Id;
+        comment.Author = this.authUser;
         comment.Content = commentContent;
-        comment.Created = DateTime.local().toHTTP();
+        comment.Created = DateTime.local().toISO();
         comment.Id = -1;
         comment.TicketId = this.Ticket.Id;
         this.loading.Loading = true;

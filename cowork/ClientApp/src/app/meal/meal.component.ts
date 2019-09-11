@@ -4,8 +4,9 @@ import {MealService} from '../services/meal.service';
 import {Meal} from '../models/Meal';
 import {DateTime} from 'luxon';
 import {SubscriptionService} from '../services/subscription.service';
-import {flatMap} from 'rxjs/operators';
+import {catchError, flatMap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {Subscription} from '../models/Subscription';
 
 @Component({
   selector: 'app-tab2',
@@ -15,13 +16,15 @@ import {of} from 'rxjs';
 export class MealComponent {
   public AvailableMeals: Meal[];
 
-  constructor(public auth: AuthService, public mealService: MealService) {
+  constructor(public auth: AuthService, public mealService: MealService, public subscriptionService: SubscriptionService) {
     this.AvailableMeals = [];
   }
 
   ionViewWillEnter() {
-      return this.mealService.FromPlaceAndStartingAtDate(DateTime.local().plus({ days: 1 }), this.auth.Subscription.Place.Id)
-          .subscribe(res => this.AvailableMeals = res);
+      this.subscriptionService.OfUser(this.auth.UserId).pipe(
+        flatMap((sub: Subscription) => this.mealService.FromPlaceAndDate(DateTime.local().plus({ days: 1 }), sub.Place.Id)
+            .pipe(catchError(err => [])))
+      ).subscribe(res => this.AvailableMeals = res);
   }
 
 }

@@ -24,13 +24,13 @@ export class MealListComponent implements OnInit {
     }
 
     ionViewWillEnter() {
-        this.mealRes.AllFromUser(this.auth.User.Id).subscribe(res => {
+        this.mealRes.AllFromUser(this.auth.UserId).subscribe(res => {
             this.ReservedMealIds = res.map(mealRes => mealRes.MealId);
         });
     }
 
     BookMeal(item: Meal) {
-        const reservation = new MealBooking(-1, item.Id, this.auth.User.Id, "");
+        const reservation = new MealBooking(-1, item.Id, this.auth.UserId, "");
         this.mealRes.Create(reservation).subscribe(res => {
             if(res === -1) this.toast.PresentToast("Erreur lors de la réservation !");
             reservation.Id = res;

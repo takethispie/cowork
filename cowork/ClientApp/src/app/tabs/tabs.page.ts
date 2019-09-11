@@ -10,7 +10,9 @@ import {UserType} from '../models/UserType';
 })
 export class TabsPage {
 
-  constructor(private alertCtrl: AlertController, private navCtrl: NavController, public auth: AuthService) {}
+  constructor(private alertCtrl: AlertController, private navCtrl: NavController, public auth: AuthService) {
+    console.log(this.auth);
+  }
 
   Disconnect() {
       this.alertCtrl.create({
@@ -24,6 +26,10 @@ export class TabsPage {
           {
             text: "Oui",
             handler: () => {
+              localStorage.setItem('auth_token', null);
+              localStorage.setItem('UserId', null);
+              localStorage.setItem('UserType', null);
+              localStorage.setItem('PlaceId', null);
               this.auth.User = null;
               this.navCtrl.navigateRoot('Auth');
             }

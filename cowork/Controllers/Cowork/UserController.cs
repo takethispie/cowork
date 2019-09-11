@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using cowork.Controllers.RequestArguments;
 using coworkdomain;
@@ -50,6 +51,8 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpPost]
         public IActionResult Create([FromBody] User user) {
+            if (!User.Claims.Any(claim => claim.Type == "Role" && claim.Value == UserType.Admin.ToString()))
+                return Unauthorized();
             var result = Repository.Create(user);
             if (result == -1) return Conflict();
             return Ok(result);

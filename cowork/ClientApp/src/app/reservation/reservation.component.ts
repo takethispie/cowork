@@ -25,7 +25,7 @@ export class ReservationTabPage implements OnInit {
 
   ngOnInit() {
     this.loading.Loading = true;
-    this.subService.OfUser(this.auth.User.Id).subscribe({
+    this.subService.OfUser(this.auth.UserId).subscribe({
       next: res => {
         if(res == null) return;
         this.userSub = res;
