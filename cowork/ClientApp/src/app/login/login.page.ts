@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
           form.resetForm();
           this.router.navigate(['']);
         }
-      }, error: (err: HttpErrorResponse)=> {
+      }, error: (err: HttpErrorResponse & Error)=> {
         if(err.status === 404) this.toast.PresentToast("Erreur de connexion");
         if(err.status === 401 || err.status === 500) this.toast.PresentToast("Email ou Mot de passe invalide !");
         this.toast.PresentToast("Une erreur inconnue est survenue");

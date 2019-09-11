@@ -26,13 +26,15 @@ export class AuthService {
             map(res => {
              if(res != null) {
                  this.User = res.user;
-                 this.Subscription = res.sub;
+                 if(res.sub != null) {
+                     this.Subscription = res.sub;
+                     this.PlaceId = res.sub.Place.Id;
+                     localStorage.setItem('PlaceId', this.PlaceId.toString())
+                 }
                  this.UserId = res.user.Id;
-                 this.PlaceId = res.sub.Place.Id;
                  this.UserType = res.user.Type;
                  localStorage.setItem('auth_token', res.auth_token);
                  localStorage.setItem('UserId', this.UserId.toString());
-                 localStorage.setItem('PlaceId', this.PlaceId.toString())
                  localStorage.setItem('UserType', res.user.Type.toString());
              }
              return res;
