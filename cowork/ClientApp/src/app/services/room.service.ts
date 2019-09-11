@@ -17,7 +17,7 @@ export class RoomService {
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<Room[]>("api/Rool/AllWithPaging/" + page + "/" + amount);
+    return this.http.get<Room[]>("api/Rool/WithPaging/" + page + "/" + amount);
   }
 
 

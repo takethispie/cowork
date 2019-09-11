@@ -16,7 +16,7 @@ export class StaffLocationService {
 
 
   AllWithPaging(page: number, amount: number) {
-    return this.http.get<StaffLocation[]>("api/StaffLocation/AllWithPaging/" + page + "/" + amount);
+    return this.http.get<StaffLocation[]>("api/StaffLocation/WithPaging/" + page + "/" + amount);
   }
 
   

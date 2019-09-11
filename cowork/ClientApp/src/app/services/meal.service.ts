@@ -66,6 +66,6 @@ export class MealService {
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<Meal[]>("api/Meal/AllWithPaging/" + page + "/" + amount);
+    return this.http.get<Meal[]>("api/Meal/WithPaging/" + page + "/" + amount);
   }
 }

@@ -22,16 +22,17 @@ import {DateTime} from "luxon";
       <ion-item *ngSwitchCase="'DatePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
-                      max="{{MaxYear()}}" ngModel></ion-datetime>
+                      max="{{MaxYear()}}" (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'DateTimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
         <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
-                      max="{{MaxYear()}}" ngModel></ion-datetime>
+                      max="{{MaxYear()}}" (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'TimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value" ngModel></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value" 
+                      (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'ReadonlyText'">
         <ion-label position="floating">{{ field.Label }}</ion-label>
@@ -61,5 +62,9 @@ export class FieldBuilderComponent implements OnInit {
   
   MaxYear() {
     return DateTime.local().year + 100 + "";
+  }
+
+  SetDate(event: CustomEvent) {
+    this.field.Value = event.detail.value as string;
   }
 }

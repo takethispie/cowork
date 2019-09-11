@@ -46,6 +46,6 @@ export class PlaceService {
 
 
   public AllWithPaging(page: number, amount: number) {
-      return this.http.get<Place[]>("api/Place/AllWithPaging/" + page + "/" + amount);
+      return this.http.get<Place[]>("api/Place/WithPaging/" + page + "/" + amount);
   }
 }

@@ -22,8 +22,8 @@ export class TimeSlotListComponent implements OnInit {
     this.fields = [
       new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
       new Field(FieldType.Number, "PlaceId", "Id espace de coworking", -1),
-      new Field(FieldType.TimePicker,"Start", "Heure d'ouverture", "08:00"),
-      new Field(FieldType.TimePicker, "End", "Heure de fermeture", "20:00"),
+      new Field(FieldType.TimePicker,"Start", "Heure d'ouverture", DateTime.local().set({ hour: 9, minute: 0}).toISO()),
+      new Field(FieldType.TimePicker, "End", "Heure de fermeture", DateTime.local().set({ hour: 20, minute: 0}).toISO()),
       new Field(FieldType.Select, "Day", "Jour", 0, [
           { Label: WeekDay[1], Value: WeekDay.Monday},
           { Label: WeekDay[2], Value: WeekDay.Tuesday},
@@ -55,8 +55,9 @@ export class TimeSlotListComponent implements OnInit {
     const model = new TimeSlot();
     model.Id = fieldDic["Id"][0].Value as number;
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
-    const start = DateTime.fromFormat(fieldDic["Start"][0].Value as string, "HH:mm");
-    const end = DateTime.fromFormat(fieldDic["End"][0].Value as string, "HH:mm");
+    const start = DateTime.fromISO(fieldDic["Start"][0].Value as string).set({ second: 0, millisecond: 0});
+    const end = DateTime.fromISO(fieldDic["End"][0].Value as string).set({ second: 0, millisecond: 0});
+    console.log(start, end);
     model.StartHour = start.hour;
     model.StartMinutes = start.minute;
     model.EndHour = end.hour;

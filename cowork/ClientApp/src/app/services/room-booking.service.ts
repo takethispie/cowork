@@ -75,6 +75,6 @@ export class RoomBookingService {
 
 
   public AllWithPaging(page: number, amount: number) {
-      return this.http.get<RoomBooking[]>("api/RoomBooking/AllWithPaging/" + page + "/" + amount);
+      return this.http.get<RoomBooking[]>("api/RoomBooking/WithPaging/" + page + "/" + amount);
   }
 }
