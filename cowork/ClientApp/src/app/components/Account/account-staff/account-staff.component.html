@@ -1,0 +1,15 @@
+<ion-grid>
+  <ion-row *ngIf="auth.UserType == 1">
+    <ion-col size="4">
+      <ticket-list [Tickets]="Tickets"></ticket-list>
+    </ion-col>
+    <ion-col size="4">
+      <ion-card>
+        <ion-card-header color="primary">
+          <ion-card-title>Vos commentaires</ion-card-title>
+        </ion-card-header>
+        <user-comment-list></user-comment-list>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

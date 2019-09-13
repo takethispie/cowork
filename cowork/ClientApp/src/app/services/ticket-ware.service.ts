@@ -16,7 +16,7 @@ export class TicketWareService {
 
 
   AllWithPaging(page: number, amount: number) {
-    return this.http.get<TicketWare[]>("api/Ticket/TicketWareWithPaging/" + page + "/" + amount);
+    return this.http.get<TicketWare[]>("api/Ticket/WareWithPaging/" + page + "/" + amount);
   }
 
 

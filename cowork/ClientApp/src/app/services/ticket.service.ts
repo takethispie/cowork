@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {CONTENTJSON} from "../Utils";
+import {CONTENTJSON, ParseDateTime} from '../Utils';
 import {Ticket} from "../models/Ticket";
 import {DateTime} from 'luxon';
 import {map} from 'rxjs/operators';
@@ -15,14 +15,9 @@ export class TicketService {
 
   private ParseDateTimeArray(tickets: Ticket[]) {
     return tickets.map(ticket => {
-      ticket.Created = TicketService.ParseDateTime(ticket.Created);
+      ticket.Created = ParseDateTime(ticket.Created);
       return ticket;
     });
-  }
-
-  private static ParseDateTime(prop: DateTime) {
-    prop = DateTime.fromISO(prop as unknown as string, { zone: "utc" });
-    return prop;
   }
 
   public All() {
@@ -31,7 +26,7 @@ export class TicketService {
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<Ticket[]>("api/Ticket/WithPaging/" + page + "/" + amount);
+    return this.http.get<Ticket[]>("api/Ticket/WithPaging/" + page + "/" + amount).pipe(map(this.ParseDateTimeArray));;
   }
 
 
@@ -52,7 +47,7 @@ export class TicketService {
 
   public ById(id: number) {
     return this.http.get<Ticket>("api/Ticket/" + id).pipe(map(ticket => {
-      ticket.Created = TicketService.ParseDateTime(ticket.Created);
+      ticket.Created = ParseDateTime(ticket.Created);
       return ticket;
     }));
   }
@@ -69,6 +64,6 @@ export class TicketService {
 
 
   public AllWithState(state: TicketState) {
-    return this.http.get<Ticket[]>("api/Ticket/WithState/" + state);
+    return this.http.get<Ticket[]>("api/Ticket/WithState/" + state).pipe(map(this.ParseDateTimeArray));;
   }
 }

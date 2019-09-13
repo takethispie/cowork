@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {TicketComment} from "../models/TicketComment";
-import {CONTENTJSON} from "../Utils";
+import {CONTENTJSON, ParseDateTime} from '../Utils';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,15 @@ import {CONTENTJSON} from "../Utils";
 export class TicketCommentService {
 
   constructor(public http: HttpClient) { }
+
+
+  private ParseDateTimeArray(comments: TicketComment[]) {
+    return comments.map(ticket => {
+      ticket.Created = ParseDateTime(ticket.Created).toISO();
+      return ticket;
+    });
+  }
+
 
   public Create(ticketComment: TicketComment) {
     return this.http.post<number>("api/Ticket/AddComment", ticketComment, CONTENTJSON);
@@ -21,12 +31,12 @@ export class TicketCommentService {
 
   
   public All() {
-    return this.http.get<TicketComment[]>("api/Ticket/AllComments");
+    return this.http.get<TicketComment[]>("api/Ticket/AllComments").pipe(map(this.ParseDateTimeArray));;
   }
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<TicketComment[]>("api/Ticket/CommentsWithPaging/" + page + "/" + amount);
+    return this.http.get<TicketComment[]>("api/Ticket/CommentsWithPaging/" + page + "/" + amount).pipe(map(this.ParseDateTimeArray));;
   }
   
   

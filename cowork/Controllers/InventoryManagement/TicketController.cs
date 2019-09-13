@@ -14,16 +14,18 @@ namespace cowork.Controllers.InventoryManagement {
         private readonly ITicketRepository repository;
         private readonly ITicketAttributionRepository ticketAttributionRepository;
         private readonly ITicketCommentRepository ticketCommentRepository;
+        private readonly ITicketWareRepository ticketWareRepository;
         private readonly IUserRepository userRepository;
 
 
         public TicketController(ITicketRepository ticketRepository, IUserRepository userRepository,
                                 ITicketAttributionRepository ticketAttributionRepository,
-                                ITicketCommentRepository ticketCommentRepository) {
+                                ITicketCommentRepository ticketCommentRepository, ITicketWareRepository ticketWareRepository) {
             repository = ticketRepository;
             this.userRepository = userRepository;
             this.ticketAttributionRepository = ticketAttributionRepository;
             this.ticketCommentRepository = ticketCommentRepository;
+            this.ticketWareRepository = ticketWareRepository;
         }
 
 
@@ -199,7 +201,21 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet("WithState/{state}")]
         public IActionResult AllWithState(int state) {
-            var result = repository.GetAllWithState(state);
+            var result = repository.GetAllWithState(state).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if (ticketAttribution != null)
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
+            
+            return Ok(result);
+        }
+
+
+        [HttpGet("WareWithPaging/{page}/{amount}")]
+        public IActionResult allWareWithPaging(int page, int amount) {
+            var result = ticketWareRepository.GetAllWithPaging(page, amount);
             return Ok(result);
         }
 

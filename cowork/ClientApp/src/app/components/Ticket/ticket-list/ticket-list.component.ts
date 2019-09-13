@@ -5,7 +5,7 @@ import {AuthService} from '../../../services/auth.service';
 import {TicketService} from '../../../services/ticket.service';
 import {ToastService} from '../../../services/toast.service';
 import {LoadingService} from '../../../services/loading.service';
-import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'ticket-list',

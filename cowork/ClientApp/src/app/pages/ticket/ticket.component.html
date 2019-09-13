@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Co'Work
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="dark">
+  <app-add-ticket slot="fixed"></app-add-ticket>
+  <ion-grid>
+    <ion-row>
+      <ion-col offset="4" size="4">
+        <ticket-list [Tickets]="Tickets"></ticket-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
