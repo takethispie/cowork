@@ -3,15 +3,9 @@ import {Ticket} from '../../models/Ticket';
 import {AuthService} from '../../services/auth.service';
 import {TicketService} from '../../services/ticket.service';
 import {ModalController} from '@ionic/angular';
-import {AddTicketComponent} from '../../components/Ticket/add-ticket/add-ticket.component';
 import {SubscriptionService} from '../../services/subscription.service';
-import {flatMap} from 'rxjs/operators';
-import {of} from 'rxjs';
 import {ToastService} from '../../services/toast.service';
 import {LoadingService} from '../../services/loading.service';
-import {NgForm} from '@angular/forms';
-import {TicketState} from '../../models/TicketState';
-import {DateTime} from 'luxon';
 
 
 @Component({

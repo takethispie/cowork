@@ -2,7 +2,7 @@
   <ion-card-header color="primary">
     <ion-toolbar color="primary">
       <ion-card-title>
-        <ion-label> {{ Ticket.Title }} </ion-label>
+        <ion-label>{{ Ticket.Title }} </ion-label>
       </ion-card-title>
       <ion-card-subtitle>
         <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>

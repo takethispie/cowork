@@ -28,10 +28,10 @@ export class TicketListComponent implements OnInit {
     this.ticketService.Delete(ticketId).subscribe({
       next: value => {
         this.Tickets = this.Tickets.filter(ticket => ticket.Id !== ticketId);
-        console.log("success !");
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        this.loadbar.Loading = false;
+        this.toastService.PresentToast("Une erreur est survenue lors de la suppression du ticket");
       },
       complete: () => this.loadbar.Loading = false
   });

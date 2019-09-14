@@ -113,10 +113,7 @@ export class TicketComponent implements OnInit {
 
 
     public AttributeTicketToMe() {
-        if(this.Ticket.AttributedTo.Id != null && this.Ticket.AttributedTo.Id > -1) {
-            this.toast.PresentToast("Ce ticket est déjà attribué");
-            return;
-        } else {
+        if(this.Ticket.AttributedTo == null || this.Ticket.AttributedTo.Id === -1) {
             const attr = new TicketAttribution();
             attr.TicketId = this.Ticket.Id;
             attr.StaffId = this.authUser.Id;
@@ -135,7 +132,7 @@ export class TicketComponent implements OnInit {
                 },
                 complete: () => this.loading.Loading = false
             });
-        }
+        } else this.toast.PresentToast("Ce ticket est déjà attribué");
     }
 
 

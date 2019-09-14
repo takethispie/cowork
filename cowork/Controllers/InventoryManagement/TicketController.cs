@@ -113,7 +113,11 @@ namespace cowork.Controllers.InventoryManagement {
             var personnal = userRepository.GetById(personnalId);
             if (personnal == null) return NotFound("Personnel introuvable");
             var res = ticketAttributionRepository.GetAllFromStaffId(personnalId)
-                                                 .Select(ticketAttr => repository.GetById(ticketAttr.TicketId))
+                                                 .Select(ticketAttr => {
+                                                     var ticket = repository.GetById(ticketAttr.TicketId);
+                                                     ticket.AttributedTo = userRepository.GetById(ticketAttr.StaffId);
+                                                     return ticket;
+                                                 })
                                                  .Select(ticket => {
                                                      ticket.Comments =
                                                          ticketCommentRepository.GetByTicketId(ticket.Id);
@@ -180,7 +184,13 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
-            var result = repository.GetAllByPaging(page, amount);
+            var result = repository.GetAllByPaging(page, amount).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if (ticketAttribution != null)
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
             return Ok(result);
         }
 

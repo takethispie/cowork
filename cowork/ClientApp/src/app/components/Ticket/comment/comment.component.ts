@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TicketComment} from '../../../models/TicketComment';
+import {UserType} from '../../../models/UserType';
 
 @Component({
   selector: 'comment',
@@ -13,4 +14,8 @@ export class CommentComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
+
+  IsStaff() {
+    return this.TicketComment.Author.Type === UserType.Staff;
+  }
 }

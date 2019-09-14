@@ -13,9 +13,10 @@ import {ToastService} from '../../../services/toast.service';
 import {LoadingService} from '../../../services/loading.service';
 import {Ware} from '../../../models/Ware';
 import {WareListModalComponent} from '../../Ware/ware-list-modal/ware-list-modal.component';
-import {tick} from '@angular/core/testing';
 import {TicketWareService} from '../../../services/ticket-ware.service';
 import {TicketWare} from '../../../models/TicketWare';
+import {UserType} from '../../../models/UserType';
+import {tick} from '@angular/core/testing';
 
 @Component({
   selector: 'app-add-ticket',
@@ -47,6 +48,7 @@ export class AddTicketComponent implements OnInit {
     if(ticket == null) return;
     ticket.OpendedBy = this.auth.User;
     ticket.OpenedById = this.auth.UserId;
+    if(this.auth.UserType === UserType.Staff) ticket.Title = "[Staff] " + ticket.Title;
     this.subService.OfUser(this.auth.UserId).pipe(
         flatMap(sub => {
           if (sub == null) return of(null);
@@ -57,14 +59,11 @@ export class AddTicketComponent implements OnInit {
           ticketWare.WareId = this.SelectedWare.Id;
           return this.ticketService.Create(ticket).pipe(
               flatMap(res => {
-                if(res > -1) {
+                  if(res === -1) return of(-1);
                   ticketWare.TicketId = res;
                   return this.ticketWareService.Create(ticketWare).pipe(
-                      catchError((err, caught) =>
-                          this.ticketService.Delete(res).pipe(map(x => -1))
-                      )
+                      catchError((err, caught) => this.ticketService.Delete(res).pipe(map(x => -1)))
                   );
-                } else return of(-1);
               })
           )
         })
