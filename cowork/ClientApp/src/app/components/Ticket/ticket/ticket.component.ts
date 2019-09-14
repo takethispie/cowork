@@ -12,6 +12,8 @@ import {AlertController} from '@ionic/angular';
 import {UserType} from '../../../models/UserType';
 import {TicketAttribution} from '../../../models/TicketAttribution';
 import {TicketAttributionService} from '../../../services/ticket-attribution.service';
+import {flatMap} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Component({
     selector: 'ticket-item',
@@ -118,13 +120,17 @@ export class TicketComponent implements OnInit {
             attr.TicketId = this.Ticket.Id;
             attr.StaffId = this.authUser.Id;
             attr.Id = -1;
-            this.ticketAttributionService.Create(attr).subscribe({
-                next: value => {
-                    if(value === -1) this.toast.PresentToast("Impossible d'ajouter l'attribution");
+            this.ticketAttributionService.Create(attr).pipe(
+                flatMap(attrResult => {
+                    if(attrResult === -1) return of(-1);
                     this.Ticket.AttributedTo = this.authUser;
                     this.Ticket.State = TicketState.Open;
-                    this.ticketService.Update(this.Ticket);
-
+                    return this.ticketService.Update(this.Ticket);
+                })
+            ).subscribe({
+                next: value => {
+                    if(value === -1) this.toast.PresentToast("Impossible d'ajouter l'attribution");
+                    this.loading.Loading = false;
                 },
                 error: err => {
                     this.toast.PresentToast("Une erreur est survenue lors de l'attribution du ticket");
