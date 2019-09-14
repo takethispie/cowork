@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {CanActivate, RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import { TabsPage } from './tabs.page';
 import {UserLoggedInGuard} from '../user-logged-in.guard';
 
@@ -10,27 +10,33 @@ const routes: Routes = [
     children: [
       {
         path: 'account',
-        loadChildren: "../account/account.module#AccountModule"
+        loadChildren: "../pages/account/account.module#AccountModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: 'meal',
-        loadChildren: "../meal/meal.module#MealModule",
+        loadChildren: "../pages/meal/meal.module#MealModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: 'reservation',
-        loadChildren: "../reservation/reservation.module#ReservationModule",
+        loadChildren: "../pages/reservation/reservation.module#ReservationModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: 'ticket',
-        loadChildren: "../ticket/ticket.module#TicketModule",
+        loadChildren: "../pages/ticket/ticket.module#TicketModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: 'ware',
-        loadChildren: "../ware/ware.module#WareModule",
+        loadChildren: "../pages/ware/ware.module#WareModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: 'backoffice',
-        loadChildren: "../backoffice/backoffice.module#BackofficeModule",
+        loadChildren: "../pages/backoffice/backoffice.module#BackofficeModule",
+        canActivate: [UserLoggedInGuard]
       },
       {
         path: '',

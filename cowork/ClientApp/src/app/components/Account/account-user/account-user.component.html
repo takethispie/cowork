@@ -1,0 +1,142 @@
+<ion-grid>
+    <!-- Account view with a user account -->
+    <ion-row>
+        <ion-col *ngIf="userSub?.Type != null" size="2">
+            <ion-card>
+                <ion-card-header color="primary">
+                    <ion-label>Votre Abonnement</ion-label>
+                </ion-card-header>
+                <ion-list lines="none">
+                    <ion-item-divider>
+                        <ion-label> Coût mensuel</ion-label>
+                    </ion-item-divider>
+                    <ion-item *ngIf="!userSub.FixedContract"> {{ userSub.Type.MonthlyFeeContractFree }}Euros/mois
+                    </ion-item>
+                    <ion-item *ngIf="userSub.FixedContract"> {{ userSub.Type.MonthlyFeeFixedContract }}Euros/mois
+                    </ion-item>
+                    <span *ngIf="userSub.FixedContract">
+                            <ion-item-divider>
+                                <ion-label> Durée d'abonnement</ion-label>
+                            </ion-item-divider>
+                            <ion-item> {{ userSub.Type.FixedContractDurationMonth }} Mois</ion-item>
+                            <ion-item-divider>
+                                <ion-label> Expiration</ion-label>
+                            </ion-item-divider>
+                            <ion-item>
+                                {{ GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) | number:'1.0-0'}}
+                                Jours</ion-item>
+                        </span>
+                    <ion-item-divider>
+                        <ion-label> Prix première heure</ion-label>
+                    </ion-item-divider>
+                    <ion-item *ngIf="userSub.Type.PriceFirstHour > 0"> {{ userSub.Type.PriceFirstHour }}Euros
+                    </ion-item>
+                    <ion-item *ngIf="userSub.Type.PriceFirstHour === 0"> Gratuit</ion-item>
+                    <ion-item-divider>
+                        <ion-label> Prix demi-heure suivante</ion-label>
+                    </ion-item-divider>
+                    <ion-item *ngIf="userSub.Type.PriceNextHalfHour > 0"> {{ userSub.Type.PriceNextHalfHour }}Euros
+                    </ion-item>
+                    <ion-item *ngIf="userSub.Type.PriceNextHalfHour === 0"> Gratuit</ion-item>
+                    <ion-item-divider>
+                        <ion-label> Prix journée</ion-label>
+                    </ion-item-divider>
+                    <ion-item
+                            *ngIf="userSub.Type.PriceDay > 0 && !userSub.Client.IsAStudent"> {{ userSub.Type.PriceDay }}
+                        Euros
+                    </ion-item>
+                    <ion-item
+                            *ngIf="userSub.Type.PriceDay > 0 && userSub.Client.IsAStudent"> {{ userSub.Type.PriceDayStudent }}
+                        Euros
+                    </ion-item>
+                    <ion-item *ngIf="userSub.Type.PriceDay === 0"> Gratuit</ion-item>
+                </ion-list>
+            </ion-card>
+        </ion-col>
+        <ion-col size="4">
+            <ion-card>
+                <ion-card-header color="primary">
+                    <ion-label>Votre Profil</ion-label>
+                </ion-card-header>
+                <ion-list lines="none">
+                    <ion-item-divider>
+                        Prénom
+                    </ion-item-divider>
+                    <ion-item>
+                        <ion-label> {{ auth.User.FirstName | titlecase }} </ion-label>
+                    </ion-item>
+                    <ion-item-divider>
+                        Nom
+                    </ion-item-divider>
+                    <ion-item>
+                        <ion-label> {{ auth.User.LastName | titlecase }}</ion-label>
+                    </ion-item>
+                    <ion-item-divider>
+                        Abonnement
+                    </ion-item-divider>
+
+                    <span *ngIf="userSub != null">
+                            <ion-item>
+                                <ion-label *ngIf="userSub != null"> {{ userSub.Type.Name }} </ion-label>
+                                <ion-button (click)="ChangeSubscription()" slot="end">Changer</ion-button>
+                            </ion-item>
+                        </span>
+
+                    <span *ngIf="userSub == null">
+                            <ion-item>
+                                <ion-label> Aucun Abonnement </ion-label>
+                                <ion-button (click)="CreateSubscription()" slot="end">Souscrire à un abonnement
+                                </ion-button>
+                            </ion-item>
+                        </span>
+                    <span *ngIf="userSub != null">
+                            <ion-item-divider>
+                                Date d'abonnement
+                            </ion-item-divider>
+                            <ion-item>
+                                <ion-label> {{ userSub.LatestRenewal | date : "dd/MM/yyyy" }} </ion-label>
+                            </ion-item>
+                            <ion-item-divider>
+                                Espace Co'Work
+                            </ion-item-divider>
+                            <ion-item>
+                                <ion-label>
+                                    <h2><b>{{ userSub.Place.Name }}</b></h2>
+                                    <p *ngFor="let time of OrderByDay(userSub.Place.OpenedTimes)">
+                                        {{ GetWeekDayName(time.Day) }}
+                                        {{ time.StartHour.toString().padStart(2, '0') + ":" + time.StartMinutes.toString().padStart(2, '0') }}
+                                        -
+                                        {{ time.EndHour.toString().padStart(2, '0') + ":" + time.EndMinutes.toString().padStart(2, '0') }}
+                                    </p>
+                                </ion-label>
+                                <ion-button (click)="ChangePlace()" slot="end">Changer</ion-button>
+                            </ion-item>
+                        </span>
+                    <ion-item-divider>
+                        Etudiant
+                    </ion-item-divider>
+                    <ion-item>
+                        <ion-label> {{ auth.User.IsAStudent ? "Oui" : "Non" }}</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-card>
+        </ion-col>
+        <ion-col *ngIf="userSub?.Type != null" size="3">
+            <ion-card>
+                <ion-card-header color="primary">
+                    <ion-label>Vos Réservations plateaux repas</ion-label>
+                </ion-card-header>
+                <meal-reservation-list [MealReservations]="userMeals"></meal-reservation-list>
+            </ion-card>
+
+        </ion-col>
+        <ion-col *ngIf="userSub?.Type != null" size="3">
+            <ion-card>
+                <ion-card-header color="primary">
+                    <ion-label>Vos Réservations de salles</ion-label>
+                </ion-card-header>
+                <room-booking-list [RoomBookings]="roomBookings"></room-booking-list>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>

@@ -58,11 +58,20 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAllByPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Ticket\"" + innerJoin +
+            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin +
                                " ORDER BY \"Ticket\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
+
+        public List<Ticket> GetAllWithState(int state) {
+            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"State\"= @state;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("state", state)
             };
             return dataMapper.MultiItemCommand(sql, par);
         }

@@ -8,6 +8,8 @@ import {CommentComponent} from './comment/comment.component';
 import {CommentFormComponent} from './comment-form/comment-form.component';
 import {TicketComponent} from './ticket/ticket.component';
 import {PipesModule} from '../../pipes/pipes-components.module';
+import {UserCommentListComponent} from './user-comment-list/user-comment-list.component';
+import {WareComponentsModule} from '../Ware/WareComponents.module';
 
 @NgModule({
     declarations: [
@@ -16,6 +18,7 @@ import {PipesModule} from '../../pipes/pipes-components.module';
         CommentComponent,
         CommentFormComponent,
         TicketComponent,
+        UserCommentListComponent,
     ],
     entryComponents: [
         TicketListComponent,
@@ -23,12 +26,14 @@ import {PipesModule} from '../../pipes/pipes-components.module';
         CommentComponent,
         CommentFormComponent,
         TicketComponent,
+        UserCommentListComponent,
     ],
     imports: [
         IonicModule,
         CommonModule,
         FormsModule,
         PipesModule,
+        WareComponentsModule,
     ],
     exports: [
         TicketListComponent,
@@ -36,6 +41,7 @@ import {PipesModule} from '../../pipes/pipes-components.module';
         CommentComponent,
         CommentFormComponent,
         TicketComponent,
+        UserCommentListComponent,
     ]
 })
 export class TicketComponentsModule {}

@@ -5,7 +5,7 @@ import {AuthService} from '../../../services/auth.service';
 import {TicketService} from '../../../services/ticket.service';
 import {ToastService} from '../../../services/toast.service';
 import {LoadingService} from '../../../services/loading.service';
-import {HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'ticket-list',
@@ -28,10 +28,10 @@ export class TicketListComponent implements OnInit {
     this.ticketService.Delete(ticketId).subscribe({
       next: value => {
         this.Tickets = this.Tickets.filter(ticket => ticket.Id !== ticketId);
-        console.log("success !");
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        this.loadbar.Loading = false;
+        this.toastService.PresentToast("Une erreur est survenue lors de la suppression du ticket");
       },
       complete: () => this.loadbar.Loading = false
   });

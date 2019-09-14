@@ -1,0 +1,8 @@
+<ion-list>
+  <ion-item *ngFor="let item of Comments">
+    <ion-label>
+      <h3><strong>#{{ item.TicketId }}</strong> - {{ item.Created | date: "dd/MM/yyyy HH:mm" }}</h3>
+      <p>{{ item.Content }}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>

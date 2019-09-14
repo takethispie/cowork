@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { User } from 'src/app/models/User';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {User} from 'src/app/models/User';
 import {ToastService} from '../../../services/toast.service';
 import {Ticket} from '../../../models/Ticket';
 import {DateTime} from 'luxon';
@@ -7,7 +7,13 @@ import {TicketState} from '../../../models/TicketState';
 import {TicketService} from '../../../services/ticket.service';
 import {TicketComment} from '../../../models/TicketComment';
 import {LoadingService} from '../../../services/loading.service';
-import {TicketCommentService} from "../../../services/ticket-comment.service";
+import {TicketCommentService} from '../../../services/ticket-comment.service';
+import {AlertController} from '@ionic/angular';
+import {UserType} from '../../../models/UserType';
+import {TicketAttribution} from '../../../models/TicketAttribution';
+import {TicketAttributionService} from '../../../services/ticket-attribution.service';
+import {flatMap} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Component({
     selector: 'ticket-item',
@@ -23,18 +29,35 @@ export class TicketComponent implements OnInit {
     public UserCanDelete: boolean = false;
 
 
-    constructor(private toast: ToastService, private ticketCommentService: TicketCommentService, private loading: LoadingService) {
+    constructor(private toast: ToastService, private ticketCommentService: TicketCommentService, private loading: LoadingService,
+                public alertCtrl: AlertController, public ticketAttributionService: TicketAttributionService,
+                public ticketService: TicketService) {
     }
 
     ngOnInit() {
         if(this.Ticket.OpenedById === this.authUser.Id) this.UserCanDelete = true;
     }
 
-    Delete() {
-        this.DeleteTicket.emit(this.Ticket.Id);
+    public Delete() {
+        this.alertCtrl.create({
+            header: "Confirmer",
+            message: "Supprimer ?",
+            buttons: [
+                {
+                    text: "Annuler",
+                    role: "cancel",
+                },
+                {
+                    text: "Oui",
+                    handler: () => {
+                        this.DeleteTicket.emit(this.Ticket.Id);
+                    }
+                },
+            ],
+        }).then(alert => alert.present())
     }
 
-    CommentSent(commentContent: string) {
+    public CommentSent(commentContent: string) {
         const comment = new TicketComment();
         comment.AuthorId = this.authUser.Id;
         comment.Author = this.authUser;
@@ -57,6 +80,7 @@ export class TicketComponent implements OnInit {
         })
     }
 
+
     public GetCreatedDuration(subDate: DateTime) {
         const now = DateTime.local();
         const diffs = now.diff(subDate.setZone('local'),['months', 'days', 'hours', 'minutes']).toObject();
@@ -67,9 +91,16 @@ export class TicketComponent implements OnInit {
         return result;
     }
 
+
     public GetTicketStatus(index: number) {
         return TicketState[index];
     }
+
+
+    public GetUserType(index: number) {
+        return UserType[index];
+    }
+
 
     public GetStatusColor(index: number) {
         switch (index) {
@@ -80,5 +111,39 @@ export class TicketComponent implements OnInit {
             case 4: return "danger";
             default: return "dark";
         }
+    }
+
+
+    public AttributeTicketToMe() {
+        if(this.Ticket.AttributedTo == null || this.Ticket.AttributedTo.Id === -1) {
+            const attr = new TicketAttribution();
+            attr.TicketId = this.Ticket.Id;
+            attr.StaffId = this.authUser.Id;
+            attr.Id = -1;
+            this.ticketAttributionService.Create(attr).pipe(
+                flatMap(attrResult => {
+                    if(attrResult === -1) return of(-1);
+                    this.Ticket.AttributedTo = this.authUser;
+                    this.Ticket.State = TicketState.Open;
+                    return this.ticketService.Update(this.Ticket);
+                })
+            ).subscribe({
+                next: value => {
+                    if(value === -1) this.toast.PresentToast("Impossible d'ajouter l'attribution");
+                    this.loading.Loading = false;
+                },
+                error: err => {
+                    this.toast.PresentToast("Une erreur est survenue lors de l'attribution du ticket");
+                    this.loading.Loading = false;
+                },
+                complete: () => this.loading.Loading = false
+            });
+        } else this.toast.PresentToast("Ce ticket est déjà attribué");
+    }
+
+
+    public IsAttributedToMe() {
+        if(this.Ticket.AttributedTo == null) return false;
+        return this.Ticket.AttributedTo.Id === this.authUser.Id;
     }
 }

@@ -13,3 +13,9 @@ export const BookingToUtc = <T>(model: T & { Start: DateTime, End: DateTime}) =>
     model.Start = model.Start.toUTC();
     return model;
 }
+
+
+export const ParseDateTime = (prop: DateTime | string) => {
+    prop = DateTime.fromISO(prop as unknown as string, { zone: "utc" });
+    return prop;
+}

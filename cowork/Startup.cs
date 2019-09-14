@@ -75,6 +75,7 @@ namespace cowork {
             services.AddSingleton<ITicketAttributionRepository>(ctx => new TicketAttributionRepository(conn));
             services.AddSingleton<ILoginRepository>(ctx => loginRepo);
             services.AddSingleton<ITicketCommentRepository>(ctx => new TicketCommentRepository(conn));
+            services.AddSingleton<ITicketWareRepository>(ctx => new TicketWareRepository(conn));
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
             services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
 

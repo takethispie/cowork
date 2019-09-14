@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button text="" (click)="retour()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Selectionner un matériel
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="Reload()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ware-list (WareSelected)="Selected($event)" [Refresher]="Refresher" [PlaceId]="PlaceId" [UserId]="UserId"></ware-list>
+</ion-content>

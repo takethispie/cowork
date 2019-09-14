@@ -14,16 +14,18 @@ namespace cowork.Controllers.InventoryManagement {
         private readonly ITicketRepository repository;
         private readonly ITicketAttributionRepository ticketAttributionRepository;
         private readonly ITicketCommentRepository ticketCommentRepository;
+        private readonly ITicketWareRepository ticketWareRepository;
         private readonly IUserRepository userRepository;
 
 
         public TicketController(ITicketRepository ticketRepository, IUserRepository userRepository,
                                 ITicketAttributionRepository ticketAttributionRepository,
-                                ITicketCommentRepository ticketCommentRepository) {
+                                ITicketCommentRepository ticketCommentRepository, ITicketWareRepository ticketWareRepository) {
             repository = ticketRepository;
             this.userRepository = userRepository;
             this.ticketAttributionRepository = ticketAttributionRepository;
             this.ticketCommentRepository = ticketCommentRepository;
+            this.ticketWareRepository = ticketWareRepository;
         }
 
 
@@ -111,7 +113,11 @@ namespace cowork.Controllers.InventoryManagement {
             var personnal = userRepository.GetById(personnalId);
             if (personnal == null) return NotFound("Personnel introuvable");
             var res = ticketAttributionRepository.GetAllFromStaffId(personnalId)
-                                                 .Select(ticketAttr => repository.GetById(ticketAttr.TicketId))
+                                                 .Select(ticketAttr => {
+                                                     var ticket = repository.GetById(ticketAttr.TicketId);
+                                                     ticket.AttributedTo = userRepository.GetById(ticketAttr.StaffId);
+                                                     return ticket;
+                                                 })
                                                  .Select(ticket => {
                                                      ticket.Comments =
                                                          ticketCommentRepository.GetByTicketId(ticket.Id);
@@ -178,7 +184,13 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
-            var result = repository.GetAllByPaging(page, amount);
+            var result = repository.GetAllByPaging(page, amount).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if (ticketAttribution != null)
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
             return Ok(result);
         }
 
@@ -193,6 +205,27 @@ namespace cowork.Controllers.InventoryManagement {
         [HttpGet("AttributionsWithPaging/{page}/{amount}")]
         public IActionResult AttributionsWithPaging(int page, int amount) {
             var result = repository.GetAllByPaging(page, amount);
+            return Ok(result);
+        }
+
+
+        [HttpGet("WithState/{state}")]
+        public IActionResult AllWithState(int state) {
+            var result = repository.GetAllWithState(state).Select(ticket => {
+                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
+                if (ticketAttribution != null)
+                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
+                return ticket;
+            });
+            
+            return Ok(result);
+        }
+
+
+        [HttpGet("WareWithPaging/{page}/{amount}")]
+        public IActionResult allWareWithPaging(int page, int amount) {
+            var result = ticketWareRepository.GetAllWithPaging(page, amount);
             return Ok(result);
         }
 

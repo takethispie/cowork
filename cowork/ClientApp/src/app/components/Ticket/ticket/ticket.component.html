@@ -1,12 +1,19 @@
 <ion-card color="light">
   <ion-card-header color="primary">
-    <ion-card-title>
-      <ion-label> {{ Ticket.Title }} </ion-label>
-    </ion-card-title>
-    <ion-card-subtitle>
-      <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>
-      <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }}</i>
-    </ion-card-subtitle>
+    <ion-toolbar color="primary">
+      <ion-card-title>
+        <ion-label>{{ Ticket.Title }} </ion-label>
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>
+        <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }} par {{ Ticket.OpendedBy?.FirstName }} {{ Ticket.OpendedBy?.LastName }}</i>
+      </ion-card-subtitle>
+      <ion-buttons slot="end">
+        <ion-button>
+          <ion-icon name="more"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-card-header>
   <ion-card-content padding>
     <ion-label>{{ Ticket.Description  }}</ion-label>
@@ -15,7 +22,11 @@
     <ion-buttons>
       <ion-button color="danger" *ngIf="UserCanDelete" (click)="Delete()">
         <ion-icon name="trash"></ion-icon>
-        <ion-label>Supprimmer</ion-label>
+        <ion-label>Supprimer</ion-label>
+      </ion-button>
+      <ion-button color="primary" *ngIf="GetUserType(authUser.Type) == 'Staff'" [hidden]="IsAttributedToMe()" (click)="AttributeTicketToMe()">
+        <ion-icon name="share"></ion-icon>
+        <ion-label>Me l'attribuer</ion-label>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

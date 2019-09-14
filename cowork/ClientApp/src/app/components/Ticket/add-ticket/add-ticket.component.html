@@ -1,31 +1,36 @@
-
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="GoBack()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Ajouter un Ticket</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <form #form="ngForm" (ngSubmit)="CreateTicket(form)">
-    <ion-list>
-      <ion-item>
-        <ion-label position="floating">Titre</ion-label>
-        <ion-input name="title" ngModel required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Description</ion-label>
-        <ion-textarea rows="6" cols="20" name="description" ngModel></ion-textarea>
-      </ion-item>
-      <!-- TODO add ware list -->
-    </ion-list>
-    <ion-footer>
+<div>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Ajouter un Ticket</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form #form="ngForm" (ngSubmit)="CreateTicket(form)">
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Titre</ion-label>
+          <ion-input name="title" ngModel required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea rows="6" cols="20" name="description" ngModel></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label *ngIf="!SelectedWare">Aucun matériel associé à ce ticket</ion-label>
+          <ion-label *ngIf="SelectedWare">{{ SelectedWare.Name }}</ion-label>
+          <ion-button *ngIf="!SelectedWare" (click)="OpenWareSelection()">
+            <ion-label>Associer un matériel</ion-label>
+          </ion-button>
+          <ion-button color="danger" *ngIf="SelectedWare" (click)="RemoveAttributedWare()">
+            <ion-label>Déassocier le matériel</ion-label>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+      <ion-footer>
         <ion-button type="submit" [disabled]="form.invalid" expand="block">Creer un ticket</ion-button>
-    </ion-footer>
-  </form>
-</ion-content>
+      </ion-footer>
+    </form>
+  </ion-content>
+</div>
 
 

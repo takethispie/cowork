@@ -1,9 +1,11 @@
 <ion-card>
   <ion-card-content>
-    <strong>{{ TicketComment.Author?.FirstName }} {{ TicketComment.Author?.LastName }}</strong>
-    <h5>{{ TicketComment.Content }}</h5>
-    <p>
-      {{ TicketComment.Created | toDateTime | date: "dd/MM/yyyy HH:mm"}}
-    </p>
+    <ion-label>
+      <b *ngIf="IsStaff()">[Staff] </b><b>{{ TicketComment.Author?.FirstName }} {{ TicketComment.Author?.LastName }}</b>
+      <h5>{{ TicketComment.Content }}</h5>
+      <p>
+        {{ TicketComment.Created | toDateTime | date: "dd/MM/yyyy HH:mm"}}
+      </p>
+    </ion-label>
   </ion-card-content>
 </ion-card>
