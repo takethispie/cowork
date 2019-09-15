@@ -91,6 +91,16 @@ namespace coworkpersistence.Repositories {
             return dataMapper.MultiItemCommand(sql, par);
         }
 
+
+        public List<TicketComment> LastCommentsFromUser(long userId, int numberOfComments) {
+            const string sql = "SELECT * FROM \"TicketComment\"" + innerJoin + "WHERE \"AuthorId\"= @userID ORDER BY \"Created\" DESC LIMIT @numComments;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("userId", userId),
+                new NpgsqlParameter("numComments", numberOfComments)
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
     }
 
 }

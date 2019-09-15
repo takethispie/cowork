@@ -229,6 +229,12 @@ namespace cowork.Controllers.InventoryManagement {
             return Ok(result);
         }
 
+
+        [HttpGet("LastCommentsFromUser/{userId}/{commentAmount}")]
+        public IActionResult LastCommentsFromUser(long userId, int commentAmount) {
+            var result = ticketCommentRepository.LastCommentsFromUser(userId, commentAmount);
+            return Ok(result);
+        }
     }
 
 }

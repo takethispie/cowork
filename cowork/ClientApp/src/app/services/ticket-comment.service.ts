@@ -43,4 +43,9 @@ export class TicketCommentService {
   public Update(comment: TicketComment) {
     return this.http.put<number>("api/Ticket/Comment", comment, CONTENTJSON);
   }
+
+
+  public LastCommentsFromUser(userId: number, commentAmount: number) {
+    return this.http.get<TicketComment[]>("api/Ticket/LastCommentsFromUser/" + userId + "/" + commentAmount);
+  }
 }
