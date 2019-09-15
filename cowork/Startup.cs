@@ -32,7 +32,7 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
-            if (Configuration["Environement"] == "Prod")
+            if (Configuration["Environment"] == "Prod")
                 conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             var DoFakeDataGeneration = Configuration["Options:FakeDataGeneration"];
             var secretKey = Configuration["Secret"];
@@ -45,8 +45,8 @@ namespace cowork {
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "https://cowork.azurewebsites.net",
-                        ValidAudience = "https://cowork.azurewebsites.net",
+                        ValidIssuer = "cowork.azurewebsites.net",
+                        ValidAudience = "cowork.azurewebsites.net",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
