@@ -16,6 +16,7 @@ namespace coworkdomain.InventoryManagement.Interfaces {
         TicketComment GetById(long id);
 
         List<TicketComment> GetByTicketId(long ticketId);
+        List<TicketComment> LastCommentsFromUser(long userId, int numberOfComments);
 
     }
 

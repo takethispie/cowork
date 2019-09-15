@@ -1,6 +1,8 @@
 <ion-grid>
   <ion-row class="legend">
-    <ion-col *ngFor="let field of fields">{{ field.Label }}</ion-col>
+    <ion-col>Id</ion-col>
+    <ion-col>Id du ticket</ion-col>
+    <ion-col>Id du matériel</ion-col>
     <ion-col>
       <ion-buttons>
         <ion-button size="small" (click)="dataHandler.AddItem()">

@@ -45,8 +45,8 @@ namespace cowork {
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "http://localhost:5001",
-                        ValidAudience = "http://localhost:5001",
+                        ValidIssuer = "https://cowork.azurewebsites.net",
+                        ValidAudience = "https://cowork.azurewebsites.net",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
