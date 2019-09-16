@@ -32,19 +32,16 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
-            if (Configuration["Environment"] == "Prod")
-                conn = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-            var DoFakeDataGeneration = Configuration["Options:FakeDataGeneration"];
             var secretKey = Configuration["Secret"];
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters {
-                        ValidateIssuer = false,
+                        ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-
+                        ValidIssuer = "http://localhost:5001",
                         ValidAudience = "http://localhost:5001",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
@@ -81,15 +78,10 @@ namespace cowork {
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];
             var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
-            if (!hasAdmin) {
-                var result = CreateAdmin(loginRepo, userRepo,
-                    new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
-                if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
-            }
-
-            if (DoFakeDataGeneration == "True") {
-                //TODO add bogus and generate fake data
-            }
+            if (hasAdmin) return;
+            var result = CreateAdmin(loginRepo, userRepo,
+                new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
+            if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
         }
 
 
