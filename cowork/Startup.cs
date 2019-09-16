@@ -40,13 +40,12 @@ namespace cowork {
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters {
-                        ValidateIssuer = true,
+                        ValidateIssuer = false,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "https://cowork.azurewebsites.net",
-                        ValidAudience = "https://cowork.azurewebsites.net",
+                        ValidAudience = "http://localhost:5001",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
@@ -100,11 +99,9 @@ namespace cowork {
             }
             else {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseAuthentication();
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
