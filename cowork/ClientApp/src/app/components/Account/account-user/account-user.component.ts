@@ -10,8 +10,6 @@ import {MealBookingService} from '../../../services/meal-booking.service';
 import {RoomBookingService} from '../../../services/room-booking.service';
 import {TimeSlotService} from '../../../services/time-slot.service';
 import {LoadingService} from '../../../services/loading.service';
-import {TicketService} from '../../../services/ticket.service';
-import {UserType} from '../../../models/UserType';
 import {DateTime} from 'luxon';
 import {SubscriptionType} from '../../../models/SubscriptionType';
 import {SubscriptionPickerComponent} from '../../Subscription/subscription-picker/subscription-picker.component';
@@ -33,22 +31,15 @@ export class AccountUserComponent {
 
     constructor(public auth: AuthService, public sub: SubscriptionService, public modal: ModalController, public toast: ToastService,
                 public mealReservationService: MealBookingService, public roomBookingService: RoomBookingService,
-                public timeSlotService: TimeSlotService, public loading: LoadingService) { }
+                public timeSlotService: TimeSlotService, public loading: LoadingService) {
+        this.userSub = this.auth.Subscription;
+    }
 
 
 
 
     ionViewWillEnter() {
         //recupere l'abonnement et le type d'abonnement de l'utilisateur ainsi que son espace de coworking
-        this.loading.Loading = true;
-        this.sub.OfUser(this.auth.UserId).subscribe({
-            next: res => this.userSub = res,
-            error: err => {
-                this.toast.PresentToast("Une erreur est survenue lors de la recuperation de l'abonnement de l'utilisateur");
-                this.loading.Loading = false;
-            },
-            complete: () => this.loading.Loading = false
-        });
         this.loading.Loading = true;
         this.roomBookingService.AllOfUser(this.auth.UserId).subscribe({
             next: res => {
