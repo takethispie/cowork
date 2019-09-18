@@ -21,10 +21,9 @@ export class MealComponent {
   }
 
   ionViewWillEnter() {
-      this.subscriptionService.OfUser(this.auth.UserId).pipe(
-        flatMap((sub: Subscription) => this.mealService.FromPlaceAndDate(DateTime.local().plus({ days: 1 }), sub.Place.Id)
-            .pipe(catchError(err => [])))
-      ).subscribe(res => this.AvailableMeals = res);
+      this.mealService.FromPlaceAndDate(DateTime.local().plus({ days: 1 }), this.auth.Subscription.Place.Id)
+          .pipe(catchError(err => []))
+          .subscribe(res => this.AvailableMeals = res);
   }
 
 }

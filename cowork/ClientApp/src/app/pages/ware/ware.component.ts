@@ -23,11 +23,13 @@ export class WareComponent implements OnInit {
   SelectedWare: Ware;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
-  view: CalendarView = CalendarView.Week;
+  view: CalendarView = CalendarView.Week;85
   refresh: Subject<any> = new Subject();
 
   constructor(private modalCtrl: ModalController, public loading: LoadingService,
-              private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) { }
+              private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) {
+
+  }
 
   ngOnInit() {}
 
@@ -51,7 +53,6 @@ export class WareComponent implements OnInit {
         this.loadOpeningTimeEvents();
       },
       error: err => {
-        console.log(err);
         this.toast.PresentToast("Erreur lors du chargement des réservations");
         this.loading.Loading = false;
       },
@@ -139,7 +140,6 @@ export class WareComponent implements OnInit {
         error: () => {
           this.toast.PresentToast("Erreur lors de la modification");
           this.loading.Loading = false;
-          this.ngOnInit();
         },
         complete: () => this.loading.Loading = false
       });
@@ -208,5 +208,9 @@ export class WareComponent implements OnInit {
     if(ware == null) return;
     this.SelectedWare = ware;
     this.TodayWeek();
+  }
+
+  Refresh() {
+    this.refresh.next();
   }
 }

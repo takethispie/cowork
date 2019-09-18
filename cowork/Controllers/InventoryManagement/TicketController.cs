@@ -52,6 +52,15 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpPut]
         public IActionResult Update([FromBody] Ticket ticket) {
+            var userClaim = HttpContext.User;
+            var userIdClaim = User.Identities
+                                  .FirstOrDefault(identity => identity.HasClaim(claim => claim.Type == "Id" || claim.Type == "Role"))
+                                  ?.Claims
+                                  .FirstOrDefault(claim => claim.Type == "Id");
+            if (ticket.AttributedTo == null || (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value)
+                                                                    || !long.TryParse(userIdClaim.Value, out var id)
+                                                                    || ticket.AttributedTo.Id != id)) 
+                return BadRequest("User can't modify status of a ticket not attributed to him");
             var res = repository.Update(ticket);
             if (res == -1) return Conflict();
             return Ok(res);

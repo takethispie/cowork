@@ -16,24 +16,16 @@ import {ToastService} from '../../services/toast.service';
   styleUrls: ['reservation.component.scss']
 })
 export class ReservationTabPage implements OnInit {
-  private userSub: Subscription;
-  private bookedRooms: RoomBooking[];
+  public userSub: Subscription;
+  public bookedRooms: RoomBooking[];
   public rooms: Room[];
 
-  constructor(public auth: AuthService, public subService: SubscriptionService, public loading: LoadingService,
-              public roomService: RoomService, public toast: ToastService) {}
+  constructor(public auth: AuthService, public loading: LoadingService,
+              public roomService: RoomService, public toast: ToastService) {
+    this.userSub = this.auth.Subscription;
+  }
 
   ngOnInit() {
-    this.loading.Loading = true;
-    this.subService.OfUser(this.auth.UserId).subscribe({
-      next: res => {
-        if(res == null) return;
-        this.userSub = res;
-        this.roomService.AllFromPlace(this.userSub.Place.Id).subscribe(rooms => this.rooms = rooms);
-      },
-      error: () => this.toast.PresentToast("Une erreur est survenue lors du chargement des salles"),
-      complete: () => this.loading.Loading = false
-    });
   }
 
   ionViewWillEnter() {

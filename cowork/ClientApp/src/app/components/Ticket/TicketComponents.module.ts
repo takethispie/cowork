@@ -10,6 +10,7 @@ import {TicketComponent} from './ticket/ticket.component';
 import {PipesModule} from '../../pipes/pipes-components.module';
 import {UserCommentListComponent} from './user-comment-list/user-comment-list.component';
 import {WareComponentsModule} from '../Ware/WareComponents.module';
+import {ChangeStatusPopoverComponent} from './change-status-popover/change-status-popover.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import {WareComponentsModule} from '../Ware/WareComponents.module';
         CommentFormComponent,
         TicketComponent,
         UserCommentListComponent,
+        ChangeStatusPopoverComponent,
     ],
     entryComponents: [
         TicketListComponent,
@@ -27,6 +29,7 @@ import {WareComponentsModule} from '../Ware/WareComponents.module';
         CommentFormComponent,
         TicketComponent,
         UserCommentListComponent,
+        ChangeStatusPopoverComponent,
     ],
     imports: [
         IonicModule,
@@ -42,6 +45,7 @@ import {WareComponentsModule} from '../Ware/WareComponents.module';
         CommentFormComponent,
         TicketComponent,
         UserCommentListComponent,
+        ChangeStatusPopoverComponent,
     ]
 })
 export class TicketComponentsModule {}

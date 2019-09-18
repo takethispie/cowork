@@ -3,6 +3,11 @@
     <ion-title>
       Co'Work
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="Refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content color="dark">
@@ -10,7 +15,7 @@
   <ion-grid>
     <ion-row class="calendar">
       <ion-col size="4">
-        <ware-list [UserId]="auth.UserId" [PlaceId]="auth.PlaceId" (WareSelected)="WareSelected($event)" (FirstWare)="FirstWareLoaded($event)"></ware-list>
+        <ware-list [UserId]="auth.UserId" [Refresher]="refresh" [PlaceId]="auth.PlaceId" (WareSelected)="WareSelected($event)" (FirstWare)="FirstWareLoaded($event)"></ware-list>
       </ion-col>
       <ion-col size="8">
         <ion-header>
