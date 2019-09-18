@@ -6,10 +6,10 @@
       </ion-card-title>
       <ion-card-subtitle>
         <ion-note [color]="GetStatusColor(Ticket.State)"><strong>{{ GetTicketStatus(Ticket.State) }}</strong></ion-note>
-        <i> {{ "#" + Ticket.Id }} - ouvert il y a {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }} par {{ Ticket.OpendedBy?.FirstName }} {{ Ticket.OpendedBy?.LastName }}</i>
+        <i> {{ "#" + Ticket.Id }} - ouvert le {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }} <span *ngIf="Ticket.OpendedBy != null">par {{ Ticket.OpendedBy?.FirstName }} {{ Ticket.OpendedBy?.LastName }}</span></i>
       </ion-card-subtitle>
       <ion-buttons slot="end">
-        <ion-button>
+        <ion-button (click)="OpenChangeStatus()">
           <ion-icon name="more"></ion-icon>
         </ion-button>
       </ion-buttons>
