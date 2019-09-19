@@ -15,13 +15,8 @@ namespace coworkpersistence.Handlers {
         public PostgresHandler(string connectionString) {
             if (string.IsNullOrEmpty(connectionString)) throw new Exception("Connection String is Empty");
             this.connectionString = connectionString;
-            try {
-                connection = new NpgsqlConnection(this.connectionString);
-                connection.Open();
-            }
-            catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
+            connection = new NpgsqlConnection(this.connectionString);
+            connection.Open();
         }
 
 
@@ -68,17 +63,6 @@ namespace coworkpersistence.Handlers {
         public void EndCommand() {
             reader?.Close();
         }
-
-
-        public void CloseHandler() {
-            if (reader != null) {
-                if (!reader.IsClosed) reader.Close();
-                reader.Dispose();
-            }
-
-            if (connection?.State != ConnectionState.Closed) connection?.Close();
-        }
-
     }
 
 }

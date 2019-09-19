@@ -14,15 +14,6 @@ namespace coworkdomain {
         }
 
 
-        public Login(long id, string email, long userId) {
-            Id = id;
-            Email = email;
-            UserId = userId;
-            PasswordHash = new byte[] { };
-            PasswordSalt = new byte[] { };
-        }
-
-
         public long Id { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }

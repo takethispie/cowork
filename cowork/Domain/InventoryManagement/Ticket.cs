@@ -28,7 +28,6 @@ namespace coworkdomain.InventoryManagement {
         public long OpenedById { get; set; }
         public TicketState State { get; set; }
         public string Description { get; set; }
-        public TimeSpan? PlanifiedResolution { get; set; }
         public long PlaceId { get; set; }
         public string Title { get; set; }
         public DateTime Created { get; set; }
