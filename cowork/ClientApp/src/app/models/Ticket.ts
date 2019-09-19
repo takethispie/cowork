@@ -10,7 +10,6 @@ export  class Ticket {
     public OpenedById: number;
     public State: TicketState;
     public Description: string;
-    public PlanifiedResolution: Duration;
     public PlaceId: number;
     public OpendedBy: User;
     public Ware: Ware;

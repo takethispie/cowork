@@ -33,6 +33,14 @@ namespace cowork {
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
             var secretKey = Configuration["Secret"];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("allowMobileOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:8100");
+                    });
+            });
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -41,8 +49,8 @@ namespace cowork {
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "http://localhost:5001",
-                        ValidAudience = "http://localhost:5001",
+                        ValidIssuers = new []{"http://localhost:5001", "http://localhost:8100"},
+                        ValidAudiences = new []{"http://localhost:5001", "http://localhost:8100"},
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });

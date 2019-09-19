@@ -46,26 +46,6 @@ namespace coworkpersistence.Datamappers {
 
 
         /// <summary>
-        ///     execute une requete sql count
-        /// </summary>
-        /// <param name="sql">requete sql COUNT</param>
-        /// <param name="parameters">paramètres à injecter dans la requête SQL</param>
-        /// <returns></returns>
-        public long CountCommand(string sql, List<DbParameter> parameters) {
-            if (parameters == null) parameters = new List<DbParameter>();
-            dbHandler.ExecuteCommand(sql, parameters);
-            if (!dbHandler.Read()) {
-                dbHandler.EndCommand();
-                return -1;
-            }
-
-            var result = dbHandler.GetValue<long>(0);
-            dbHandler.EndCommand();
-            return result;
-        }
-
-
-        /// <summary>
         ///     retourne une liste d'objet metier du type T
         /// </summary>
         /// <param name="sql">la requete sql à executer</param>
