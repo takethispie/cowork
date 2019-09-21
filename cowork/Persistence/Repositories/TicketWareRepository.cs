@@ -44,7 +44,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(TicketWare ticketWare) {
             const string sql =
-                "UPDATE public.\"TicketWare\" SET \"Id\"= @id, \"TicketId\"= @ticketId, \"WareId\"= @wareId WHERE \"Id\"= @id returning \"Id\";";
+                "UPDATE public.\"TicketWare\" SET \"TicketId\"= @ticketId, \"WareId\"= @wareId WHERE \"Id\"= @id returning \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", ticketWare.Id),
                 new NpgsqlParameter("ticketId", ticketWare.TicketId),

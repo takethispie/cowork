@@ -9,7 +9,7 @@ export enum FieldType {
     TimePicker,
     ReadonlyText,
     Number,
-    ReadonlyNumber
+    ReadonlyNumber,
 }
 
 export interface FieldOptions {

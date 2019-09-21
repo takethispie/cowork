@@ -88,7 +88,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(Ticket ticket) {
             var sql =
-                "UPDATE public.\"Tickets\" SET \"Id\"= @id, \"OpenedBy\"= @openedby, \"State\"= @state, \"Description\"= @description, \"PlaceId\"= @placeId, \"Title\"= @title, \"Created\"= @created WHERE \"Tickets\".\"Id\"= @id RETURNING \"Tickets\".\"Id\";";
+                "UPDATE public.\"Tickets\" SET \"OpenedBy\"= @openedby, \"State\"= @state, \"Description\"= @description, \"PlaceId\"= @placeId, \"Title\"= @title, \"Created\"= @created WHERE \"Tickets\".\"Id\"= @id RETURNING \"Tickets\".\"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", ticket.Id),
                 new NpgsqlParameter("openedBy", ticket.OpenedById),

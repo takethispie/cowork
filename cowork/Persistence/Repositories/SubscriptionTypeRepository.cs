@@ -73,7 +73,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(SubscriptionType type) {
             const string sql =
-                "UPDATE public.\"SubscriptionType\" SET \"Id\"= @id, \"Name\"= @name, \"FixedContractDurationMonth\"= @fixedContractDurationMonth, \"PriceFirstHour\"= @priceFirstHour, \"PriceNextHalfHour\"= @priceNextHalfHour, \"PriceDay\"= @priceDay, \"PriceDayStudent\"= @priceDayStudent, \"FixedContractMonthlyFee\"= @fixedContractMonthlyFee, \"ContractFreeMonthlyFee\"= @contractFreeMonthlyFee, \"Description\"= @description WHERE \"Id\"= @id RETURNING \"Id\";";
+                "UPDATE public.\"SubscriptionType\" SET \"Name\"= @name, \"FixedContractDurationMonth\"= @fixedContractDurationMonth, \"PriceFirstHour\"= @priceFirstHour, \"PriceNextHalfHour\"= @priceNextHalfHour, \"PriceDay\"= @priceDay, \"PriceDayStudent\"= @priceDayStudent, \"FixedContractMonthlyFee\"= @fixedContractMonthlyFee, \"ContractFreeMonthlyFee\"= @contractFreeMonthlyFee, \"Description\"= @description WHERE \"Id\"= @id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", type.Id),
                 new NpgsqlParameter("name", type.Name),

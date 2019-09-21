@@ -59,7 +59,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(Subscription sub) {
             const string sql =
-                "UPDATE public.\"Subscription\" SET \"Id\"= @id, \"TypeId\"= @typeId, \"LatestRenewal\"= @latestRenewal, \"UserId\"= @userId, \"PlaceId\"= @placeId, \"FixedContract\"= @fixedContract WHERE \"Subscription\".\"Id\"= @id RETURNING \"Id\";";
+                "UPDATE public.\"Subscription\" SET \"TypeId\"= @typeId, \"LatestRenewal\"= @latestRenewal, \"UserId\"= @userId, \"PlaceId\"= @placeId, \"FixedContract\"= @fixedContract WHERE \"Subscription\".\"Id\"= @id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", sub.Id),
                 new NpgsqlParameter("typeId", sub.TypeId),

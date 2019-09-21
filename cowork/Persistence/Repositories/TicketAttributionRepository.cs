@@ -87,7 +87,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(TicketAttribution ticketAttribution) {
             const string sql =
-                "UPDATE public.\"TicketAttribution\" SET \"Id\"= @id, \"StaffId\"= @staffId, \"TicketId\"= @ticketId WHERE \"Id\"= @id RETURNING \"Id\";";
+                "UPDATE public.\"TicketAttribution\" SET \"StaffId\"= @staffId, \"TicketId\"= @ticketId WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("staffId", ticketAttribution.StaffId),
                 new NpgsqlParameter("ticketId", ticketAttribution.TicketId)

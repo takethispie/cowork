@@ -41,7 +41,7 @@ namespace cowork.Controllers.Cowork {
             if (result == -1) return Conflict();
             userRegistration.User.Id = result;
             PasswordHashing.CreatePasswordHash(userRegistration.Password, out var hash, out var salt);
-            result = LoginRepository.Create(new Login(-1, hash, salt, userRegistration.Email, result));
+            result = LoginRepository.Create(new LoginController(-1, hash, salt, userRegistration.Email, result));
             if (result > -1) return Ok(userRegistration.User);
             Repository.DeleteById(userRegistration.User.Id);
             return Conflict();

@@ -52,6 +52,30 @@ namespace coworkpersistence.Repositories {
             return result ? login.UserId : -1;
         }
 
+
+        public long Update(Login login) {
+            const string sql =
+                "UPDATE public.\"Login\" SET \"PasswordHash\"= @passwordHash, \"UserId\"= @userId, \"PasswordSalt\"= @passwordSalt, \"Email\"= @email WHERE \"Id\"= @id RETURNING \"Login\".\"Id\";";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("id", login.Id),
+                new NpgsqlParameter("passwordHash", login.PasswordHash),
+                new NpgsqlParameter("passwordSalt", login.PasswordSalt),
+                new NpgsqlParameter("userId", login.UserId),
+                new NpgsqlParameter("email", login.Email)
+            };
+            return dataMapper.NoQueryCommand(sql, par);
+        }
+
+
+        public List<Login> WithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"Login\" ORDER BY \"Login\".\"Id\" LIMIT @amount OFFSET @skip;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("amount", amount),
+                new NpgsqlParameter("skip", amount * page),
+            };
+            return dataMapper.MultiItemCommand(sql, par);
+        }
+
     }
 
 }
