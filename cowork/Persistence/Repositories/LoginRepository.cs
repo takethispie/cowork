@@ -53,6 +53,15 @@ namespace coworkpersistence.Repositories {
         }
 
 
+        public Login ById(long id) {
+            const string sql = "SELECT * FROM \"Login\" where \"Id\"= @id;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("id", id)
+            };
+            return dataMapper.OneItemCommand(sql, par);
+        }
+
+
         public long Update(Login login) {
             const string sql =
                 "UPDATE public.\"Login\" SET \"PasswordHash\"= @passwordHash, \"UserId\"= @userId, \"PasswordSalt\"= @passwordSalt, \"Email\"= @email WHERE \"Id\"= @id RETURNING \"Login\".\"Id\";";

@@ -12,6 +12,8 @@ namespace coworkdomain {
 
         long Auth(string email, string password);
 
+        Login ById(long id);
+
         List<Login> WithPaging(int page, int amount);
 
     }

@@ -14,7 +14,7 @@ import List from 'linqts/dist/src/list';
 export class LoginListComponent implements OnInit {
 
     Fields: Field[] = [];
-    DataHandler: TableDataHandler<{Id: number, Email: string, UserId: number}>;
+    DataHandler: TableDataHandler<Login>;
 
     constructor(loginService: UserLoginService, modalCtrl: ModalController) {
         this.Fields = [
@@ -23,7 +23,7 @@ export class LoginListComponent implements OnInit {
             new Field(FieldType.Text, "Password", "Mot de passe", ""),
             new Field(FieldType.Number, "UserId", "Id utilisateur", -1)
         ];
-        this.DataHandler = new TableDataHandler<{Id: number, Email: string, UserId: number}>(loginService, modalCtrl, this.Fields, this.CreateModelFromFields);
+        this.DataHandler = new TableDataHandler<Login>(loginService, modalCtrl, this.Fields, this.CreateModelFromFields);
     }
 
     ngOnInit() {
@@ -37,6 +37,7 @@ export class LoginListComponent implements OnInit {
         login.Email = fieldDic["Email"][0].Value as string;
         login.UserId = fieldDic["UserId"][0].Value as number;
         login.Password = fieldDic["Password"][0].Value as string;
+        if(login.Password == null) login.Password = "";
         return login;
     }
 
