@@ -10,7 +10,7 @@ namespace coworkpersistence.DomainBuilders {
             var subType = new SubscriptionType {
                 Id = dbHandler.GetValue<long>(0 + startingIndex),
                 Name = dbHandler.GetValue<string>(1 + startingIndex),
-                FixedContractDurationMonth = dbHandler.GetValue<long>(2 + startingIndex),
+                FixedContractDurationMonth = dbHandler.GetValue<int>(2 + startingIndex),
                 PriceFirstHour = dbHandler.GetValue<double>(3 + startingIndex),
                 PriceNextHalfHour = dbHandler.GetValue<double>(4 + startingIndex),
                 PriceDay = dbHandler.GetValue<double>(5 + startingIndex),

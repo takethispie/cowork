@@ -17,7 +17,7 @@ namespace coworktest {
             placeId = placeRepository.Create(place);
             var ware = new Ware(-1, "Dell T1600", "Ordinateur de bureau", "132251573-13242142-n1235v", placeId, false);
             wareId = repo.Create(ware);
-            userId = userRepository.Create(new User(-1, "Alexandre", "testwarebooking", "warebooking@test.com", false,
+            userId = userRepository.Create(new User(-1, "Alexandre", "testwarebooking", false,
                 UserType.User));
             wareBookingId =
                 bookingRepository.Create(new WareBooking(-1, userId, wareId, DateTime.Now, DateTime.Now.AddHours(1)));

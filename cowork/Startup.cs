@@ -89,7 +89,7 @@ namespace cowork {
             var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
             if (hasAdmin) return;
             var result = CreateAdmin(loginRepo, userRepo,
-                new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
+                new User(-1, "admin", "admin", false, UserType.Admin), adminEmail, adminPassword);
             if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
         }
 

@@ -17,7 +17,7 @@ namespace coworktest {
             var room = new Room(-1, place.Id, "test", RoomType.Call);
             roomId = roomRepo.Create(room);
             room.Id = roomId;
-            var user = new User(-1, "alexandre", "felix", "test@test.com", false, UserType.User);
+            var user = new User(-1, "alexandre", "felix", false, UserType.User);
             userId = userRepo.Create(user);
             user.Id = userId;
             currentDate = DateTime.Now;
