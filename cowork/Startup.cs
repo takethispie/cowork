@@ -81,6 +81,7 @@ namespace cowork {
             services.AddSingleton<ITicketCommentRepository>(ctx => new TicketCommentRepository(conn));
             services.AddSingleton<ITicketWareRepository>(ctx => new TicketWareRepository(conn));
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
+            services.AddSingleton<IStaffLocationRepository>(ctx => new StaffLocationRepository(conn));
             services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
 
             var adminEmail = Configuration["AdminAccount:Email"];

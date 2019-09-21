@@ -91,7 +91,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(RoomBooking reservation) {
             const string sql =
-                "UPDATE public.\"RoomBooking\" SET \"Id\"= @id, \"RoomId\"= @roomId, \"UserId\"= @userId, \"Start\"= @start, \"End\"= @enddate WHERE \"Id\"= @id RETURNING  \"Id\";";
+                "UPDATE public.\"RoomBooking\" SET \"RoomId\"= @roomId, \"UserId\"= @userId, \"Start\"= @start, \"End\"= @enddate WHERE \"Id\"= @id RETURNING  \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", reservation.Id),
                 new NpgsqlParameter("roomId", reservation.RoomId),

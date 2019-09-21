@@ -9,7 +9,7 @@ import {DateTime} from "luxon";
       <app-select *ngSwitchCase="'Select'" [field]="field" (value)="SetValue($event)"></app-select>
       <ion-item *ngSwitchCase="'Text'">
         <ion-label position="floating">{{ field.Label }}</ion-label>
-        <ion-input [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-input>
+        <ion-input min="1" [name]="field.Name" [(ngModel)]="field.Value" ngModel></ion-input>
       </ion-item>
       <ion-item *ngSwitchCase="'Number'">
         <ion-label position="floating">{{ field.Label }}</ion-label>

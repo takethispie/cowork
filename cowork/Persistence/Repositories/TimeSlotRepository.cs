@@ -82,7 +82,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(TimeSlot timeSlot) {
             const string sql =
-                "UPDATE public.\"TimeSlot\" SET \"Id\"= @id, \"Day\"= @day, \"StartHour\"= @startHour, \"StartMinutes\"= @startMinutes, \"EndHour\"= @endHour, \"EndMinutes\"= @endMinutes, \"PlaceId\"= @placeId WHERE \"Id\" = @id RETURNING \"Id\";";
+                "UPDATE public.\"TimeSlot\" SET \"Day\"= @day, \"StartHour\"= @startHour, \"StartMinutes\"= @startMinutes, \"EndHour\"= @endHour, \"EndMinutes\"= @endMinutes, \"PlaceId\"= @placeId WHERE \"Id\" = @id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", timeSlot.Id),
                 new NpgsqlParameter("startHour", timeSlot.StartHour),

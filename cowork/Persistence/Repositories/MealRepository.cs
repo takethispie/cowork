@@ -85,7 +85,7 @@ namespace coworkpersistence.Repositories {
 
         public long Update(Meal meal) {
             const string sql =
-                "UPDATE public.\"Meal\" SET \"Id\"= @id, \"Date\"= @date, \"Description\"= @description, \"PlaceId\"= @placeId WHERE \"Id\"= @id RETURNING \"Id\";";
+                "UPDATE public.\"Meal\" SET \"Date\"= @date, \"Description\"= @description, \"PlaceId\"= @placeId WHERE \"Id\"= @id RETURNING \"Id\";";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", meal.Id),
                 new NpgsqlParameter("date", meal.Date),

@@ -1,0 +1,35 @@
+<ion-grid>
+  <ion-row class="legend">
+    <ion-col *ngFor="let field of Fields">{{ field.Label }}</ion-col>
+    <ion-col>
+      <ion-button size="small" (click)="DataHandler.AddItem()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+      <ion-button size="small" (click)="DataHandler.Refresh()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let row of DataHandler.Data">
+    <ion-col>{{ row.Id }}</ion-col>
+    <ion-col>{{ row.Email }}</ion-col>
+    <ion-col>*************</ion-col>
+    <ion-col>{{ row.UserId }}</ion-col>
+    <ion-col>
+      <ion-buttons>
+        <ion-button color="danger" size="small" (click)="DataHandler.Delete(row.Id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+        <ion-button size="small" (click)="DataHandler.UpdateItem(row, Fields)">
+          <ion-icon slot="icon-only" name="open"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-col>
+  </ion-row>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="DataHandler.LoadData($event)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-grid>

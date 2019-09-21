@@ -23,6 +23,7 @@ import {WareListComponent} from './ware-list/ware-list.component';
 import {DynamicFormBuilderModule} from "../dynamic-form-builder/dynamic-form-builder.module";
 import {DynamicFormModalComponent} from "./dynamic-form-modal/dynamic-form-modal.component";
 import {TicketWareListComponent} from "./ticket-ware-list/ticket-ware-list.component";
+import {LoginListComponent} from './login-list/login-list.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {TicketWareListComponent} from "./ticket-ware-list/ticket-ware-list.compo
       WareListComponent,
       DynamicFormModalComponent,
       TicketWareListComponent,
+      LoginListComponent,
   ],
   exports: [
       DynamicDataHostComponent,
@@ -66,6 +68,7 @@ import {TicketWareListComponent} from "./ticket-ware-list/ticket-ware-list.compo
       WareListComponent,
       DynamicFormModalComponent,
       TicketWareListComponent,
+      LoginListComponent,
   ],
   entryComponents: [
       DynamicDataHostComponent,
