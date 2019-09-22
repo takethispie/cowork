@@ -21,6 +21,7 @@ export class SubscriptionListComponent implements OnInit {
 
   constructor(private  subscriptionService: SubscriptionService, public modalCtrl: ModalController, 
               public subTypeService: SubscriptionTypeService, public placeService: PlaceService) {
+
     this.placeService.All().pipe(
       flatMap(places => this.subTypeService.All().pipe(map(subTypes => ({ Places: places, Types: subTypes }) )))  
     ).subscribe({
@@ -29,8 +30,9 @@ export class SubscriptionListComponent implements OnInit {
         const typeOptions = value.Types.map(type => ({ Label: type.Name, Value: type.Id }) );
         this.fields = [
           new Field(FieldType.ReadonlyNumber, "Id", "Id", -1),
-          new Field(FieldType.Number, "UserId", "Id de l'utilisateur",-1),
+          new Field(FieldType.Number, "ClientId", "Id de l'utilisateur",-1),
           new Field(FieldType.CheckBox, "FixedContract", "Contrat avec engagement", false),
+          new Field(FieldType.DatePicker, "LatestRenewal", "Dernier renouvellement", DateTime.local().toISO()),
           new Field(FieldType.Select, "PlaceId", "Espace de coworking", 0, placeOptions),
           new Field(FieldType.Select, "TypeId", "Type d'abonnement", 0, typeOptions)
         ];
@@ -47,9 +49,9 @@ export class SubscriptionListComponent implements OnInit {
     const fieldDic = new List(fields).GroupBy(f => f.Name);
     const model = new Subscription();
     model.Id = fieldDic["Id"][0].Value as number;
-    model.ClientId = fieldDic["UserId"][0].Value as number;
+    model.ClientId = fieldDic["ClientId"][0].Value as number;
     model.FixedContract = fieldDic["FixedContract"][0].Value as boolean;
-    model.LatestRenewal = DateTime.local();
+    model.LatestRenewal = DateTime.fromISO(fieldDic["LatestRenewal"][0].Value as string);
     model.PlaceId = fieldDic["PlaceId"][0].Value as number;
     model.TypeId = fieldDic["TypeId"][0].Value as number;
     return model;

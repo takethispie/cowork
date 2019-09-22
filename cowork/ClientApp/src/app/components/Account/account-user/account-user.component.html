@@ -23,8 +23,15 @@
                                 <ion-label> Expiration</ion-label>
                             </ion-item-divider>
                             <ion-item>
-                                {{ GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) | number:'1.0-0'}}
-                                Jours</ion-item>
+                                <ion-label>
+                                    {{ GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) | number:'1.0-0'}}
+                                    Jours
+                                </ion-label>
+                                <ion-button *ngIf="GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) <= 31"
+                                            color="danger" (click)="RenewSubscription()">
+                                    Renouveller
+                                </ion-button>
+                            </ion-item>
                         </span>
                     <ion-item-divider>
                         <ion-label> Prix première heure</ion-label>

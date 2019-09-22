@@ -153,4 +153,7 @@ export class AccountUserComponent {
         return TimeSlot.OrderByDay(OpenedTimes);
     }
 
+    RenewSubscription() {
+        console.log("Renewal started");
+    }
 }

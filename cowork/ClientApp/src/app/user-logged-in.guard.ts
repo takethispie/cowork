@@ -3,14 +3,16 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Observable, of} from 'rxjs';
 import {AuthService} from './services/auth.service';
 import {UserService} from './services/user.service';
-import {map} from 'rxjs/operators';
+import {flatMap, map} from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
+import {SubscriptionService} from './services/subscription.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserLoggedInGuard implements CanActivate {
-    constructor(public auth: AuthService, public router: Router, public userService: UserService) { }
+    constructor(public auth: AuthService, public router: Router, public userService: UserService,
+                public subscriptionService: SubscriptionService) { }
 
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -27,8 +29,15 @@ export class UserLoggedInGuard implements CanActivate {
             this.auth.UserType = parseInt(userType, 10);
             if(this.auth.User == null) {
                 return this.userService.ById(parseInt(userId, 10)).pipe(
-                    map(res => {
+                    flatMap(res => {
                         this.auth.User = res;
+                        this.auth.UserId = res.Id;
+                        this.auth.UserType = res.Type;
+                        return this.subscriptionService.OfUser(res.Id);
+                    }),
+                    map(res => {
+                        this.auth.Subscription = res;
+                        this.auth.PlaceId = res.PlaceId;
                         return true;
                     })
                 );

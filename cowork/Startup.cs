@@ -7,6 +7,8 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence;
 using coworkpersistence.Repositories;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +34,7 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
+            services.AddHangfire(config => config.UsePostgreSqlStorage(conn));
             var secretKey = Configuration["Secret"];
             services.AddCors(options =>
             {
@@ -103,6 +106,7 @@ namespace cowork {
                 app.UseHsts();
             }
             app.UseAuthentication();
+            
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -116,6 +120,7 @@ namespace cowork {
                 spa.Options.SourcePath = "ClientApp";
                 if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
+            app.UseHangfireServer();
         }
 
 
