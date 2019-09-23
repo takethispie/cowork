@@ -6,6 +6,7 @@ import {UserService} from './services/user.service';
 import {flatMap, map} from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import {SubscriptionService} from './services/subscription.service';
+import {UserType} from './models/UserType';
 
 @Injectable({
     providedIn: 'root'
@@ -33,11 +34,12 @@ export class UserLoggedInGuard implements CanActivate {
                         this.auth.User = res;
                         this.auth.UserId = res.Id;
                         this.auth.UserType = res.Type;
+                        if(this.auth.UserType === UserType.Admin) return of(null);
                         return this.subscriptionService.OfUser(res.Id);
                     }),
                     map(res => {
                         this.auth.Subscription = res;
-                        this.auth.PlaceId = res.PlaceId;
+                        if(res != null) this.auth.PlaceId = res.PlaceId;
                         return true;
                     })
                 );

@@ -24,11 +24,12 @@ export class TabsPage {
           {
             text: "Oui",
             handler: () => {
-              localStorage.setItem('auth_token', null);
-              localStorage.setItem('UserId', null);
-              localStorage.setItem('UserType', null);
-              localStorage.setItem('PlaceId', null);
+              localStorage.clear();
               this.auth.User = null;
+              this.auth.UserType = null;
+              this.auth.Subscription = null;
+              this.auth.UserId = -1;
+              this.auth.PlaceId = -1;
               this.navCtrl.navigateRoot('Auth');
             }
           },

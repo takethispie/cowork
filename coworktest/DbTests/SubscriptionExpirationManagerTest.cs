@@ -53,7 +53,7 @@ namespace coworktest.DbTests {
             var manager = new SubscriptionExpirationManager(userRepository, subscriptionRepository, loginRepository);
             var res = manager.GetEmailListOfSoonToBeExpiredSubscription(3);
             Assert.NotNull(res);
-            Assert.AreEqual(1, res.Count);
+            Assert.AreEqual(1, res.Count());
         }
         
         
@@ -62,7 +62,7 @@ namespace coworktest.DbTests {
             var manager = new SubscriptionExpirationManager(userRepository, subscriptionRepository, loginRepository);
             var res = manager.GetEmailListOfSoonToBeExpiredSubscription(30);
             Assert.NotNull(res);
-            Assert.AreEqual(2, res.Count);
+            Assert.AreEqual(2, res.Count());
             Assert.IsTrue(res.Any(email => email == "test@test.com"));
             Assert.IsTrue(res.Any(email => email == "test3@test.com"));
             Assert.IsTrue(res.All(email => email != "test2@test.com"));

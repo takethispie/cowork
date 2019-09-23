@@ -37,9 +37,11 @@ export class AccountUserComponent {
 
 
 
-
     ionViewWillEnter() {
-        //recupere l'abonnement et le type d'abonnement de l'utilisateur ainsi que son espace de coworking
+        console.log(this.userSub.LatestRenewal.diffNow("days").days);
+        if(this.userSub.LatestRenewal.diffNow("days").days < 30) {
+            this.toast.PresentToast("Attention votre abonnement sera expiré à la fin du mois !")
+        }
         this.loading.Loading = true;
         this.roomBookingService.AllOfUser(this.auth.UserId).subscribe({
             next: res => {
@@ -78,10 +80,10 @@ export class AccountUserComponent {
 
 
     public GetSubscriptionExpirationDate(subDate: string, subType: SubscriptionType) {
-        const now = DateTime.local().set({ second: 0, millisecond: 0});
+        const now = DateTime.local().set({hour: 0, minute: 0, second: 0, millisecond: 0});
         const subDateParsed = DateTime.fromISO(subDate);
-        const expirationDate = subDateParsed.plus({ months: subType.FixedContractDurationMonth });
-        return expirationDate.diff(now).as('days');
+        const expirationDate = subDateParsed.plus({ month: subType.FixedContractDurationMonth });
+        return expirationDate.diff(now.set({hour: 0, minute: 0, second: 0, millisecond: 0})).as('day');
     }
 
     async ChangeSubscription() {
@@ -96,6 +98,7 @@ export class AccountUserComponent {
                 this.userSub.TypeId = res.data.SubscriptionType.Id;
                 this.userSub.Type = res.data.SubscriptionType;
                 this.userSub.FixedContract = res.data.ContractType === "FixedContract";
+                this.userSub.LatestRenewal = DateTime.local();
                 this.loading.Loading = true;
                 this.sub.Update(this.userSub).subscribe({
                     next: subId => {
@@ -153,7 +156,7 @@ export class AccountUserComponent {
         return TimeSlot.OrderByDay(OpenedTimes);
     }
 
-    RenewSubscription() {
-        console.log("Renewal started");
+    async OnRenewClick() {
+        await this.ChangeSubscription();
     }
 }

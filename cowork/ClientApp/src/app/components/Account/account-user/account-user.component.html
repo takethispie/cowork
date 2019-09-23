@@ -28,7 +28,7 @@
                                     Jours
                                 </ion-label>
                                 <ion-button *ngIf="GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) <= 31"
-                                            color="danger" (click)="RenewSubscription()">
+                                            color="danger" (click)="OnRenewClick()">
                                     Renouveller
                                 </ion-button>
                             </ion-item>
@@ -36,25 +36,23 @@
                     <ion-item-divider>
                         <ion-label> Prix première heure</ion-label>
                     </ion-item-divider>
-                    <ion-item *ngIf="userSub.Type.PriceFirstHour > 0"> {{ userSub.Type.PriceFirstHour }}Euros
+                    <ion-item *ngIf="userSub.Type.PriceFirstHour > 0"> {{ userSub.Type.PriceFirstHour }} €
                     </ion-item>
                     <ion-item *ngIf="userSub.Type.PriceFirstHour === 0"> Gratuit</ion-item>
                     <ion-item-divider>
                         <ion-label> Prix demi-heure suivante</ion-label>
                     </ion-item-divider>
-                    <ion-item *ngIf="userSub.Type.PriceNextHalfHour > 0"> {{ userSub.Type.PriceNextHalfHour }}Euros
+                    <ion-item *ngIf="userSub.Type.PriceNextHalfHour > 0"> {{ userSub.Type.PriceNextHalfHour }} €
                     </ion-item>
                     <ion-item *ngIf="userSub.Type.PriceNextHalfHour === 0"> Gratuit</ion-item>
                     <ion-item-divider>
                         <ion-label> Prix journée</ion-label>
                     </ion-item-divider>
-                    <ion-item
-                            *ngIf="userSub.Type.PriceDay > 0 && !userSub.Client.IsAStudent"> {{ userSub.Type.PriceDay }}
-                        Euros
+                    <ion-item *ngIf="userSub.Type.PriceDay > 0 && !userSub.Client.IsAStudent">
+                        {{ userSub.Type.PriceDay }} €
                     </ion-item>
-                    <ion-item
-                            *ngIf="userSub.Type.PriceDay > 0 && userSub.Client.IsAStudent"> {{ userSub.Type.PriceDayStudent }}
-                        Euros
+                    <ion-item *ngIf="userSub.Type.PriceDay > 0 && userSub.Client.IsAStudent">
+                        {{ userSub.Type.PriceDayStudent }} €
                     </ion-item>
                     <ion-item *ngIf="userSub.Type.PriceDay === 0"> Gratuit</ion-item>
                 </ion-list>

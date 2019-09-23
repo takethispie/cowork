@@ -27,10 +27,12 @@ export class WareListComponent implements OnInit {
 
     ngOnInit() {
         this.Refresher.subscribe({
-           next: value => this.ReloadData()
+           next: () => this.ReloadData()
         });
 
         if(this.PlaceId == null) return;
+        this.page = 0;
+        this.Wares = [];
         this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
             if(res.length === 0) return;
             res.forEach(ware => this.Wares.push(ware));

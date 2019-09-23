@@ -35,7 +35,6 @@
     <Folder Include="ClientApp" />
     <Folder Include="ClientApp\src\app\components\dynamic-form-builder\atoms" />
     <Folder Include="ClientApp\src\app\services" />
-    <Folder Include="Service" />
   </ItemGroup>
 
 

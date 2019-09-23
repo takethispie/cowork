@@ -23,7 +23,7 @@ namespace cowork {
         }
 
 
-        public List<string> GetEmailListOfSoonToBeExpiredSubscription(int threshold) {
+        public IEnumerable<string> GetEmailListOfSoonToBeExpiredSubscription(int threshold) {
             var soonToExpire = subscriptionRepository.GetAll()
                 .Where(sub => sub.FixedContract && isSubscriptionExpiringSoon(threshold, sub));
             var userIdsWithExpiringSub = soonToExpire
@@ -34,9 +34,15 @@ namespace cowork {
         }
 
 
-        private static bool isSubscriptionExpiringSoon(int threshold, Subscription sub) {
+        public IEnumerable<Subscription> GetAllExpiredSubscriptions() {
+            return subscriptionRepository.GetAll()
+                .Where(sub => sub.FixedContract && isSubscriptionExpiringSoon(0, sub));
+        }
+
+
+        private static bool isSubscriptionExpiringSoon(int daysThreshold, Subscription sub) {
             var expiration = sub.LatestRenewal.AddMonths(sub.Type.FixedContractDurationMonth);
-            var limitBeforeNotification = DateTime.Today.AddDays(threshold);
+            var limitBeforeNotification = DateTime.Today.AddDays(daysThreshold);
             return expiration < limitBeforeNotification;
         }
 

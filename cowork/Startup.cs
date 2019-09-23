@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using cowork.Service;
 using coworkdomain;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
@@ -64,7 +65,6 @@ namespace cowork {
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-
             var userRepo = new UserRepository(conn);
             var loginRepo = new LoginRepository(conn);
             //instancing all repositories 
@@ -86,6 +86,7 @@ namespace cowork {
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
             services.AddSingleton<IStaffLocationRepository>(ctx => new StaffLocationRepository(conn));
             services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
+            services.AddSingleton<IScheduledService, ExpiredSubscriptionDeletionService>();
 
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];

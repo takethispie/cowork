@@ -14,7 +14,7 @@ export class TimeSlot {
     
     public static OrderByDay(slots: TimeSlot[]) {
         const list = new List<TimeSlot>(slots).OrderBy(slot => slot.Day);
-        const first = list.First();
+        const first = list.FirstOrDefault();
         list.Remove(list.First());
         list.Add(first);
         return list.ToArray();
