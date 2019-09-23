@@ -16,7 +16,7 @@ namespace coworktest {
             var place = new Place(-1, "test", false, false, false, 3, 3, 3);
             placeId = placeRepo.Create(place);
             place.Id = placeId;
-            var user = new User(-1, "alexandre", "felix", "test@test.com", false, UserType.User);
+            var user = new User(-1, "alexandre", "felix", false, UserType.User);
             userId = userRepo.Create(user);
             user.Id = userId;
             var sub = new Subscription(-1, subTypeId, userId, DateTime.Now, placeId, false);
@@ -53,7 +53,7 @@ namespace coworktest {
 
         [Test]
         public void Create() {
-            var user = new User(-1, "jean", "jean", "jean@jean.com", true, UserType.User);
+            var user = new User(-1, "jean", "jean", true, UserType.User);
             var userid = userRepo.Create(user);
             var sub = new Subscription(-1, subTypeId, userid, DateTime.Now, placeId, false);
             var result = repo.Create(sub);

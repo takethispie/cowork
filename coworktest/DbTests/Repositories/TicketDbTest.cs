@@ -15,9 +15,9 @@ namespace coworktest {
         public void Setup() {
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepo.Create(place);
-            staff = new User(-1, "ticket1user", "t", "test@test.com", false, UserType.User);
+            staff = new User(-1, "ticket1user", "t", false, UserType.User);
             persId = userRepo.Create(staff);
-            user = new User(-1, "ticket2user", "t", "test@test.com", false, UserType.User);
+            user = new User(-1, "ticket2user", "t", false, UserType.User);
             userId = userRepo.Create(user);
             var ware = new Ware(-1, "Dell T1600", "Ordinateur de bureau", "132251573-13242142-n1235v", placeId, false);
             wareId = wareRepo.Create(ware);

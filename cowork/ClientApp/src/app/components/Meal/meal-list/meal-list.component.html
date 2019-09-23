@@ -1,6 +1,11 @@
 <ion-grid>
+    <ion-row *ngIf="Meals.length === 0">
+        <ion-col offset="3" size="6">
+            <ion-item >Aucun plateau repas disponible</ion-item>
+        </ion-col>
+    </ion-row>
     <ion-row *ngFor="let item of Meals">
-        <ion-col offset="3" size="5">
+        <ion-col offset="3" size="6">
             <ion-card color="light">
                 <ion-card-header color="primary">
                     <ion-label>{{ item.Date.toFormat("dd/MM/yyyy") }}</ion-label>

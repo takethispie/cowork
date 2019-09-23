@@ -60,6 +60,15 @@ namespace coworkpersistence.Repositories {
             };
             return dataMapper.OneItemCommand(sql, par);
         }
+        
+        
+        public Login ByUserId(long id) {
+            const string sql = "SELECT * FROM \"Login\" where \"UserId\"= @id;";
+            var par = new List<DbParameter> {
+                new NpgsqlParameter("id", id)
+            };
+            return dataMapper.OneItemCommand(sql, par);
+        }
 
 
         public long Update(Login login) {

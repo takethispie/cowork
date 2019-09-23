@@ -21,17 +21,17 @@ import {DateTime} from "luxon";
       </ion-item>
       <ion-item *ngSwitchCase="'DatePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" placeholder="Choisir une date" [value]="field.Value" [(ngModel)]="field.Value"
                       max="{{MaxYear()}}" (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'DateTimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value"
+        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" placeholder="Choisir une date" [value]="field.Value" [(ngModel)]="field.Value"
                       max="{{MaxYear()}}" (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'TimePicker'">
         <ion-label position="floating">{{field.Label}}</ion-label>
-        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value" 
+        <ion-datetime displayFormat="HH:mm" picker-format="HH:mm" placeholder="Choisir une heure" [value]="field.Value" [(ngModel)]="field.Value"
                       (ionChange)="SetDate($event)" ngModel></ion-datetime>
       </ion-item>
       <ion-item *ngSwitchCase="'ReadonlyText'">

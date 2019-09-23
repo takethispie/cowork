@@ -23,13 +23,13 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
-            testUser = repo.Create(new User(-1, "Alexandre", "Felix", "test@test.com", false, UserType.User));
+            testUser = repo.Create(new User(-1, "Alexandre", "Felix", false, UserType.User));
         }
 
 
         [Test]
         public void CreateUser() {
-            var user = new User(-1, "jean", "jean", "jean@jean.com", true, UserType.User);
+            var user = new User(-1, "jean", "jean", true, UserType.User);
             var result = repo.Create(user) > -1;
             Assert.AreEqual(true, result);
         }
@@ -51,7 +51,7 @@ namespace coworktest {
 
         [Test]
         public void CreateAndDeleteUser() {
-            var user = new User(-1, "todelete", "todelete", "to@delete.com", false, UserType.User);
+            var user = new User(-1, "todelete", "todelete", false, UserType.User);
             var id = repo.Create(user);
             var result = repo.DeleteById(id);
             Assert.AreEqual(true, result);

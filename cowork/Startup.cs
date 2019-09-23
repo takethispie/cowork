@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using System.Text;
+using cowork.Service;
 using coworkdomain;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence;
 using coworkpersistence.Repositories;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +35,7 @@ namespace cowork {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             var conn = Configuration["Database:ConnectionString"];
+            services.AddHangfire(config => config.UsePostgreSqlStorage(conn));
             var secretKey = Configuration["Secret"];
             services.AddCors(options =>
             {
@@ -61,7 +65,6 @@ namespace cowork {
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-
             var userRepo = new UserRepository(conn);
             var loginRepo = new LoginRepository(conn);
             //instancing all repositories 
@@ -83,13 +86,14 @@ namespace cowork {
             services.AddSingleton<IWareBookingRepository>(ctx => new WareBookingRepository(conn));
             services.AddSingleton<IStaffLocationRepository>(ctx => new StaffLocationRepository(conn));
             services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
+            services.AddSingleton<IScheduledService, ExpiredSubscriptionDeletionService>();
 
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];
             var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
             if (hasAdmin) return;
             var result = CreateAdmin(loginRepo, userRepo,
-                new User(-1, "admin", "admin", adminEmail, false, UserType.Admin), adminEmail, adminPassword);
+                new User(-1, "admin", "admin", false, UserType.Admin), adminEmail, adminPassword);
             if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
         }
 
@@ -103,6 +107,7 @@ namespace cowork {
                 app.UseHsts();
             }
             app.UseAuthentication();
+            
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -116,6 +121,7 @@ namespace cowork {
                 spa.Options.SourcePath = "ClientApp";
                 if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
+            app.UseHangfireServer();
         }
 
 

@@ -14,6 +14,8 @@ namespace coworkdomain {
 
         Login ById(long id);
 
+        Login ByUserId(long id);
+
         List<Login> WithPaging(int page, int amount);
 
     }

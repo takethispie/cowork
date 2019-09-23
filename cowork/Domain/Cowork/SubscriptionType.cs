@@ -5,7 +5,7 @@ namespace coworkdomain.Cowork {
         public SubscriptionType() { }
 
 
-        public SubscriptionType(long id, string name, long fixedContractDurationMonth,
+        public SubscriptionType(long id, string name, int fixedContractDurationMonth,
                                 double priceFirstHour, double priceNextHalfHour, double priceDay,
                                 double priceDayStudent,
                                 double monthlyFeeFixedContract, double monthlyFeeContractFree, string description) {
@@ -24,7 +24,7 @@ namespace coworkdomain.Cowork {
 
         public long Id { get; set; }
         public string Name { get; set; }
-        public long FixedContractDurationMonth { get; set; }
+        public int FixedContractDurationMonth { get; set; }
         public double PriceFirstHour { get; set; }
         public double PriceNextHalfHour { get; set; }
         public double PriceDay { get; set; }

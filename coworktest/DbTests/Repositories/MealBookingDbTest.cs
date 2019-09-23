@@ -14,7 +14,7 @@ namespace coworktest {
             placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
             date = DateTime.Today;
             mealId = mealRepo.Create(new Meal(-1, date, "salade tomate", placeId));
-            userId = userRepo.Create(new User(-1, "Alexandre", "Felix", "test@test.com", false, UserType.User));
+            userId = userRepo.Create(new User(-1, "Alexandre", "Felix", false, UserType.User));
             mealResId = repo.Create(new MealBooking(-1, mealId, userId, ""));
         }
 

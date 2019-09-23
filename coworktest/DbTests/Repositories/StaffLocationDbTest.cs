@@ -12,7 +12,7 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
-            var user = new User(-1, "staff", "staff", "staff@staff.com", true, UserType.Staff);
+            var user = new User(-1, "staff", "staff", true, UserType.Staff);
             userId = userRepository.Create(user);
             var place = new Place(-1, "stafflocationtest", true, true, true, 10, 10, 50);
             placeId = placeRepository.Create(place);
@@ -47,7 +47,7 @@ namespace coworktest {
 
         [Test]
         public void Create() {
-            var user = new User(-1, "staff2", "staff2", "staff2@staff.com", true, UserType.Staff);
+            var user = new User(-1, "staff2", "staff2", true, UserType.Staff);
             var newUser = userRepository.Create(user);
             var location = new StaffLocation(-1, newUser, placeId);
             var result = staffLocationRepository.Create(location);
@@ -85,7 +85,7 @@ namespace coworktest {
 
         [Test]
         public void Update() {
-            var user = new User(-1, "staff3", "staff3", "staff3@staff.com", true, UserType.Staff);
+            var user = new User(-1, "staff3", "staff3", true, UserType.Staff);
             var newUser = userRepository.Create(user);
             var current = staffLocationRepository.GetById(staffLocationId);
             Assert.AreEqual(userId, current.UserId);

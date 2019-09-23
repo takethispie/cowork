@@ -29,7 +29,7 @@ namespace coworktest {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
             loginRepository = new LoginRepository(connection);
             userRepository = new UserRepository(connection);
-            userId = userRepository.Create(new User(-1, "Alexandre", "testLogin", "test", false, UserType.User));
+            userId = userRepository.Create(new User(-1, "Alexandre", "testLogin", false, UserType.User));
         }
 
 
