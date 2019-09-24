@@ -37,14 +37,6 @@ namespace cowork {
             var conn = Configuration["Database:ConnectionString"];
             services.AddHangfire(config => config.UsePostgreSqlStorage(conn));
             var secretKey = Configuration["Secret"];
-            services.AddCors(options =>
-            {
-                options.AddPolicy("allowMobileOrigin",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:8100", "http://localhost");
-                    });
-            });
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -62,6 +54,16 @@ namespace cowork {
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services
+                .AddCors(options =>
+                {
+                    options.AddPolicy("allowMobileOrigin",
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin();
+                            builder.AllowAnyMethod();
+                        });
+                });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
