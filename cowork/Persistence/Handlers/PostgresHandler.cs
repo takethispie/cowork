@@ -6,7 +6,7 @@ using Npgsql;
 
 namespace coworkpersistence.Handlers {
 
-    public class PostgresHandler : ISqlDbHandler {
+    public class PostgresHandler : ISqlDbHandler, IDisposable {
 
         private readonly NpgsqlConnection connection;
         private DbDataReader reader;
@@ -63,6 +63,13 @@ namespace coworkpersistence.Handlers {
         public void EndCommand() {
             reader?.Close();
         }
+
+
+        public void Dispose() {
+            connection?.Dispose();
+            reader?.Dispose();
+        }
+
     }
 
 }

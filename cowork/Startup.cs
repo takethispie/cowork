@@ -42,7 +42,7 @@ namespace cowork {
                 options.AddPolicy("allowMobileOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8100");
+                        builder.WithOrigins("http://localhost:8100", "http://localhost");
                     });
             });
             services
@@ -53,8 +53,8 @@ namespace cowork {
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuers = new []{"http://localhost:5001", "http://localhost:8100"},
-                        ValidAudiences = new []{"http://localhost:5001", "http://localhost:8100"},
+                        ValidIssuers = new []{"http://localhost:5001", "http://localhost:8100","http://localhost"},
+                        ValidAudiences = new []{"http://localhost:5001", "http://localhost:8100", "https://localhost"},
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
