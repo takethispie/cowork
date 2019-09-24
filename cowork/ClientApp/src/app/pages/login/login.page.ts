@@ -36,19 +36,4 @@ export class LoginPage implements OnInit {
   Register() {
     this.router.navigate(['Register']);
   }
-
-  LoginTakethispie() {
-    this.loading.Loading = true;
-    this.auth.Login("takethispie", "ariba1").subscribe({
-      next: response => {
-        if(response) {
-          this.router.navigate(['']);
-        }
-      }, error: (err: HttpErrorResponse)=> {
-        if(err.status === 404) this.toast.PresentToast("Erreur de connexion");
-        if(err.status === 401 || err.status === 500) this.toast.PresentToast("Email ou Mot de passe invalide !");
-        this.toast.PresentToast("Une erreur inconnue est survenue");
-      }, complete: () => this.loading.Loading = false
-    });
-  }
 }
