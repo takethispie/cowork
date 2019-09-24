@@ -60,8 +60,8 @@ namespace cowork {
                     options.AddPolicy("allowMobileOrigin",
                         builder =>
                         {
-                            builder.AllowAnyOrigin();
-                            builder.AllowAnyMethod();
+                            builder.WithOrigins("http://localhost:8100", "http://localhost");
+                            builder.AllowAnyHeader();
                         });
                 });
 
@@ -112,7 +112,7 @@ namespace cowork {
             
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseCors("allowMobileOrigin");
             app.UseMvc(routes => {
                 routes.MapRoute(
                     "default",

@@ -13,7 +13,7 @@ namespace cowork.Service {
         public ExpiredSubscriptionDeletionService(IUserRepository userRepository, ILoginRepository loginRepository, ISubscriptionRepository subscriptionRepository) {
             subscriptionExpirationManager = new SubscriptionExpirationManager(userRepository, subscriptionRepository, loginRepository);
             this.subscriptionRepository = subscriptionRepository;
-            RecurringJob.AddOrUpdate(() => Process(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(() => Process(), Cron.Daily);
         }
 
 
