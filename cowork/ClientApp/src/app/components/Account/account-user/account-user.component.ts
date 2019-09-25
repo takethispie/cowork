@@ -38,7 +38,6 @@ export class AccountUserComponent {
 
 
     ionViewWillEnter() {
-        console.log(this.userSub.LatestRenewal.diffNow("days").days);
         if(this.userSub.LatestRenewal.diffNow("days").days < 30) {
             this.toast.PresentToast("Attention votre abonnement sera expiré à la fin du mois !")
         }
