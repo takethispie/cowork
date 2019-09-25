@@ -27,7 +27,7 @@ namespace coworktest.InMemoryRepositories {
 
 
         public List<MealBooking> GetAllFromDateAndPlace(DateTime date, long placeId) {
-            throw new NotImplementedException();
+            return new List<MealBooking>();
         }
 
 

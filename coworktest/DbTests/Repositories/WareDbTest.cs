@@ -4,6 +4,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -24,15 +25,6 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            bookingRepository.Delete(wareBookingId);
-            repo.Delete(wareId);
-            placeRepository.Delete(placeId);
-            userRepository.DeleteById(userId);
-        }
-
-
         private IWareRepository repo;
         private IPlaceRepository placeRepository;
         private IWareBookingRepository bookingRepository;
@@ -44,10 +36,10 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new WareRepository(connection);
-            placeRepository = new PlaceRepository(connection);
-            bookingRepository = new WareBookingRepository(connection);
-            userRepository = new UserRepository(connection);
+            repo = new InMemoryWareRepository();
+            placeRepository = new InMemoryPlaceRepository();
+            bookingRepository = new InMemoryWareBookingRepository();
+            userRepository = new InMemoryUserRepository();
         }
 
 

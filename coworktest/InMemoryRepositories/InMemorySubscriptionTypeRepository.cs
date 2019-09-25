@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 
@@ -14,37 +15,52 @@ namespace coworktest.InMemoryRepositories {
         }
         
         public List<SubscriptionType> GetAll() {
-            throw new System.NotImplementedException();
+            return SubscriptionTypes;
         }
 
 
         public SubscriptionType GetById(long id) {
-            throw new System.NotImplementedException();
+            return SubscriptionTypes.Find(s => s.Id == id);
         }
 
 
         public SubscriptionType GetByName(string name) {
-            throw new System.NotImplementedException();
+            return SubscriptionTypes.Find(s => s.Name == name);
         }
 
 
         public bool Delete(long id) {
-            throw new System.NotImplementedException();
+            var item = SubscriptionTypes.Find(b => b.Id == id);
+            if (item == null) return false;
+            SubscriptionTypes.Remove(item);
+            return true;
         }
 
 
         public long Create(SubscriptionType type) {
-            throw new System.NotImplementedException();
+            var id = SubscriptionTypes.Count;
+            type.Id = id;
+            SubscriptionTypes.Add(type);
+            return id;
         }
 
 
-        public long Update(SubscriptionType type) {
-            throw new System.NotImplementedException();
+        public long Update(SubscriptionType item) {
+            long id = -1;
+            SubscriptionTypes = SubscriptionTypes.Select(i => {
+                if (i.Id == item.Id) {
+                    id = item.Id;
+                    return item;
+                }
+                id = -1;
+                return i;
+            }).ToList();
+            return id;
         }
 
 
         public List<SubscriptionType> GetAllWithPaging(int page, int amount) {
-            throw new System.NotImplementedException();
+            return SubscriptionTypes.Skip(page * amount).Take(amount).ToList();
         }
 
     }

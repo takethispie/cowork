@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 
@@ -6,52 +7,65 @@ namespace coworktest.InMemoryRepositories {
 
     public class InMemoryRoomRepository : IRoomRepository {
 
-        public List<Room> rooms;
+        public List<Room> Rooms;
 
 
         public InMemoryRoomRepository() {
-            rooms = new List<Room>();
+            Rooms = new List<Room>();
         }
         
         public List<Room> GetAll() {
-            throw new System.NotImplementedException();
+            return Rooms;
         }
 
 
         public Room GetById(long id) {
-            throw new System.NotImplementedException();
+            return Rooms.Find(r => r.Id == id);
         }
 
 
         public Room GetByName(string name) {
-            throw new System.NotImplementedException();
+            return Rooms.Find(r => r.Name == name);
         }
 
 
         public List<Room> GetAllFromPlace(long placeId) {
-            throw new System.NotImplementedException();
+            return Rooms.Where(r => r.PlaceId == placeId).ToList();
         }
 
 
         public List<Room> GetAllWithPaging(int page, int amount) {
-            throw new System.NotImplementedException();
+            return Rooms.Skip(page * amount).Take(amount).ToList();
         }
 
 
         public long Create(Room room) {
-            throw new System.NotImplementedException();
+            var id = Rooms.Count;
+            room.Id = id;
+            Rooms.Add(room);
+            return id;
         }
 
 
         public bool Delete(long id) {
-            throw new System.NotImplementedException();
+            var item = Rooms.Find(r => r.Id == id);
+            if (item == null) return false;
+            Rooms.Remove(item);
+            return true;
         }
 
 
-        public long Update(Room room) {
-            throw new System.NotImplementedException();
+        public long Update(Room item) {
+            long id = -1;
+            Rooms = Rooms.Select(i => {
+                if (i.Id == item.Id) {
+                    id = item.Id;
+                    return item;
+                }
+                id = -1;
+                return i;
+            }).ToList();
+            return id;
         }
-
     }
-
 }

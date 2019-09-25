@@ -1,6 +1,7 @@
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -15,12 +16,6 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(subtypeId);
-        }
-
-
         private string connection;
         private long subtypeId;
         private ISubscriptionTypeRepository repo;
@@ -29,7 +24,7 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new SubscriptionTypeRepository(connection);
+            repo = new InMemorySubscriptionTypeRepository();
         }
 
 

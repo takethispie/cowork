@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
@@ -15,47 +17,62 @@ namespace coworktest.InMemoryRepositories {
         }
         
         public List<Ticket> GetAll() {
-            throw new System.NotImplementedException();
+            return Tickets;
         }
 
 
         public List<Ticket> GetAllOfPlace(long placeId) {
-            throw new System.NotImplementedException();
+            return Tickets.FindAll(t => t.PlaceId == placeId);
         }
 
 
         public Ticket GetById(long id) {
-            throw new System.NotImplementedException();
+            return Tickets.Find(t => t.Id == id);
         }
 
 
         public List<Ticket> GetAllOpenedBy(User user) {
-            throw new System.NotImplementedException();
+            return Tickets.FindAll(t => t.OpenedById == user.Id);
         }
 
 
         public List<Ticket> GetAllByPaging(int page, int amount) {
-            throw new System.NotImplementedException();
+            return Tickets.Skip(page * amount).Take(amount).ToList();
         }
 
 
         public List<Ticket> GetAllWithState(int state) {
-            throw new System.NotImplementedException();
+            return Tickets.FindAll(t => (int)t.State == state);
         }
 
 
         public bool Delete(long id) {
-            throw new System.NotImplementedException();
+            var item = Tickets.Find(b => b.Id == id);
+            if (item == null) return false;
+            Tickets.Remove(item);
+            return true;
         }
 
 
-        public long Update(Ticket ticket) {
-            throw new System.NotImplementedException();
+        public long Update(Ticket item) {
+            long id = -1;
+            Tickets = Tickets.Select(i => {
+                if (i.Id == item.Id) {
+                    id = item.Id;
+                    return item;
+                }
+                id = -1;
+                return i;
+            }).ToList();
+            return id;
         }
 
 
         public long Create(Ticket ticket) {
-            throw new System.NotImplementedException();
+            var id = Tickets.Count;
+            ticket.Id = id;
+            Tickets.Add(ticket);
+            return id;
         }
 
     }

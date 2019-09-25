@@ -2,6 +2,7 @@ using System;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -19,15 +20,6 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(mealResId);
-            mealRepo.Delete(mealId);
-            userRepo.DeleteById(userId);
-            placeRepo.Delete(placeId);
-        }
-
-
         private long mealResId, mealId, userId, placeId;
         private IMealBookingRepository repo;
         private IMealRepository mealRepo;
@@ -40,10 +32,10 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            mealRepo = new MealRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-            userRepo = new UserRepository(connection);
-            repo = new MealBookingRepository(connection);
+            mealRepo = new InMemoryMealRepository();
+            placeRepo = new InMemoryPlaceRepository();
+            userRepo = new InMemoryUserRepository();
+            repo = new InMemoryMealBookingRepository();
         }
 
 
@@ -69,13 +61,6 @@ namespace coworktest {
         [Test]
         public void GetAll() {
             var result = repo.GetAll();
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetAllFromDateAndPlace() {
-            var result = repo.GetAllFromDateAndPlace(date, placeId);
             Assert.NotNull(result);
         }
 

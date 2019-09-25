@@ -25,15 +25,6 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void Teardown() {
-            repo.Delete(subId);
-            typeRepo.Delete(subTypeId);
-            placeRepo.Delete(placeId);
-            userRepo.DeleteById(userId);
-        }
-
-
         private ISubscriptionRepository repo;
         private ISubscriptionTypeRepository typeRepo;
         private IUserRepository userRepo;

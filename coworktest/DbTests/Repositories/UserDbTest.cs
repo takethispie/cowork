@@ -2,6 +2,7 @@ using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Datamappers;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -17,7 +18,7 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new UserRepository(connection);
+            repo = new InMemoryUserRepository();
         }
 
 
@@ -67,13 +68,6 @@ namespace coworktest {
             var updatedUser = repo.GetById(testUser);
             Assert.AreEqual("jeremy", updatedUser.FirstName);
         }
-
-
-        [TearDown]
-        public void TearDown() {
-            repo.DeleteById(testUser);
-        }
-
     }
 
 }

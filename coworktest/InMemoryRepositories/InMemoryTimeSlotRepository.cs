@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 
@@ -14,37 +15,52 @@ namespace coworktest.InMemoryRepositories {
         }
         
         public List<TimeSlot> GetAll() {
-            throw new System.NotImplementedException();
+            return TimeSlots;
         }
 
 
         public TimeSlot GetById(long id) {
-            throw new System.NotImplementedException();
+            return TimeSlots.Find(t => t.Id == id);
         }
 
 
         public List<TimeSlot> GetAllOfPlace(long placeId) {
-            throw new System.NotImplementedException();
+            return TimeSlots.FindAll(t => t.PlaceId == placeId);
         }
 
 
         public List<TimeSlot> GetAllByPaging(int page, int amount) {
-            throw new System.NotImplementedException();
+            return TimeSlots.Skip(page * amount).Take(amount).ToList();
         }
 
 
         public bool Delete(long id) {
-            throw new System.NotImplementedException();
+            var item = TimeSlots.Find(b => b.Id == id);
+            if (item == null) return false;
+            TimeSlots.Remove(item);
+            return true;
         }
 
 
         public long Create(TimeSlot timeSlot) {
-            throw new System.NotImplementedException();
+            var id = TimeSlots.Count;
+            timeSlot.Id = id;
+            TimeSlots.Add(timeSlot);
+            return id;
         }
 
 
-        public long Update(TimeSlot timeSlot) {
-            throw new System.NotImplementedException();
+        public long Update(TimeSlot item) {
+            long id = -1;
+            TimeSlots = TimeSlots.Select(i => {
+                if (i.Id == item.Id) {
+                    id = item.Id;
+                    return item;
+                }
+                id = -1;
+                return i;
+            }).ToList();
+            return id;
         }
 
     }

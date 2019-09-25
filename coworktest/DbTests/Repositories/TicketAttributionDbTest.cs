@@ -4,6 +4,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -15,12 +16,6 @@ namespace coworktest {
         public void Setup() {
             var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
             ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
-        }
-
-
-        [TearDown]
-        public void TearDown() {
-            ticketAttributionRepository.Delete(ticketAttrId);
         }
 
 
@@ -38,11 +33,11 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            ticketRepository = new TicketRepository(connection);
-            ticketAttributionRepository = new TicketAttributionRepository(connection);
-            userRepository = new UserRepository(connection);
-            wareRepository = new WareRepository(connection);
-            placeRepository = new PlaceRepository(connection);
+            ticketRepository = new InMemoryTicketRepository();
+            ticketAttributionRepository = new InMemoryTicketAttributionRepository();
+            userRepository = new InMemoryUserRepository();
+            wareRepository = new InMemoryWareRepository();
+            placeRepository = new InMemoryPlaceRepository();
 
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepository.Create(place);

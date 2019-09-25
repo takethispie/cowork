@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 
@@ -14,42 +15,57 @@ namespace coworktest.InMemoryRepositories {
         }
         
         public List<Ware> GetAll() {
-            throw new System.NotImplementedException();
+            return Wares;
         }
 
 
         public List<Ware> GetAllFromPlace(long id) {
-            throw new System.NotImplementedException();
+            return Wares.FindAll(w => w.PlaceId == id);
         }
 
 
         public List<Ware> GetAllFromPlaceWithPaging(long id, int amount, int page) {
-            throw new System.NotImplementedException();
+            return Wares.FindAll(w => w.PlaceId == id).Skip(amount * page).Take(amount).ToList();
         }
 
 
         public List<Ware> GetAllWithPaging(int page, int amount) {
-            throw new System.NotImplementedException();
+            return Wares.Skip(amount * page).Take(amount).ToList();
         }
 
 
         public Ware GetById(long id) {
-            throw new System.NotImplementedException();
+            return Wares.Find(w => w.Id == id);
         }
 
 
         public bool Delete(long id) {
-            throw new System.NotImplementedException();
+            var item = Wares.Find(b => b.Id == id);
+            if (item == null) return false;
+            Wares.Remove(item);
+            return true;
         }
 
 
-        public long Update(Ware ware) {
-            throw new System.NotImplementedException();
+        public long Update(Ware item) {
+            long id = -1;
+            Wares = Wares.Select(i => {
+                if (i.Id == item.Id) {
+                    id = item.Id;
+                    return item;
+                }
+                id = -1;
+                return i;
+            }).ToList();
+            return id;
         }
 
 
         public long Create(Ware ware) {
-            throw new System.NotImplementedException();
+            var id = Wares.Count;
+            ware.Id = id;
+            Wares.Add(ware);
+            return id;
         }
 
     }

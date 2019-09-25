@@ -1,6 +1,7 @@
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -16,14 +17,7 @@ namespace coworktest {
             var room = new Room(-1, place.Id, "Room1", RoomType.Meeting);
             roomId = repo.Create(room);
         }
-
-
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(roomId);
-            placeRepository.Delete(placeId);
-        }
-
+        
 
         private IRoomRepository repo;
         private IPlaceRepository placeRepository;
@@ -35,8 +29,8 @@ namespace coworktest {
         [OneTimeSetUp]
         public void OneTimeSetup() {
             connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new RoomRepository(connection);
-            placeRepository = new PlaceRepository(connection);
+            repo = new InMemoryRoomRepository();
+            placeRepository = new InMemoryPlaceRepository();
         }
 
 

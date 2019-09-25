@@ -12,11 +12,7 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() { }
-
-
-        [TearDown]
-        public void TearDown() { }
-
+        
 
         private ILoginRepository loginRepository;
         private IUserRepository userRepository;
