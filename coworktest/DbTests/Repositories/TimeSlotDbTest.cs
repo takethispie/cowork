@@ -20,7 +20,7 @@ namespace coworktest {
         [TearDown]
         public void TearDown() {
             repo.Delete(slotId);
-            placeRepo.DeleteById(placeId);
+            placeRepo.Delete(placeId);
         }
 
 

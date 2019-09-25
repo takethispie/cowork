@@ -11,7 +11,7 @@ namespace coworkpersistence.Repositories {
 
     public class TicketWareRepository : ITicketWareRepository {
 
-        private const string innerJoin =
+        private const string InnerJoin =
             " INNER JOIN \"Ware\" W on \"TicketWare\".\"WareId\" = W.\"Id\" inner join \"Place\" P on W.\"PlaceId\" = P.\"Id\" ";
 
         private readonly SqlDataMapper<TicketWare> dataMapper;
@@ -55,13 +55,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TicketWare> GetAll() {
-            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin + ";";
+            const string sql = "SELECT * FROM \"TicketWare\"" + InnerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public List<TicketWare> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin +
+            const string sql = "SELECT * FROM \"TicketWare\"" + InnerJoin +
                                " ORDER BY \"TicketWare\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
@@ -72,7 +72,7 @@ namespace coworkpersistence.Repositories {
 
 
         public TicketWare GetById(long id) {
-            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin + "WHERE \"TicketWare\".\"Id\"= @id;";
+            const string sql = "SELECT * FROM \"TicketWare\"" + InnerJoin + "WHERE \"TicketWare\".\"Id\"= @id;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -81,7 +81,7 @@ namespace coworkpersistence.Repositories {
 
 
         public TicketWare GetByTicketId(long id) {
-            const string sql = "SELECT * FROM \"TicketWare\"" + innerJoin + "WHERE \"TicketId\"= @id;";
+            const string sql = "SELECT * FROM \"TicketWare\"" + InnerJoin + "WHERE \"TicketId\"= @id;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };

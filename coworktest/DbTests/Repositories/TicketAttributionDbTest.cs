@@ -63,7 +63,7 @@ namespace coworktest {
             wareRepository.Delete(wareId);
             userRepository.DeleteById(userId);
             userRepository.DeleteById(staffId);
-            placeRepository.DeleteById(placeId);
+            placeRepository.Delete(placeId);
         }
 
 

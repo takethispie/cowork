@@ -11,7 +11,7 @@ namespace coworkpersistence.Repositories {
 
     public class WareRepository : IWareRepository {
 
-        private const string innerJoin = " INNER JOIN \"Place\" P on \"Ware\".\"PlaceId\" = P.\"Id\" ";
+        private const string InnerJoin = " INNER JOIN \"Place\" P on \"Ware\".\"PlaceId\" = P.\"Id\" ";
 
         private readonly SqlDataMapper<Ware> dataMapper;
 
@@ -22,13 +22,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ware> GetAll() {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + ";";
+            const string sql = "SELECT * FROM public.\"Ware\"" + InnerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public List<Ware> GetAllFromPlace(long id) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + "WHERE \"Ware\".\"PlaceId\"= @id";
+            const string sql = "SELECT * FROM public.\"Ware\"" + InnerJoin + "WHERE \"Ware\".\"PlaceId\"= @id";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -37,7 +37,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ware> GetAllFromPlaceWithPaging(long id, int amount, int page) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin +
+            const string sql = "SELECT * FROM public.\"Ware\"" + InnerJoin +
                                "WHERE \"Ware\".\"PlaceId\"= @id ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id),
@@ -49,7 +49,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ware> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin +
+            const string sql = "SELECT * FROM public.\"Ware\"" + InnerJoin +
                                " ORDER BY \"Ware\".\"Id\" LIMIT @amount OFFSET @skip";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
@@ -60,7 +60,7 @@ namespace coworkpersistence.Repositories {
 
 
         public Ware GetById(long id) {
-            const string sql = "SELECT * FROM public.\"Ware\"" + innerJoin + "WHERE \"Ware\".\"Id\"= @id";
+            const string sql = "SELECT * FROM public.\"Ware\"" + InnerJoin + "WHERE \"Ware\".\"Id\"= @id";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };

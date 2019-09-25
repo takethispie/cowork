@@ -48,15 +48,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpDelete("ById/{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.DeleteById(id);
-            if (!result) return Conflict();
-            return Ok();
-        }
-
-
-        [HttpDelete("ByName/{id}")]
-        public IActionResult Delete(string name) {
-            var result = Repository.DeleteByName(name);
+            var result = Repository.Delete(id);
             if (!result) return Conflict();
             return Ok();
         }

@@ -30,7 +30,7 @@ namespace coworktest {
             repo.Delete(roomBookingId);
             roomRepo.Delete(roomId);
             userRepo.DeleteById(userId);
-            placeRepo.DeleteById(placeId);
+            placeRepo.Delete(placeId);
         }
 
 
@@ -58,7 +58,7 @@ namespace coworktest {
             repo.Delete(roomBookingId);
             roomRepo.Delete(roomId);
             userRepo.DeleteById(userId);
-            placeRepo.DeleteById(placeId);
+            placeRepo.Delete(placeId);
         }
 
 

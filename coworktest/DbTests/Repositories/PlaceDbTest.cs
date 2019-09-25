@@ -16,7 +16,7 @@ namespace coworktest {
 
         [TearDown]
         public void TearDown() {
-            repo.DeleteById(placeId);
+            repo.Delete(placeId);
         }
 
 
@@ -38,14 +38,7 @@ namespace coworktest {
             var result = repo.Create(newPlace);
             Assert.AreEqual(true, result > -1);
             Assert.NotNull(repo.GetByName("test2"));
-            repo.DeleteById(result);
-        }
-
-
-        [Test]
-        public void Delete() {
-            var result = repo.DeleteByName("test");
-            Assert.AreEqual(true, result);
+            repo.Delete(result);
         }
 
 

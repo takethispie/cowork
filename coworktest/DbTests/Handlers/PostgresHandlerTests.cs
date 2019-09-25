@@ -25,7 +25,7 @@ namespace coworktest.DbTests.Handlers {
         [Test]
         public void ShouldThrowExceptionOnEmptyString() {
             var ex =Assert.Throws<Exception>(() => { 
-                var PgHandler = new PostgresHandler("");
+                var pgHandler = new PostgresHandler("");
             });
             Assert.AreEqual("Connection String is Empty", ex.Message);
         }

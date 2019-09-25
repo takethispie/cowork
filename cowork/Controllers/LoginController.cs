@@ -28,7 +28,7 @@ namespace cowork.Controllers {
 
         [HttpPost]
         public IActionResult Create([FromBody] LoginClearPassword login) {
-            if (isEmailInvalid(login) || isPasswordInvalid(login))
+            if (IsEmailInvalid(login) || IsPasswordInvalid(login))
                 return BadRequest();
             var newLogin = CreateLoginModel(login);
             var res = repository.Create(newLogin);
@@ -39,7 +39,7 @@ namespace cowork.Controllers {
 
         [HttpPut]
         public IActionResult Update([FromBody] LoginClearPassword login) {
-            if (isEmailInvalid(login))
+            if (IsEmailInvalid(login))
                 return BadRequest();
             Login newLogin;
             if (login.Password == "") {
@@ -53,12 +53,12 @@ namespace cowork.Controllers {
         }
 
 
-        private bool isEmailInvalid(LoginClearPassword login) {
+        private bool IsEmailInvalid(LoginClearPassword login) {
             return string.IsNullOrEmpty(login.Email) || string.IsNullOrWhiteSpace(login.Email);
         }
 
 
-        private bool isPasswordInvalid(LoginClearPassword login) {
+        private bool IsPasswordInvalid(LoginClearPassword login) {
             return string.IsNullOrEmpty(login.Password) || string.IsNullOrWhiteSpace(login.Password);
         }
 

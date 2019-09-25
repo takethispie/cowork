@@ -24,7 +24,7 @@ namespace coworktest {
             repo.Delete(mealResId);
             mealRepo.Delete(mealId);
             userRepo.DeleteById(userId);
-            placeRepo.DeleteById(placeId);
+            placeRepo.Delete(placeId);
         }
 
 

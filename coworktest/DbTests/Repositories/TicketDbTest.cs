@@ -36,7 +36,7 @@ namespace coworktest {
             wareRepo.Delete(wareId);
             userRepo.DeleteById(userId);
             userRepo.DeleteById(persId);
-            placeRepo.DeleteById(placeId);
+            placeRepo.Delete(placeId);
         }
 
 
