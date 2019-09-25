@@ -34,8 +34,6 @@ namespace coworktest.DbTests {
             
             user = new User(-1, "1", "1", false, UserType.Staff);
             userId = userRepository.Create(user);
-            sub = new Subscription(-1, 1, userId, DateTime.Now.AddMonths(-8), 1, true) {Type = subscriptionType};
-            subscriptionRepository.Create(sub);
             login = new Login(-1, hash, salt, "test2@test.com", userId);
             loginRepository.Create(login);
             
@@ -58,7 +56,7 @@ namespace coworktest.DbTests {
         
         
         [Test]
-        public void HasOneExpiringSubscriptionUserOnOneMonthNotice() {
+        public void HasTwoExpiringSubscriptionUserOnOneMonthNotice() {
             var manager = new SubscriptionExpirationManager(userRepository, subscriptionRepository, loginRepository);
             var res = manager.GetEmailListOfSoonToBeExpiredSubscription(30);
             Assert.NotNull(res);
@@ -66,6 +64,15 @@ namespace coworktest.DbTests {
             Assert.IsTrue(res.Any(email => email == "test@test.com"));
             Assert.IsTrue(res.Any(email => email == "test3@test.com"));
             Assert.IsTrue(res.All(email => email != "test2@test.com"));
+        }
+
+
+        [Test]
+        public void HasOneExpiredSubscription() {
+            var manager = new SubscriptionExpirationManager(userRepository, subscriptionRepository, loginRepository);
+            var res = manager.GetAllExpiredSubscriptions();
+            Assert.NotNull(res);
+            Assert.AreEqual(1, res.Count());
         }
     }
 

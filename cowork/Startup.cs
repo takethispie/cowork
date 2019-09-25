@@ -62,6 +62,7 @@ namespace cowork {
                         {
                             builder.WithOrigins("http://localhost:8100", "http://localhost");
                             builder.AllowAnyHeader();
+                            builder.AllowAnyMethod();
                         });
                 });
 

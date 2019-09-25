@@ -16,13 +16,13 @@
           <ion-textarea rows="6" cols="20" name="description" ngModel></ion-textarea>
         </ion-item>
         <ion-item>
-          <ion-label *ngIf="!SelectedWare">Aucun matériel associé à ce ticket</ion-label>
+          <ion-label *ngIf="!SelectedWare">Aucun matériel associé</ion-label>
           <ion-label *ngIf="SelectedWare">{{ SelectedWare.Name }}</ion-label>
           <ion-button *ngIf="!SelectedWare" (click)="OpenWareSelection()">
             <ion-label>Associer un matériel</ion-label>
           </ion-button>
           <ion-button color="danger" *ngIf="SelectedWare" (click)="RemoveAttributedWare()">
-            <ion-label>Déassocier le matériel</ion-label>
+            <ion-label>Désassocier le matériel</ion-label>
           </ion-button>
         </ion-item>
       </ion-list>
