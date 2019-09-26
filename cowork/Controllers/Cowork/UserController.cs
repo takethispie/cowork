@@ -84,11 +84,11 @@ namespace cowork.Controllers.Cowork {
             var user = Repository.GetById(userId);
             if (user == null) return NotFound();
             var sub = SubscriptionRepository.GetOfUser(user.Id);
-            var auth_token = AuthTokenHandler.EncryptToken(new List<Claim> {
+            var authToken = AuthTokenHandler.EncryptToken(new List<Claim> {
                 new Claim("Role", user.Type.ToString()),
                 new Claim("Id", user.Id.ToString())
             });
-            return Ok(new {user, sub, auth_token});
+            return Ok(new {user, sub, auth_token = authToken});
         }
 
 

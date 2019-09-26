@@ -7,7 +7,7 @@ namespace coworktest.InMemoryRepositories {
 
     public class InMemorySubscriptionRepository : ISubscriptionRepository {
 
-        private List<Subscription> subscriptions;
+        public List<Subscription> subscriptions;
 
 
         public InMemorySubscriptionRepository() {

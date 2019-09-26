@@ -4,6 +4,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -13,36 +14,11 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
-            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
-            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
-        }
-
-
-        [TearDown]
-        public void TearDown() {
-            ticketAttributionRepository.Delete(ticketAttrId);
-        }
-
-
-        private string connection;
-        private long ticketId, staffId, userId, placeId, wareId, ticketAttrId;
-        private ITicketRepository ticketRepository;
-        private ITicketAttributionRepository ticketAttributionRepository;
-        private IUserRepository userRepository;
-        private IWareRepository wareRepository;
-        private IPlaceRepository placeRepository;
-        private User user;
-        private User staff;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            ticketRepository = new TicketRepository(connection);
-            ticketAttributionRepository = new TicketAttributionRepository(connection);
-            userRepository = new UserRepository(connection);
-            wareRepository = new WareRepository(connection);
-            placeRepository = new PlaceRepository(connection);
+            ticketRepository = new InMemoryTicketRepository();
+            ticketAttributionRepository = new InMemoryTicketAttributionRepository();
+            userRepository = new InMemoryUserRepository();
+            wareRepository = new InMemoryWareRepository();
+            placeRepository = new InMemoryPlaceRepository();
 
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepository.Create(place);
@@ -54,7 +30,19 @@ namespace coworktest {
             wareId = wareRepository.Create(ware);
             var ticket = new Ticket(-1, userId, TicketState.New, "", placeId, "test", DateTime.Now);
             ticketId = ticketRepository.Create(ticket);
+            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
+            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
         }
+
+
+        private long ticketId, staffId, userId, placeId, wareId, ticketAttrId;
+        private ITicketRepository ticketRepository;
+        private ITicketAttributionRepository ticketAttributionRepository;
+        private IUserRepository userRepository;
+        private IWareRepository wareRepository;
+        private IPlaceRepository placeRepository;
+        private User user;
+        private User staff;
 
 
         [OneTimeTearDown]
@@ -63,7 +51,7 @@ namespace coworktest {
             wareRepository.Delete(wareId);
             userRepository.DeleteById(userId);
             userRepository.DeleteById(staffId);
-            placeRepository.DeleteById(placeId);
+            placeRepository.Delete(placeId);
         }
 
 

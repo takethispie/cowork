@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +13,12 @@ namespace cowork.Controllers.InventoryManagement {
     public class WareBookingController : ControllerBase {
 
         private readonly IWareBookingRepository bookingRepository;
+        private readonly ITimeSlotRepository timeSlotRepository;
 
 
-        public WareBookingController(IWareBookingRepository repository) {
+        public WareBookingController(IWareBookingRepository repository, ITimeSlotRepository timeSlotRepository) {
             bookingRepository = repository;
+            this.timeSlotRepository = timeSlotRepository;
         }
 
 
@@ -49,6 +53,15 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpPost]
         public IActionResult Create([FromBody] WareBooking wareBooking) {
+            var existing = bookingRepository.GetStartingAt(wareBooking.Start.Date)
+                .Where(booking => booking.WareId == wareBooking.WareId)
+                .Any(slot => slot.End >= wareBooking.End && slot.Start <= wareBooking.Start);
+            if (existing) return BadRequest("Erreur: créneau déjà pris");
+            var openings = timeSlotRepository.GetAllOfPlace(wareBooking.Ware.PlaceId)
+                .Find(op => op.Day == wareBooking.Start.DayOfWeek);
+            if (wareBooking.Start.Hour < openings.StartHour && wareBooking.Start.Minute < openings.StartMinutes
+                || wareBooking.End.Hour < openings.EndHour && wareBooking.End.Minute < openings.EndMinutes)
+                return BadRequest("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");
             var result = bookingRepository.Create(wareBooking);
             if (result == -1) return Conflict();
             return Ok(result);

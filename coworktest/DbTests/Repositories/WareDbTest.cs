@@ -4,6 +4,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -13,6 +14,10 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryWareRepository();
+            placeRepository = new InMemoryPlaceRepository();
+            bookingRepository = new InMemoryWareBookingRepository();
+            userRepository = new InMemoryUserRepository();
             var place = new Place(-1, "testware", true, true, true, 3, 1, 30);
             placeId = placeRepository.Create(place);
             var ware = new Ware(-1, "Dell T1600", "Ordinateur de bureau", "132251573-13242142-n1235v", placeId, false);
@@ -24,31 +29,11 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            bookingRepository.Delete(wareBookingId);
-            repo.Delete(wareId);
-            placeRepository.DeleteById(placeId);
-            userRepository.DeleteById(userId);
-        }
-
-
         private IWareRepository repo;
         private IPlaceRepository placeRepository;
         private IWareBookingRepository bookingRepository;
         private IUserRepository userRepository;
-        private string connection;
         private long placeId, wareId, userId, wareBookingId;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new WareRepository(connection);
-            placeRepository = new PlaceRepository(connection);
-            bookingRepository = new WareBookingRepository(connection);
-            userRepository = new UserRepository(connection);
-        }
 
 
         [Test]
