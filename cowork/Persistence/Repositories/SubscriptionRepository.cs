@@ -11,7 +11,7 @@ namespace coworkpersistence.Repositories {
 
     public class SubscriptionRepository : ISubscriptionRepository {
 
-        private const string innerJoin =
+        private const string InnerJoin =
             " INNER JOIN \"SubscriptionType\" ST on \"Subscription\".\"TypeId\" = ST.\"Id\" INNER JOIN \"Place\" P on \"Subscription\".\"PlaceId\" = P.\"Id\" INNER JOIN \"Users\" U on \"Subscription\".\"UserId\" = U.\"Id\" ";
 
         private readonly SqlDataMapper<Subscription> dataMapper;
@@ -23,13 +23,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Subscription> GetAll() {
-            var sql = "SELECT * FROM public.\"Subscription\"" + innerJoin + ";";
+            var sql = "SELECT * FROM public.\"Subscription\"" + InnerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public List<Subscription> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Subscription\"" + innerJoin +
+            const string sql = "SELECT * FROM \"Subscription\"" + InnerJoin +
                                " ORDER BY \"Subscription\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
@@ -40,7 +40,7 @@ namespace coworkpersistence.Repositories {
 
 
         public Subscription GetById(long id) {
-            var sql = "SELECT * FROM public.\"Subscription\"" + innerJoin + "WHERE \"Subscription\".\"Id\"= @p;";
+            var sql = "SELECT * FROM public.\"Subscription\"" + InnerJoin + "WHERE \"Subscription\".\"Id\"= @p;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("p", id)
             };
@@ -49,7 +49,7 @@ namespace coworkpersistence.Repositories {
 
 
         public Subscription GetOfUser(long userId) {
-            var sql = "SELECT * FROM public.\"Subscription\"" + innerJoin + "WHERE \"Subscription\".\"UserId\"= @p;";
+            var sql = "SELECT * FROM public.\"Subscription\"" + InnerJoin + "WHERE \"Subscription\".\"UserId\"= @p;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("p", userId)
             };

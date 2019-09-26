@@ -2,6 +2,7 @@ using System;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -11,6 +12,10 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            mealRepo = new InMemoryMealRepository();
+            placeRepo = new InMemoryPlaceRepository();
+            userRepo = new InMemoryUserRepository();
+            repo = new InMemoryMealBookingRepository();
             placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
             date = DateTime.Today;
             mealId = mealRepo.Create(new Meal(-1, date, "salade tomate", placeId));
@@ -19,32 +24,12 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(mealResId);
-            mealRepo.Delete(mealId);
-            userRepo.DeleteById(userId);
-            placeRepo.DeleteById(placeId);
-        }
-
-
         private long mealResId, mealId, userId, placeId;
         private IMealBookingRepository repo;
         private IMealRepository mealRepo;
         private IUserRepository userRepo;
         private IPlaceRepository placeRepo;
-        private string connection;
         private DateTime date;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            mealRepo = new MealRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-            userRepo = new UserRepository(connection);
-            repo = new MealBookingRepository(connection);
-        }
 
 
         [Test]
@@ -69,13 +54,6 @@ namespace coworktest {
         [Test]
         public void GetAll() {
             var result = repo.GetAll();
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
-        public void GetAllFromDateAndPlace() {
-            var result = repo.GetAllFromDateAndPlace(date, placeId);
             Assert.NotNull(result);
         }
 

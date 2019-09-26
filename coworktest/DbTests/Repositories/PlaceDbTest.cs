@@ -1,6 +1,7 @@
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -10,26 +11,13 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryPlaceRepository();
             placeId = repo.Create(new Place(-1, "test", true, true, true, 1, 0, 1));
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.DeleteById(placeId);
-        }
-
-
         private IPlaceRepository repo;
-        private string connection;
         private long placeId;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new PlaceRepository(connection);
-        }
 
 
         [Test]
@@ -38,14 +26,7 @@ namespace coworktest {
             var result = repo.Create(newPlace);
             Assert.AreEqual(true, result > -1);
             Assert.NotNull(repo.GetByName("test2"));
-            repo.DeleteById(result);
-        }
-
-
-        [Test]
-        public void Delete() {
-            var result = repo.DeleteByName("test");
-            Assert.AreEqual(true, result);
+            repo.Delete(result);
         }
 
 
@@ -70,8 +51,8 @@ namespace coworktest {
             var current = repo.GetByName("test");
             Assert.AreEqual(true, current.HighBandwidthWifi);
             current.HighBandwidthWifi = false;
-            var result = repo.Update(current) > -1;
-            Assert.AreEqual(true, result);
+            var result = repo.Update(current);
+            Assert.AreEqual(true, result > -1);
         }
 
     }

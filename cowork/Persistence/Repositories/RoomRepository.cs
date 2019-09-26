@@ -11,7 +11,7 @@ namespace coworkpersistence.Repositories {
 
     public class RoomRepository : IRoomRepository {
 
-        private const string innerJoin = " INNER JOIN \"Place\" P on \"Room\".\"PlaceId\" = P.\"Id\" ";
+        private const string InnerJoin = " INNER JOIN \"Place\" P on \"Room\".\"PlaceId\" = P.\"Id\" ";
 
         private readonly SqlDataMapper<Room> datamapper;
 
@@ -22,13 +22,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Room> GetAll() {
-            const string sql = "SELECT * FROM public.\"Room\"" + innerJoin + ";";
+            const string sql = "SELECT * FROM public.\"Room\"" + InnerJoin + ";";
             return datamapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public Room GetById(long id) {
-            const string sql = "SELECT * FROM public.\"Room\"" + innerJoin + "WHERE \"Room\".\"Id\"=@id";
+            const string sql = "SELECT * FROM public.\"Room\"" + InnerJoin + "WHERE \"Room\".\"Id\"=@id";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -37,7 +37,7 @@ namespace coworkpersistence.Repositories {
 
 
         public Room GetByName(string name) {
-            const string sql = "SELECT * FROM public.\"Room\"" + innerJoin + "WHERE \"Room\".\"Name\"=@p";
+            const string sql = "SELECT * FROM public.\"Room\"" + InnerJoin + "WHERE \"Room\".\"Name\"=@p";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("p", name)
             };
@@ -46,7 +46,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Room> GetAllFromPlace(long placeId) {
-            const string sql = "SELECT * FROM public.\"Room\"" + innerJoin + "WHERE \"PlaceId\"=@p";
+            const string sql = "SELECT * FROM public.\"Room\"" + InnerJoin + "WHERE \"PlaceId\"=@p";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("p", placeId)
             };
@@ -55,7 +55,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Room> GetAllWithPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"Room\"" + innerJoin +
+            const string sql = "SELECT * FROM \"Room\"" + InnerJoin +
                                " ORDER BY \"Room\".\"Id\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
