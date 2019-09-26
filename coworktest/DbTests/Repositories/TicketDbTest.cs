@@ -140,7 +140,7 @@ namespace coworktest {
             var result = ticketWareRepository.GetAll();
             Assert.NotNull(result);
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(result[0].Ware.Name, "Dell T1600");
+            Assert.AreEqual(result[0].WareId, wareId);
         }
 
 
@@ -155,7 +155,7 @@ namespace coworktest {
         public void GetByIdTicketWare() {
             var result = ticketWareRepository.GetById(ticketWareId);
             Assert.NotNull(result);
-            Assert.AreEqual(result.Ware.Name, "Dell T1600");
+            Assert.AreEqual(result.WareId, wareId);
         }
 
 
@@ -163,7 +163,7 @@ namespace coworktest {
         public void GetByTicketIdTicketWare() {
             var result = ticketWareRepository.GetByTicketId(ticketId);
             Assert.NotNull(result);
-            Assert.AreEqual(result.Ware.Name, "Dell T1600");
+            Assert.AreEqual(result.WareId, wareId);
         }
 
 

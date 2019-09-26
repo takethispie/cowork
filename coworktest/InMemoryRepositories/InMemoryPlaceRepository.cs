@@ -37,12 +37,9 @@ namespace coworktest.InMemoryRepositories {
         public long Update(Place item) {
             long id = -1;
             Places = Places.Select(i => {
-                if (i.Id == item.Id) {
-                    id = item.Id;
-                    return item;
-                }
-                id = -1;
-                return i;
+                if (i.Id != item.Id) return i;
+                id = item.Id;
+                return item;
             }).ToList();
             return id;
         }

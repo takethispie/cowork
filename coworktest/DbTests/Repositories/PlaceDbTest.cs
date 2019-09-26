@@ -58,8 +58,8 @@ namespace coworktest {
             var current = repo.GetByName("test");
             Assert.AreEqual(true, current.HighBandwidthWifi);
             current.HighBandwidthWifi = false;
-            var result = repo.Update(current) > -1;
-            Assert.AreEqual(true, result);
+            var result = repo.Update(current);
+            Assert.AreEqual(true, result > -1);
         }
 
     }
