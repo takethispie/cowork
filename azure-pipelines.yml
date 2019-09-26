@@ -6,56 +6,30 @@
 trigger:
 - master
 - dev
+
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  testsProjects: 'cowork.csproj'
 
 steps:
-
 - task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
   inputs:
-    versionSpec: 
-    checkLatest: true
+    restoreSolution: '$(solution)'
 
-- task: DotNetCoreCLI@2
-  displayName: "dotnet restore"
+- task: VSBuild@1
   inputs:
-    command: 'restore'
-    feedsToUse: 'select'
-    projects: '$(solution)'
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
-    
-- task: DotNetCoreCLI@2
-  displayName: "dotnet Build"
+- task: VSTest@2
   inputs:
-    command: 'build'
-    projects: '$(solution)'
-
-
-- task: DotNetCoreCLI@2
-  displayName: "dotnet test"
-  inputs:
-    command: 'test'
-    projects: '$(testsProjects)'
-
-
-- task: DotNetCoreCLI@2
-  displayName: "dotnet publish"
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '-o $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: true
-
-
-- task: PublishBuildArtifacts@1
-  displayName: "publish artifact"
-  inputs:
-  platform: '$(buildPlatform)'
-  configuration: '$(buildConfiguration)'
-
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
