@@ -12,6 +12,10 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemorySubscriptionRepository();
+            typeRepo = new InMemorySubscriptionTypeRepository();
+            userRepo = new InMemoryUserRepository();
+            placeRepo = new InMemoryPlaceRepository();
             var subType = new SubscriptionType(-1, "test", -1, 5, 2, 20, 18, -1, 200, "test description");
             subTypeId = typeRepo.Create(subType);
             var place = new Place(-1, "test", false, false, false, 3, 3, 3);
@@ -30,17 +34,6 @@ namespace coworktest {
         private IUserRepository userRepo;
         private IPlaceRepository placeRepo;
         private long subId, subTypeId, placeId, userId;
-        private string connection;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemorySubscriptionRepository();
-            typeRepo = new InMemorySubscriptionTypeRepository();
-            userRepo = new InMemoryUserRepository();
-            placeRepo = new InMemoryPlaceRepository();
-        }
 
 
         [Test]

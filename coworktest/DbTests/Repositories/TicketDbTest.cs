@@ -14,6 +14,12 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryTicketRepository();
+            userRepo = new InMemoryUserRepository();
+            placeRepo = new InMemoryPlaceRepository();
+            wareRepo = new InMemoryWareRepository();
+            ticketCommentRepository = new InMemoryTicketCommentRepository();
+            ticketWareRepository = new InMemoryTicketWareRepository();
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepo.Create(place);
             staff = new User(-1, "ticket1user", "t", false, UserType.User);
@@ -36,22 +42,9 @@ namespace coworktest {
         private ITicketWareRepository ticketWareRepository;
         private ITicketCommentRepository ticketCommentRepository;
 
-        private string connection;
         private long ticketId, persId, userId, placeId, wareId, commentId, ticketWareId;
         private User user;
         private User staff;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemoryTicketRepository();
-            userRepo = new InMemoryUserRepository();
-            placeRepo = new InMemoryPlaceRepository();
-            wareRepo = new InMemoryWareRepository();
-            ticketCommentRepository = new InMemoryTicketCommentRepository();
-            ticketWareRepository = new InMemoryTicketWareRepository();
-        }
 
 
         [Test]

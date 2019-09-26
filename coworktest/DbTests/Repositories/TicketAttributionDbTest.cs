@@ -14,25 +14,6 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
-            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
-            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
-        }
-
-
-        private string connection;
-        private long ticketId, staffId, userId, placeId, wareId, ticketAttrId;
-        private ITicketRepository ticketRepository;
-        private ITicketAttributionRepository ticketAttributionRepository;
-        private IUserRepository userRepository;
-        private IWareRepository wareRepository;
-        private IPlaceRepository placeRepository;
-        private User user;
-        private User staff;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
             ticketRepository = new InMemoryTicketRepository();
             ticketAttributionRepository = new InMemoryTicketAttributionRepository();
             userRepository = new InMemoryUserRepository();
@@ -49,7 +30,19 @@ namespace coworktest {
             wareId = wareRepository.Create(ware);
             var ticket = new Ticket(-1, userId, TicketState.New, "", placeId, "test", DateTime.Now);
             ticketId = ticketRepository.Create(ticket);
+            var ticketAttribution = new TicketAttribution(-1, ticketId, staffId);
+            ticketAttrId = ticketAttributionRepository.Create(ticketAttribution);
         }
+
+
+        private long ticketId, staffId, userId, placeId, wareId, ticketAttrId;
+        private ITicketRepository ticketRepository;
+        private ITicketAttributionRepository ticketAttributionRepository;
+        private IUserRepository userRepository;
+        private IWareRepository wareRepository;
+        private IPlaceRepository placeRepository;
+        private User user;
+        private User staff;
 
 
         [OneTimeTearDown]

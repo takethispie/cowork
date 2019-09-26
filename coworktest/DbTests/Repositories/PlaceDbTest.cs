@@ -11,20 +11,13 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryPlaceRepository();
             placeId = repo.Create(new Place(-1, "test", true, true, true, 1, 0, 1));
         }
 
 
         private IPlaceRepository repo;
-        private string connection;
         private long placeId;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemoryPlaceRepository();
-        }
 
 
         [Test]

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ namespace cowork.Controllers.InventoryManagement {
         private readonly IWareBookingRepository bookingRepository;
 
 
-        public WareBookingController(IWareBookingRepository repository) {
+        public WareBookingController(IWareBookingRepository repository, ITimeSlotRepository timeSlotRepository) {
             bookingRepository = repository;
         }
 
@@ -54,6 +55,7 @@ namespace cowork.Controllers.InventoryManagement {
                 .Where(booking => booking.WareId == wareBooking.WareId)
                 .Any(slot => slot.End >= wareBooking.End && slot.Start <= wareBooking.Start);
             if (existing) return BadRequest("Erreur: créneau déjà pris");
+            
             var result = bookingRepository.Create(wareBooking);
             if (result == -1) return Conflict();
             return Ok(result);

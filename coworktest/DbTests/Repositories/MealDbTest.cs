@@ -12,6 +12,8 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryMealRepository();
+            placeRepo = new InMemoryPlaceRepository();
             placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 0));
             date = DateTime.Today;
             mealId = repo.Create(new Meal(-1, date, "", placeId));
@@ -23,15 +25,6 @@ namespace coworktest {
         private long mealId, placeId;
         private string connection;
         private DateTime date;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemoryMealRepository();
-            placeRepo = new InMemoryPlaceRepository();
-        }
-
 
         [Test]
         public void Create() {

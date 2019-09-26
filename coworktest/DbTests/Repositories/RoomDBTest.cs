@@ -11,6 +11,8 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryRoomRepository();
+            placeRepository = new InMemoryPlaceRepository();
             place = new Place(-1, "Bastille", true, true, true, 2, 3, 1);
             placeId = placeRepository.Create(place);
             place.Id = placeId;
@@ -21,17 +23,8 @@ namespace coworktest {
 
         private IRoomRepository repo;
         private IPlaceRepository placeRepository;
-        private string connection;
         private long roomId, placeId;
         private Place place;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemoryRoomRepository();
-            placeRepository = new InMemoryPlaceRepository();
-        }
 
 
         [Test]

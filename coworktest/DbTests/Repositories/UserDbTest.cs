@@ -15,15 +15,9 @@ namespace coworktest {
         private long testUser;
 
 
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new InMemoryUserRepository();
-        }
-
-
         [SetUp]
         public void Setup() {
+            repo = new InMemoryUserRepository();
             testUser = repo.Create(new User(-1, "Alexandre", "Felix", false, UserType.User));
         }
 

@@ -3,6 +3,7 @@ using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -11,28 +12,16 @@ namespace coworktest {
     public class LoginDbTest {
 
         [SetUp]
-        public void Setup() { }
+        public void Setup() {
+            loginRepository = new InMemoryLoginRepository();
+            userRepository = new InMemoryUserRepository();
+            userId = userRepository.Create(new User(-1, "Alexandre", "testLogin", false, UserType.User));
+        }
         
 
         private ILoginRepository loginRepository;
         private IUserRepository userRepository;
         private long loginId, userId;
-        private string connection;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            loginRepository = new LoginRepository(connection);
-            userRepository = new UserRepository(connection);
-            userId = userRepository.Create(new User(-1, "Alexandre", "testLogin", false, UserType.User));
-        }
-
-
-        [OneTimeTearDown]
-        public void OneTimeTearDown() {
-            userRepository.DeleteById(userId);
-        }
 
 
         [Test]
