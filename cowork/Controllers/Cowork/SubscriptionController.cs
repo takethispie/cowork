@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
@@ -68,6 +69,11 @@ namespace cowork.Controllers.Cowork {
             var res = Repository.GetOfUser(userId);
             if (res == null) return NotFound();
             res.Place.OpenedTimes = TimeSlotRepository.GetAllOfPlace(res.Place.Id);
+            if (res.FixedContract &&
+                res.LatestRenewal.AddMonths(res.Type.FixedContractDurationMonth) < DateTime.Today) {
+                Repository.Delete(res.Id);
+                return Ok(null);
+            }
             return Ok(res);
         }
 
