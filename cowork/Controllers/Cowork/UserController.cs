@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -88,6 +89,10 @@ namespace cowork.Controllers.Cowork {
                 new Claim("Role", user.Type.ToString()),
                 new Claim("Id", user.Id.ToString())
             });
+            if (sub.FixedContract && sub.LatestRenewal.AddMonths(sub.Type.FixedContractDurationMonth) < DateTime.Today) {
+                SubscriptionRepository.Delete(sub.Id);
+                sub = null;
+            } 
             return Ok(new {user, sub, auth_token = authToken});
         }
 

@@ -36,7 +36,12 @@ namespace cowork {
 
         public IEnumerable<Subscription> GetAllExpiredSubscriptions() {
             return subscriptionRepository.GetAll()
-                .Where(sub => sub.FixedContract && IsSubscriptionExpiringSoon(1, sub));
+                .Where(sub => sub.FixedContract && IsExpired(sub, DateTime.Today));
+        }
+
+
+        private static bool IsExpired(Subscription sub, DateTime now) {
+            return sub.LatestRenewal.AddMonths(sub.Type.FixedContractDurationMonth) < DateTime.Today;
         }
 
 
