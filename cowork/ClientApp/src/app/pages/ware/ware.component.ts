@@ -10,9 +10,9 @@ import {ToastService} from '../../services/toast.service';
 import {AuthService} from '../../services/auth.service';
 import {WareBookingService} from '../../services/ware-booking.service';
 import {WareBooking} from '../../models/WareBooking';
-import {CalendarBooking} from '../../components/Ware/ware-booking-calendar/CalendarBooking';
+import {CalendarBooking} from './CalendarBooking';
 import {Ware} from '../../models/Ware';
-import {colors} from '../../components/Room/room-calendar/colors';
+import {colors} from './colors';
 
 @Component({
   selector: 'app-ware',
@@ -44,7 +44,8 @@ export class WareComponent implements OnInit {
         map((data: WareBooking[]) => data.map(wareBooking => {
           const ret: CalendarBooking & CalendarEvent = CalendarBooking.FromWareBooking(wareBooking);
           if(wareBooking.UserId === this.auth.UserId) return this.AddEditionProperties(ret);
-          ret.color = colors.blue;
+          if(wareBooking.UserId === -1) ret.color = colors.red;
+          else ret.color = colors.blue;
           return ret;
         })),
     ).subscribe({

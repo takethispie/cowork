@@ -58,6 +58,7 @@ export class TicketComponent implements OnInit {
         }).then(alert => alert.present())
     }
 
+
     public CommentSent(commentContent: string) {
         const comment = new TicketComment();
         comment.AuthorId = this.authUser.Id;
@@ -156,6 +157,7 @@ export class TicketComponent implements OnInit {
         if(this.Ticket.AttributedTo == null) return false;
         return this.Ticket.AttributedTo.Id === this.authUser.Id;
     }
+
 
     public async OpenChangeStatus() {
         const pop = await this.popover.create({
