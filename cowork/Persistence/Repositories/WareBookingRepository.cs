@@ -86,7 +86,7 @@ namespace coworkpersistence.Repositories {
         public List<WareBooking> GetStartingAt(DateTime dateTime) {
             var sql = "SELECT * FROM \"WareBooking\"" + innerJoin + "WHERE \"Start\"::date >= @startDate";
             var par = new List<DbParameter> {
-                new NpgsqlParameter("startDate", dateTime.TimeOfDay)
+                new NpgsqlParameter("startDate", dateTime.Date)
             };
             return dataMapper.MultiItemCommand(sql, par);
         }
