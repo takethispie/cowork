@@ -127,6 +127,7 @@ export class AccountUserComponent {
             this.sub.Create(this.userSub).subscribe(subId => {
                 if(subId !== -1) {
                     this.userSub.Id = subId;
+                    this.auth.Subscription = this.userSub;
                     this.toast.PresentToast("Abonnement enrengistré avec succès");
                 } else this.toast.PresentToast("Erreur lors de l'abonnement");
             });
