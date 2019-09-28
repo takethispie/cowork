@@ -11,26 +11,26 @@ export class TicketAttributionService {
   constructor(public http: HttpClient) { }
 
   public Create(ticketAttribution: TicketAttribution) {
-    return this.http.post<number>("api/Ticket/Attribution", ticketAttribution, CONTENTJSON);
+    return this.http.post<number>("api/TicketAttribution", ticketAttribution, CONTENTJSON);
   }
   
 
   public Delete(id: number) {
-    return this.http.delete("api/Ticket/Attribution/" + id);
+    return this.http.delete("api/TicketAttribution/" + id);
   }
   
 
   public All() {
-    return this.http.get<TicketAttribution[]>("api/Ticket/AllAttributions");
+    return this.http.get<TicketAttribution[]>("api/TicketAttribution");
   }
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<TicketAttribution[]>("api/Ticket/AttributionsWithPaging/" + page + "/" + amount);
+    return this.http.get<TicketAttribution[]>("api/TicketAttribution/WithPaging/" + page + "/" + amount);
   }
   
   
   public Update(attribution: TicketAttribution) {
-    return this.http.put<number>("api/Ticket/Attribution", attribution, CONTENTJSON);
+    return this.http.put<number>("api/TicketAttribution", attribution, CONTENTJSON);
   }
 }
