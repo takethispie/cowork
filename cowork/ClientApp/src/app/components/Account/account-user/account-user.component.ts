@@ -28,6 +28,7 @@ export class AccountUserComponent {
     public userSub: Subscription;
     public userMeals: MealBooking[];
     public roomBookings: RoomBooking[];
+    public DaysBeforeExpiration: number;
 
     constructor(public auth: AuthService, public sub: SubscriptionService, public modal: ModalController, public toast: ToastService,
                 public mealReservationService: MealBookingService, public roomBookingService: RoomBookingService,
@@ -38,6 +39,7 @@ export class AccountUserComponent {
 
 
     ionViewWillEnter() {
+        this.DaysBeforeExpiration = this.GetSubscriptionExpirationDate(this.userSub.LatestRenewal as unknown as string, this.userSub.Type);
         if(this.userSub.LatestRenewal.diffNow("days").days < 30) {
             this.toast.PresentToast("Attention votre abonnement sera expiré à la fin du mois !")
         }

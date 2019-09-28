@@ -34,7 +34,7 @@ export class UserLoggedInGuard implements CanActivate {
                         this.auth.User = res;
                         this.auth.UserId = res.Id;
                         this.auth.UserType = res.Type;
-                        if(this.auth.UserType === UserType.Admin) return of(null);
+                        if(this.auth.UserType === UserType.Admin || this.auth.UserType === UserType.Staff) return of(null);
                         return this.subscriptionService.OfUser(res.Id);
                     }),
                     map(res => {

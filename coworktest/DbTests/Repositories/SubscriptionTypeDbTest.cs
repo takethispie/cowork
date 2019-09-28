@@ -1,6 +1,7 @@
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -10,27 +11,14 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemorySubscriptionTypeRepository();
             var subType = new SubscriptionType(-1, "test", -1, 5, 2, 20, 18, -1, 200, "Test description");
             subtypeId = repo.Create(subType);
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(subtypeId);
-        }
-
-
-        private string connection;
         private long subtypeId;
         private ISubscriptionTypeRepository repo;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new SubscriptionTypeRepository(connection);
-        }
 
 
         [Test]

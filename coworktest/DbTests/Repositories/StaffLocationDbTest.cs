@@ -3,6 +3,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -12,6 +13,9 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            userRepository = new InMemoryUserRepository();
+            staffLocationRepository = new InMemoryStaffLocationRepository();
+            placeRepository = new InMemoryPlaceRepository();
             var user = new User(-1, "staff", "staff", true, UserType.Staff);
             userId = userRepository.Create(user);
             var place = new Place(-1, "stafflocationtest", true, true, true, 10, 10, 50);
@@ -21,28 +25,10 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            staffLocationRepository.Delete(staffLocationId);
-            placeRepository.DeleteById(placeId);
-            userRepository.DeleteById(userId);
-        }
-
-
         private IStaffLocationRepository staffLocationRepository;
         private IUserRepository userRepository;
         private IPlaceRepository placeRepository;
         private long userId, placeId, staffLocationId;
-        private string connection;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            userRepository = new UserRepository(connection);
-            staffLocationRepository = new StaffLocationRepository(connection);
-            placeRepository = new PlaceRepository(connection);
-        }
 
 
         [Test]

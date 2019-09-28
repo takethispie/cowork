@@ -45,8 +45,7 @@ namespace coworktest.InMemoryRepositories {
 
         public long Create(User user) {
             var id = -1;
-            if (users.Count == 0) id = 0;
-            else id = users.Count;
+            id = users.Count == 0 ? 0 : users.Count;
             user.Id = id;
             users.Add(user);
             return id;

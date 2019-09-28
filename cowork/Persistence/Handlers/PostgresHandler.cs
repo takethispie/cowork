@@ -14,13 +14,13 @@ namespace coworkpersistence.Handlers {
 
         public PostgresHandler(string connectionString) {
             if (string.IsNullOrEmpty(connectionString)) throw new Exception("Connection String is Empty");
-            this.connectionString = connectionString;
-            connection = new NpgsqlConnection(this.connectionString);
+            this.ConnectionString = connectionString;
+            connection = new NpgsqlConnection(this.ConnectionString);
             connection.Open();
         }
 
 
-        private string connectionString { get; }
+        private string ConnectionString { get; }
 
 
         /// <inheritdoc />

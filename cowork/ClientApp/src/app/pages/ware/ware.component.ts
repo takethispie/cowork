@@ -10,9 +10,10 @@ import {ToastService} from '../../services/toast.service';
 import {AuthService} from '../../services/auth.service';
 import {WareBookingService} from '../../services/ware-booking.service';
 import {WareBooking} from '../../models/WareBooking';
-import {CalendarBooking} from '../../components/Ware/ware-booking-calendar/CalendarBooking';
+import {CalendarBooking} from './CalendarBooking';
 import {Ware} from '../../models/Ware';
-import {colors} from '../../components/Room/room-calendar/colors';
+import {colors} from './colors';
+import {TimeSlotService} from '../../services/time-slot.service';
 
 @Component({
   selector: 'app-ware',
@@ -26,16 +27,12 @@ export class WareComponent implements OnInit {
   view: CalendarView = CalendarView.Week;85
   refresh: Subject<any> = new Subject();
 
-  constructor(private modalCtrl: ModalController, public loading: LoadingService,
+  constructor(private modalCtrl: ModalController, public loading: LoadingService, public timeSlotService: TimeSlotService,
               private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) {
 
   }
 
   ngOnInit() {}
-
-  loadOpeningTimeEvents = () => {
-
-  };
 
   loadEvents(wareId: number, dateTime: DateTime) {
     if(this.SelectedWare == null) return;
@@ -44,13 +41,13 @@ export class WareComponent implements OnInit {
         map((data: WareBooking[]) => data.map(wareBooking => {
           const ret: CalendarBooking & CalendarEvent = CalendarBooking.FromWareBooking(wareBooking);
           if(wareBooking.UserId === this.auth.UserId) return this.AddEditionProperties(ret);
-          ret.color = colors.blue;
+          if(wareBooking.UserId === -1) ret.color = colors.red;
+          else ret.color = colors.blue;
           return ret;
-        })),
+        }))
     ).subscribe({
       next: res => {
         this.events = res;
-        this.loadOpeningTimeEvents();
       },
       error: err => {
         this.toast.PresentToast("Erreur lors du chargement des réservations");

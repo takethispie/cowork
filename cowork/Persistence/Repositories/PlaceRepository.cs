@@ -70,7 +70,7 @@ namespace coworkpersistence.Repositories {
         }
 
 
-        public bool DeleteById(long id) {
+        public bool Delete(long id) {
             const string sql = "DELETE FROM public.\"Place\" WHERE \"Id\"=@id RETURNING  \"Id\"";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", id)

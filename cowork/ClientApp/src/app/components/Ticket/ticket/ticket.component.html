@@ -9,7 +9,7 @@
         <i> {{ "#" + Ticket.Id }} - ouvert le {{ Ticket.Created | date: "dd/MM/yyyy HH:mm" }} <span *ngIf="Ticket.OpendedBy != null">par {{ Ticket.OpendedBy?.FirstName }} {{ Ticket.OpendedBy?.LastName }}</span></i>
       </ion-card-subtitle>
       <ion-buttons slot="end">
-        <ion-button (click)="OpenChangeStatus()">
+        <ion-button (click)="OpenChangeStatus()" [hidden]="!IsAttributedToMe()">
           <ion-icon name="more"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -25,8 +25,12 @@
         <ion-label>Supprimer</ion-label>
       </ion-button>
       <ion-button color="primary" *ngIf="GetUserType(authUser.Type) == 'Staff'" [hidden]="IsAttributedToMe()" (click)="AttributeTicketToMe()">
-        <ion-icon name="share"></ion-icon>
+        <ion-icon name="add"></ion-icon>
         <ion-label>Me l'attribuer</ion-label>
+      </ion-button>
+      <ion-button readonly color="primary" *ngIf="GetUserType(authUser.Type) == 'Staff'" disabled="true" [hidden]="!IsAttributedToMe()">
+        <ion-icon name="checkmark"></ion-icon>
+        <ion-label>M'est attribué</ion-label>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

@@ -13,10 +13,8 @@ namespace coworkdomain.Cowork.Interfaces {
 
         long Update(Place place);
 
-        bool DeleteById(long id);
-
-        bool DeleteByName(string name);
-
+        bool Delete(long id);
+        
         long Create(Place place);
 
     }

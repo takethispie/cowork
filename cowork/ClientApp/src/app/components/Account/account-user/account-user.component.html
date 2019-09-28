@@ -23,11 +23,15 @@
                                 <ion-label> Expiration</ion-label>
                             </ion-item-divider>
                             <ion-item>
-                                <ion-label>
-                                    {{ GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) | number:'1.0-0'}}
+                                <ion-label *ngIf="DaysBeforeExpiration > 0">
+                                    {{ DaysBeforeExpiration | number:'1.0-0'}}
                                     Jours
                                 </ion-label>
-                                <ion-button *ngIf="GetSubscriptionExpirationDate(userSub.LatestRenewal, userSub.Type) <= 31"
+                                <ion-label *ngIf="DaysBeforeExpiration < 0">
+                                    {{ DaysBeforeExpiration | number:'1.0-0'}}
+                                    Jours
+                                </ion-label>
+                                <ion-button *ngIf="DaysBeforeExpiration<= 31"
                                             color="danger" (click)="OnRenewClick()">
                                     Renouveller
                                 </ion-button>

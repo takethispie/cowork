@@ -6,17 +6,17 @@
       <ion-label>Accueil</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="meal" *ngIf="auth.UserType == 0">
+    <ion-tab-button tab="meal" *ngIf="auth.UserType == 0 && auth.Subscription != null">
       <ion-icon name="pizza"></ion-icon>
       <ion-label>Reservation Repas</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="reservation" *ngIf="auth.UserType == 0">
+    <ion-tab-button tab="reservation" *ngIf="auth.UserType == 0  && auth.Subscription != null">
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Reservation Salles</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="ware" *ngIf="auth.UserType == 0">
+    <ion-tab-button tab="ware" *ngIf="auth.UserType == 0  && auth.Subscription != null">
       <ion-icon name="laptop"></ion-icon>
       <ion-label>Reservation Materiel</ion-label>
     </ion-tab-button>

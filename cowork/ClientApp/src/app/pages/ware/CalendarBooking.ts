@@ -1,6 +1,6 @@
-import {Ware} from '../../../models/Ware';
-import {User} from '../../../models/User';
-import {WareBooking} from '../../../models/WareBooking';
+import {Ware} from '../../models/Ware';
+import {User} from '../../models/User';
+import {WareBooking} from '../../models/WareBooking';
 import {DateTime} from 'luxon';
 import {colors} from './colors';
 

@@ -233,7 +233,7 @@ namespace cowork.Controllers.TicketingSystem {
 
 
         [HttpGet("WareWithPaging/{page}/{amount}")]
-        public IActionResult allWareWithPaging(int page, int amount) {
+        public IActionResult AllWareWithPaging(int page, int amount) {
             var result = ticketWareRepository.GetAllWithPaging(page, amount);
             return Ok(result);
         }

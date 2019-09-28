@@ -12,7 +12,7 @@ namespace coworkpersistence.Repositories {
 
     public class TicketRepository : ITicketRepository {
 
-        private const string innerJoin =
+        private const string InnerJoin =
             " inner join \"Users\" U on \"Tickets\".\"OpenedBy\" = U.\"Id\" inner join \"Place\" P on \"Tickets\".\"PlaceId\" = P.\"Id\" ";
 
         private readonly SqlDataMapper<Ticket> dataMapper;
@@ -25,13 +25,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAll() {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + ";";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + ";";
             return dataMapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public List<Ticket> GetAllOfPlace(long placeId) {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"PlaceId\"= @id";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + "WHERE \"Tickets\".\"PlaceId\"= @id";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", placeId)
             };
@@ -40,7 +40,7 @@ namespace coworkpersistence.Repositories {
 
 
         public Ticket GetById(long id) {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"Id\"= @id";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + "WHERE \"Tickets\".\"Id\"= @id";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -49,7 +49,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAllOpenedBy(User user) {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"OpenedBy\"= @id;";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + "WHERE \"Tickets\".\"OpenedBy\"= @id;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", user.Id)
             };
@@ -58,8 +58,8 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAllByPaging(int page, int amount) {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin +
-                               " ORDER BY \"Ticket\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin +
+                               " ORDER BY \"Tickets\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
@@ -69,7 +69,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<Ticket> GetAllWithState(int state) {
-            const string sql = "SELECT * FROM public.\"Tickets\"" + innerJoin + "WHERE \"Tickets\".\"State\"= @state;";
+            const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + "WHERE \"Tickets\".\"State\"= @state;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("state", state)
             };

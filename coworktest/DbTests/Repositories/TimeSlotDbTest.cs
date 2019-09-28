@@ -2,6 +2,7 @@ using System;
 using coworkdomain.Cowork;
 using coworkdomain.Cowork.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -11,31 +12,17 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryTimeSlotRepository();
+            placeRepo = new InMemoryPlaceRepository();
             placeId = placeRepo.Create(new Place(-1, "test", true, true, true, 1, 0, 1));
             var slot = new TimeSlot(-1, DayOfWeek.Monday, 8, 30, 19, 30, placeId);
             slotId = repo.Create(slot);
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            repo.Delete(slotId);
-            placeRepo.DeleteById(placeId);
-        }
-
-
         private ITimeSlotRepository repo;
         private IPlaceRepository placeRepo;
-        private string connection;
         private long slotId, placeId;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new TimeSlotRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-        }
 
 
         [Test]

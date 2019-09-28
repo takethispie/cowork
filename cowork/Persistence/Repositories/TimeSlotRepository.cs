@@ -11,7 +11,7 @@ namespace coworkpersistence.Repositories {
 
     public class TimeSlotRepository : ITimeSlotRepository {
 
-        private const string innerJoin = " INNER JOIN \"Place\" P on \"TimeSlot\".\"PlaceId\" = P.\"Id\" ";
+        private const string InnerJoin = " INNER JOIN \"Place\" P on \"TimeSlot\".\"PlaceId\" = P.\"Id\" ";
 
         private readonly SqlDataMapper<TimeSlot> datamapper;
 
@@ -22,13 +22,13 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TimeSlot> GetAll() {
-            const string sql = "SELECT * FROM public.\"TimeSlot\"" + innerJoin + ";";
+            const string sql = "SELECT * FROM public.\"TimeSlot\"" + InnerJoin + ";";
             return datamapper.MultiItemCommand(sql, new List<DbParameter>());
         }
 
 
         public TimeSlot GetById(long id) {
-            const string sql = "SELECT * FROM public.\"TimeSlot\"" + innerJoin + "WHERE \"TimeSlot\".\"Id\"=@id;";
+            const string sql = "SELECT * FROM public.\"TimeSlot\"" + InnerJoin + "WHERE \"TimeSlot\".\"Id\"=@id;";
             var parameters = new List<DbParameter> {
                 new NpgsqlParameter("id", id)
             };
@@ -37,7 +37,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TimeSlot> GetAllOfPlace(long placeId) {
-            const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin + "WHERE \"TimeSlot\".\"PlaceId\"= @id";
+            const string sql = "SELECT * FROM \"TimeSlot\"" + InnerJoin + "WHERE \"TimeSlot\".\"PlaceId\"= @id";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("id", placeId)
             };
@@ -46,7 +46,7 @@ namespace coworkpersistence.Repositories {
 
 
         public List<TimeSlot> GetAllByPaging(int page, int amount) {
-            const string sql = "SELECT * FROM \"TimeSlot\"" + innerJoin +
+            const string sql = "SELECT * FROM \"TimeSlot\"" + InnerJoin +
                                " ORDER BY \"TimeSlot\".\"PlaceId\" ASC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),

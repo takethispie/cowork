@@ -4,6 +4,7 @@ using coworkdomain.Cowork.Interfaces;
 using coworkdomain.InventoryManagement;
 using coworkdomain.InventoryManagement.Interfaces;
 using coworkpersistence.Repositories;
+using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
 namespace coworktest {
@@ -13,6 +14,12 @@ namespace coworktest {
 
         [SetUp]
         public void Setup() {
+            repo = new InMemoryTicketRepository();
+            userRepo = new InMemoryUserRepository();
+            placeRepo = new InMemoryPlaceRepository();
+            wareRepo = new InMemoryWareRepository();
+            ticketCommentRepository = new InMemoryTicketCommentRepository();
+            ticketWareRepository = new InMemoryTicketWareRepository();
             var place = new Place(-1, "testticket", false, true, true, 3, 1, 20);
             placeId = placeRepo.Create(place);
             staff = new User(-1, "ticket1user", "t", false, UserType.User);
@@ -28,41 +35,16 @@ namespace coworktest {
         }
 
 
-        [TearDown]
-        public void TearDown() {
-            ticketWareRepository.Delete(ticketWareId);
-            ticketCommentRepository.Delete(commentId);
-            repo.Delete(ticketId);
-            wareRepo.Delete(wareId);
-            userRepo.DeleteById(userId);
-            userRepo.DeleteById(persId);
-            placeRepo.DeleteById(placeId);
-        }
-
-
         private ITicketRepository repo;
         private IUserRepository userRepo;
         private IWareRepository wareRepo;
         private IPlaceRepository placeRepo;
         private ITicketWareRepository ticketWareRepository;
+        private ITicketCommentRepository ticketCommentRepository;
 
-        private string connection;
         private long ticketId, persId, userId, placeId, wareId, commentId, ticketWareId;
         private User user;
         private User staff;
-        private TicketCommentRepository ticketCommentRepository;
-
-
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
-            connection = "Host=localhost;Database=cowork;Username=postgres;Password=ariba1";
-            repo = new TicketRepository(connection);
-            userRepo = new UserRepository(connection);
-            placeRepo = new PlaceRepository(connection);
-            wareRepo = new WareRepository(connection);
-            ticketCommentRepository = new TicketCommentRepository(connection);
-            ticketWareRepository = new TicketWareRepository(connection);
-        }
 
 
         [Test]
@@ -150,8 +132,8 @@ namespace coworktest {
         public void GetAllTicketWare() {
             var result = ticketWareRepository.GetAll();
             Assert.NotNull(result);
-            Assert.AreEqual(result.Count, 1);
-            Assert.AreEqual(result[0].Ware.Name, "Dell T1600");
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(result[0].WareId, wareId);
         }
 
 
@@ -166,7 +148,7 @@ namespace coworktest {
         public void GetByIdTicketWare() {
             var result = ticketWareRepository.GetById(ticketWareId);
             Assert.NotNull(result);
-            Assert.AreEqual(result.Ware.Name, "Dell T1600");
+            Assert.AreEqual(result.WareId, wareId);
         }
 
 
@@ -174,7 +156,7 @@ namespace coworktest {
         public void GetByTicketIdTicketWare() {
             var result = ticketWareRepository.GetByTicketId(ticketId);
             Assert.NotNull(result);
-            Assert.AreEqual(result.Ware.Name, "Dell T1600");
+            Assert.AreEqual(result.WareId, wareId);
         }
 
 
