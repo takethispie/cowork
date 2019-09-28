@@ -1,4 +1,4 @@
-using coworkdomain.Cowork;
+using cowork.domain;
 
 namespace cowork.Controllers.RequestArguments {
 

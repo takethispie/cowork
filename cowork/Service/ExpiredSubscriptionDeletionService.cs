@@ -1,5 +1,5 @@
-﻿using coworkdomain;
-using coworkdomain.Cowork.Interfaces;
+﻿using cowork.domain;
+using cowork.domain.Interfaces;
 using Hangfire;
 
 namespace cowork.Service {
