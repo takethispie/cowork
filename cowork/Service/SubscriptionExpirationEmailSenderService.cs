@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using coworkdomain;
-using coworkdomain.Cowork.Interfaces;
-using Hangfire;
+﻿using cowork.domain;
+using cowork.domain.Interfaces;
 
 namespace cowork.Service {
 

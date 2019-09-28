@@ -1,13 +1,6 @@
 using System;
-using System.Linq;
 using System.Text;
 using cowork.Service;
-using coworkdomain;
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
-using coworkdomain.InventoryManagement.Interfaces;
-using coworkpersistence;
-using coworkpersistence.Repositories;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using System.Linq;
+using cowork.domain;
+using cowork.domain.Interfaces;
+using cowork.persistence.Repositories;
 
 namespace cowork {
 

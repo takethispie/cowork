@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
+using cowork.domain;
+using cowork.domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

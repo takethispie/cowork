@@ -1,5 +1,5 @@
-using coworkdomain.InventoryManagement;
-using coworkdomain.InventoryManagement.Interfaces;
+using cowork.domain;
+using cowork.domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
