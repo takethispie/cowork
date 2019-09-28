@@ -57,9 +57,11 @@ namespace cowork.Controllers.TicketingSystem {
                                   .FirstOrDefault(identity => identity.HasClaim(claim => claim.Type == "Id" || claim.Type == "Role"))
                                   ?.Claims
                                   .FirstOrDefault(claim => claim.Type == "Id");
-            if (ticket.AttributedTo == null || (userIdClaim == null || string.IsNullOrEmpty(userIdClaim.Value)
-                                                                    || !long.TryParse(userIdClaim.Value, out var id)
-                                                                    || ticket.AttributedTo.Id != id)) 
+            if (ticket.AttributedTo == null 
+                || (userIdClaim == null 
+                || string.IsNullOrEmpty(userIdClaim.Value)
+                || !long.TryParse(userIdClaim.Value, out var id)
+                || ticket.AttributedTo.Id != id)) 
                 return BadRequest("User can't modify status of a ticket not attributed to him");
             var res = repository.Update(ticket);
             if (res == -1) return Conflict();
@@ -117,80 +119,6 @@ namespace cowork.Controllers.TicketingSystem {
         }
 
 
-        [HttpGet("AttributedTo/{personnalId}")]
-        public IActionResult AllAttributedTo(long personnalId) {
-            var personnal = userRepository.GetById(personnalId);
-            if (personnal == null) return NotFound("Personnel introuvable");
-            var res = ticketAttributionRepository.GetAllFromStaffId(personnalId)
-                                                 .Select(ticketAttr => {
-                                                     var ticket = repository.GetById(ticketAttr.TicketId);
-                                                     ticket.AttributedTo = userRepository.GetById(ticketAttr.StaffId);
-                                                     return ticket;
-                                                 })
-                                                 .Select(ticket => {
-                                                     ticket.Comments =
-                                                         ticketCommentRepository.GetByTicketId(ticket.Id);
-                                                     return ticket;
-                                                 });
-            return Ok(res);
-        }
-
-
-        [HttpGet("AllAttributions")]
-        public IActionResult AllAttribution() {
-            var result = ticketAttributionRepository.GetAll();
-            return Ok(result);
-        }
-
-
-        [HttpGet("AllComments")]
-        public IActionResult AllComments() {
-            var result = ticketCommentRepository.GetAll();
-            return Ok(result);
-        }
-
-
-        [HttpPost("AddComment")]
-        public IActionResult AddComment([FromBody] TicketComment ticketComment) {
-            if (ticketComment == null) return BadRequest();
-            var result = ticketCommentRepository.Create(ticketComment);
-            if (result == -1) return Conflict();
-            return Ok(result);
-        }
-
-
-        [HttpDelete("DeleteComment/{commentId}")]
-        public IActionResult DeleteComment(long commentId) {
-            var result = ticketCommentRepository.Delete(commentId);
-            if (!result) return NotFound();
-            return Ok();
-        }
-
-
-        [HttpGet("CommentsOf/{ticketId}")]
-        public IActionResult CommentsOf(long ticketId) {
-            var result = ticketCommentRepository.GetByTicketId(ticketId);
-            if (result == null) return NotFound();
-            return Ok(result);
-        }
-
-
-        [HttpPost("Attribution")]
-        public IActionResult CreateAttribution([FromBody] TicketAttribution ticketAttribution) {
-            var result = ticketAttributionRepository.Create(ticketAttribution);
-            if (result == -1) return Conflict();
-            return Ok(result);
-        }
-
-
-        [HttpDelete("Attribution/{id}")]
-        public IActionResult DeleteAttribution(long id) {
-            var result = ticketAttributionRepository.Delete(id);
-            if (result == false) return NotFound();
-            return Ok();
-        }
-
-
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
             var result = repository.GetAllByPaging(page, amount).Select(ticket => {
@@ -200,20 +128,6 @@ namespace cowork.Controllers.TicketingSystem {
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
             });
-            return Ok(result);
-        }
-
-
-        [HttpGet("CommentsWithPaging/{page}/{amount}")]
-        public IActionResult CommentsWithPaging(int page, int amount) {
-            var result = ticketCommentRepository.GetAllWithPaging(page, amount);
-            return Ok(result);
-        }
-
-
-        [HttpGet("AttributionsWithPaging/{page}/{amount}")]
-        public IActionResult AttributionsWithPaging(int page, int amount) {
-            var result = repository.GetAllByPaging(page, amount);
             return Ok(result);
         }
 
@@ -228,20 +142,6 @@ namespace cowork.Controllers.TicketingSystem {
                 return ticket;
             });
             
-            return Ok(result);
-        }
-
-
-        [HttpGet("WareWithPaging/{page}/{amount}")]
-        public IActionResult AllWareWithPaging(int page, int amount) {
-            var result = ticketWareRepository.GetAllWithPaging(page, amount);
-            return Ok(result);
-        }
-
-
-        [HttpGet("LastCommentsFromUser/{userId}/{commentAmount}")]
-        public IActionResult LastCommentsFromUser(long userId, int commentAmount) {
-            var result = ticketCommentRepository.LastCommentsFromUser(userId, commentAmount);
             return Ok(result);
         }
     }

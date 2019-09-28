@@ -21,31 +21,31 @@ export class TicketCommentService {
 
 
   public Create(ticketComment: TicketComment) {
-    return this.http.post<number>("api/Ticket/AddComment", ticketComment, CONTENTJSON);
+    return this.http.post<number>("api/TicketComment", ticketComment, CONTENTJSON);
   }
   
 
   public Delete(commentId: number) {
-    return this.http.delete("api/Ticket/Comment/" + commentId);
+    return this.http.delete("api/TicketComment/" + commentId);
   }
 
   
   public All() {
-    return this.http.get<TicketComment[]>("api/Ticket/AllComments").pipe(map(this.ParseDateTimeArray));;
+    return this.http.get<TicketComment[]>("api/TicketComment").pipe(map(this.ParseDateTimeArray));;
   }
 
 
   public AllWithPaging(page: number, amount: number) {
-    return this.http.get<TicketComment[]>("api/Ticket/CommentsWithPaging/" + page + "/" + amount).pipe(map(this.ParseDateTimeArray));;
+    return this.http.get<TicketComment[]>("api/TicketComment/WithPaging/" + page + "/" + amount).pipe(map(this.ParseDateTimeArray));;
   }
   
   
   public Update(comment: TicketComment) {
-    return this.http.put<number>("api/Ticket/Comment", comment, CONTENTJSON);
+    return this.http.put<number>("api/TicketComment", comment, CONTENTJSON);
   }
 
 
   public LastCommentsFromUser(userId: number, commentAmount: number) {
-    return this.http.get<TicketComment[]>("api/Ticket/LastCommentsFromUser/" + userId + "/" + commentAmount);
+    return this.http.get<TicketComment[]>("api/TicketComment/LastCommentsFromUser/" + userId + "/" + commentAmount);
   }
 }
