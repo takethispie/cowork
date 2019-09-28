@@ -1,13 +1,10 @@
 using System;
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
-using coworkdomain.InventoryManagement;
-using coworkdomain.InventoryManagement.Interfaces;
-using coworkpersistence.Repositories;
+using cowork.domain;
+using cowork.domain.Interfaces;
 using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
-namespace coworktest {
+namespace coworktest.DbTests.Repositories {
 
     [TestFixture]
     public class TicketDbTest {

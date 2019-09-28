@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using coworkdomain.Cowork;
-using coworkdomain.InventoryManagement;
-using coworkdomain.InventoryManagement.Interfaces;
+using cowork.domain;
+using cowork.domain.Interfaces;
 
 namespace coworktest.InMemoryRepositories {
 

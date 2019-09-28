@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork", "cowork\cowork.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "coworktest", "coworktest\coworktest.csproj", "{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork.domain", "cowork.domain\cowork.domain.csproj", "{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork.persistence", "cowork.persistence\cowork.persistence.csproj", "{9DE4D5FB-A508-4631-AAFE-11FE5B5F8759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE4D5FB-A508-4631-AAFE-11FE5B5F8759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE4D5FB-A508-4631-AAFE-11FE5B5F8759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE4D5FB-A508-4631-AAFE-11FE5B5F8759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE4D5FB-A508-4631-AAFE-11FE5B5F8759}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

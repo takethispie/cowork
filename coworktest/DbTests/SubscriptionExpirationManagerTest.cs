@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using cowork;
-using coworkdomain;
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
-using coworkpersistence;
+using cowork.domain;
+using cowork.domain.Interfaces;
 using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 

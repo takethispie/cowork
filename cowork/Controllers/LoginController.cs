@@ -1,8 +1,7 @@
 ﻿using cowork.Controllers.RequestArguments;
-using coworkdomain;
-using coworkpersistence;
+using cowork.domain;
+using cowork.domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cowork.Controllers {

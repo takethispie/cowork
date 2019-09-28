@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using coworkdomain;
-using coworkpersistence;
+using cowork.domain;
+using cowork.domain.Interfaces;
 
 namespace coworktest.InMemoryRepositories {
 

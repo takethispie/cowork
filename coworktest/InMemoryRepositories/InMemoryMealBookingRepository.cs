@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
-using NUnit.Framework;
+using cowork.domain;
+using cowork.domain.Interfaces;
 
 namespace coworktest.InMemoryRepositories {
 

@@ -1,11 +1,10 @@
-using coworkdomain.Cowork;
-using coworkdomain.Cowork.Interfaces;
-using coworkpersistence.Datamappers;
-using coworkpersistence.Repositories;
+using cowork.domain;
+using cowork.domain.Interfaces;
+using cowork.persistence.Datamappers;
 using coworktest.InMemoryRepositories;
 using NUnit.Framework;
 
-namespace coworktest {
+namespace coworktest.DbTests.Repositories {
 
     public class UserDbTest {
 
