@@ -59,7 +59,7 @@ namespace coworkpersistence.Repositories {
 
         public List<Ticket> GetAllByPaging(int page, int amount) {
             const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin +
-                               " ORDER BY \"Ticket\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
+                               " ORDER BY \"Tickets\".\"Created\" DESC LIMIT @amount OFFSET @skip;";
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", page * amount)
