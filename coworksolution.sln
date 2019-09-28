@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork", "cowork\cowork.csproj", "{16911905-08A4-4E63-AA08-CD6823719ABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "coworktest", "coworktest\coworktest.csproj", "{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork.test", "cowork.test\cowork.test.csproj", "{B2758BAD-DCAC-4F13-91A6-1C1D85EAB134}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cowork.domain", "cowork.domain\cowork.domain.csproj", "{F500ECC2-9D15-4A93-8DC8-1F5AAB53E3A5}"
 EndProject

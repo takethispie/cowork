@@ -4,7 +4,13 @@
 			"path": "cowork"
 		},
 		{
-			"path": "coworktest"
+			"path": "cowork.domain"
+		},
+		{
+			"path": "cowork.persistence"
+		},
+		{
+			"path": "cowork.test"
 		}
 	],
 	"settings": {
