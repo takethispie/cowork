@@ -34,6 +34,11 @@ const routes: Routes = [
         canActivate: [UserLoggedInGuard]
       },
       {
+        path: 'backoffice',
+        loadChildren: "../pages/backoffice/backoffice.module#BackofficeModule",
+        canActivate: [UserLoggedInGuard]
+      },
+      {
         path: '',
         redirectTo: '/tabs/account',
         pathMatch: 'full'

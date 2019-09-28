@@ -21,6 +21,11 @@
       <ion-label>Reservation Materiel</ion-label>
     </ion-tab-button>
 
+    <ion-tab-button tab="backoffice" *ngIf="auth.UserType == 2">
+      <ion-icon name="laptop"></ion-icon>
+      <ion-label>Backoffice</ion-label>
+    </ion-tab-button>
+
     <ion-tab-button tab="ticket">
       <ion-icon name="help"></ion-icon>
       <ion-label>Support Technique</ion-label>

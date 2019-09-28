@@ -13,6 +13,7 @@ import {WareBooking} from '../../models/WareBooking';
 import {CalendarBooking} from './CalendarBooking';
 import {Ware} from '../../models/Ware';
 import {colors} from './colors';
+import {TimeSlotService} from '../../services/time-slot.service';
 
 @Component({
   selector: 'app-ware',
@@ -26,16 +27,12 @@ export class WareComponent implements OnInit {
   view: CalendarView = CalendarView.Week;85
   refresh: Subject<any> = new Subject();
 
-  constructor(private modalCtrl: ModalController, public loading: LoadingService,
+  constructor(private modalCtrl: ModalController, public loading: LoadingService, public timeSlotService: TimeSlotService,
               private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) {
 
   }
 
   ngOnInit() {}
-
-  loadOpeningTimeEvents = () => {
-
-  };
 
   loadEvents(wareId: number, dateTime: DateTime) {
     if(this.SelectedWare == null) return;
@@ -47,11 +44,10 @@ export class WareComponent implements OnInit {
           if(wareBooking.UserId === -1) ret.color = colors.red;
           else ret.color = colors.blue;
           return ret;
-        })),
+        }))
     ).subscribe({
       next: res => {
         this.events = res;
-        this.loadOpeningTimeEvents();
       },
       error: err => {
         this.toast.PresentToast("Erreur lors du chargement des réservations");
