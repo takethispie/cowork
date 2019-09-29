@@ -23,12 +23,6 @@ namespace cowork.test.InMemoryRepositories {
             return Rooms.Find(r => r.Id == id);
         }
 
-
-        public Room GetByName(string name) {
-            return Rooms.Find(r => r.Name == name);
-        }
-
-
         public List<Room> GetAllFromPlace(long placeId) {
             return Rooms.Where(r => r.PlaceId == placeId).ToList();
         }

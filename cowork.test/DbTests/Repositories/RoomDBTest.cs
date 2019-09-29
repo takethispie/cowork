@@ -57,13 +57,6 @@ namespace cowork.test.DbTests.Repositories {
 
 
         [Test]
-        public void GetByName() {
-            var result = repo.GetByName("Room1");
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
         public void Update() {
             var room = repo.GetById(roomId);
             Assert.NotNull(room);

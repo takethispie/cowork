@@ -14,8 +14,22 @@ namespace cowork.domain {
             CosyRoomAmount = cosyRoomAmount;
             PrinterAmount = printerAmount;
             LaptopAmount = laptopAmount;
-            OpenedTimes = null;
-            BookableRooms = null;
+            OpenedTimes = new List<TimeSlot>();
+            BookableRooms = new List<Room>();
+        }
+        
+        public Place(string name, bool highBandwidthWifi, bool unlimitedBeverages, bool membersOnlyArea,
+                     int cosyRoomAmount, int printerAmount, int laptopAmount) {
+            Id = -1;
+            Name = name;
+            HighBandwidthWifi = highBandwidthWifi;
+            UnlimitedBeverages = unlimitedBeverages;
+            MembersOnlyArea = membersOnlyArea;
+            CosyRoomAmount = cosyRoomAmount;
+            PrinterAmount = printerAmount;
+            LaptopAmount = laptopAmount;
+            OpenedTimes = new List<TimeSlot>();
+            BookableRooms = new List<Room>();
         }
 
 

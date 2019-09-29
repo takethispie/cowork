@@ -1,5 +1,7 @@
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.Room;
+using cowork.usecases.Room.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +21,14 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet]
         public IActionResult All() {
-            var res = Repository.GetAll();
+            var res = new GetAllRooms(Repository).Execute();
             return Ok(res);
         }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] Room room) {
-            var res = Repository.Create(room);
+        public IActionResult Create([FromBody] CreateRoomInput room) {
+            var res = new CreateRoom(Repository, room).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -34,7 +36,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPut]
         public IActionResult Update([FromBody] Room room) {
-            var res = Repository.Update(room);
+            var res = new UpdateRoom(Repository, room).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -42,7 +44,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.Delete(id);
+            var result = new DeleteRoom(Repository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -50,22 +52,14 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("FromPlace/{placeId}")]
         public IActionResult AllFromPlace(long placeId) {
-            var res = Repository.GetAllFromPlace(placeId);
+            var res = new GetRoomsFromPlace(Repository, placeId).Execute();
             return Ok(res);
         }
 
 
         [HttpGet("ById/{id}")]
         public IActionResult ById(long id) {
-            var result = Repository.GetById(id);
-            if (result == null) return NotFound();
-            return Ok(result);
-        }
-
-
-        [HttpGet("ByName/{name}")]
-        public IActionResult ByName(string name) {
-            var result = Repository.GetByName(name);
+            var result = new GetRoomById(Repository, id).Execute();
             if (result == null) return NotFound();
             return Ok(result);
         }
@@ -73,7 +67,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = Repository.GetAllWithPaging(page, amount);
+            var result = new GetRoomsWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 

@@ -13,6 +13,15 @@ namespace cowork.domain {
             PlaceId = placeId;
             FixedContract = fixedContract;
         }
+        
+        public Subscription(long typeId, long clientId, DateTime latestRenewal, long placeId, bool fixedContract) {
+            Id = -1;
+            TypeId = typeId;
+            ClientId = clientId;
+            LatestRenewal = latestRenewal;
+            PlaceId = placeId;
+            FixedContract = fixedContract;
+        }
 
 
         public Subscription() { }
