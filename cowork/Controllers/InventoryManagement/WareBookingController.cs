@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.WareBooking;
+using cowork.usecases.WareBooking.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,55 +15,50 @@ namespace cowork.Controllers.InventoryManagement {
 
         private readonly IWareBookingRepository bookingRepository;
         private readonly ITimeSlotRepository timeSlotRepository;
+        private readonly IWareRepository wareRepository;
 
 
-        public WareBookingController(IWareBookingRepository repository, ITimeSlotRepository timeSlotRepository) {
+        public WareBookingController(IWareBookingRepository repository, ITimeSlotRepository timeSlotRepository, 
+                                     IWareRepository wareRepository) {
             bookingRepository = repository;
             this.timeSlotRepository = timeSlotRepository;
+            this.wareRepository = wareRepository;
         }
 
 
         [HttpGet]
         public IActionResult All() {
-            var result = bookingRepository.GetAll();
+            var result = new GetAllWareBookings(bookingRepository).Execute();
             return Ok(result);
         }
 
 
         [HttpGet("ByWareId/{wareId}")]
         public IActionResult AllByWareId(long id) {
-            var result = bookingRepository.GetAllByWareId(id);
+            var result = new GetWareBookingsByWareId(bookingRepository, id).Execute();
             return Ok(result);
         }
 
 
         [HttpPost("ByWareIdStartingAt/{wareId}")]
         public IActionResult AllByWareIdStartingAt(long wareId, [FromBody] DateTime dateTime) {
-            var result = bookingRepository.GetAllByWareIdStartingAt(wareId, dateTime);
+            var result = new GetWareBookingsByWareIdStartingAt(bookingRepository, wareId, dateTime).Execute();
             return Ok(result);
         }
 
 
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
-            var result = bookingRepository.GetById(id);
+            var result = new GetWareBookingById(bookingRepository, id).Execute();
             if (result == null) return NotFound();
             return Ok(result);
         }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] WareBooking wareBooking) {
-            var existing = bookingRepository.GetStartingAt(wareBooking.Start.Date)
-                .Where(booking => booking.WareId == wareBooking.WareId)
-                .Any(slot => slot.End >= wareBooking.End && slot.Start <= wareBooking.Start);
-            if (existing) return BadRequest("Erreur: créneau déjà pris");
-            var openings = timeSlotRepository.GetAllOfPlace(wareBooking.Ware.PlaceId)
-                .Find(op => op.Day == wareBooking.Start.DayOfWeek);
-            if (wareBooking.Start.Hour < openings.StartHour && wareBooking.Start.Minute < openings.StartMinutes
-                || wareBooking.End.Hour < openings.EndHour && wareBooking.End.Minute < openings.EndMinutes)
-                return BadRequest("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");
-            var result = bookingRepository.Create(wareBooking);
+        public IActionResult Create([FromBody] CreateWareBookingInput wareBooking) {
+            var result = new CreateWareBooking(bookingRepository, timeSlotRepository, wareRepository,
+                wareBooking).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }
@@ -69,7 +66,7 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpPut]
         public IActionResult Update([FromBody] WareBooking wareBooking) {
-            var result = bookingRepository.Update(wareBooking);
+            var result = new UpdateWareBooking(bookingRepository, wareBooking).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }
@@ -77,7 +74,7 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = bookingRepository.Delete(id);
+            var result = new DeleteWareBooking(bookingRepository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -85,35 +82,35 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet("OfUser/{userId}")]
         public IActionResult OfUser(long userId) {
-            var result = bookingRepository.GetByUser(userId);
+            var result = new GetWareBookinsOfUser(bookingRepository, userId).Execute();
             return Ok(result);
         }
 
 
         [HttpPost("AllStartingAt")]
         public IActionResult AllStartingAt([FromBody] DateTime dateTime) {
-            var result = bookingRepository.GetStartingAt(dateTime);
+            var result = new GetWareBookingsStartingAtDate(bookingRepository, dateTime).Execute();
             return Ok(result);
         }
 
 
         [HttpPost("WithPaging/{page}/{amount}")]
         public IActionResult PagingWithStartDate(int page, int amount, [FromBody] DateTime start) {
-            var result = bookingRepository.GetWithPaging(page, amount, start);
+            var result = new GetWareBookingsWithPaging(bookingRepository, page, amount, start).Execute();
             return Ok(result);
         }
 
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = bookingRepository.GetWithPaging(page, amount);
+            var result = new GetWareBookingsWithPaging(bookingRepository, page, amount, null).Execute();
             return Ok(result);
         }
 
 
         [HttpPost("FromGivenDate")]
         public IActionResult FromGivenDate([FromBody] DateTime start) {
-            var result = bookingRepository.GetAllFromDate(start);
+            var result = new GetWareBookingsFromDate(bookingRepository, start).Execute();
             return Ok(result);
         }
 
