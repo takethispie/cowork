@@ -2,7 +2,6 @@
 
     public class CreatePlaceInput {
 
-        public long Id { get; set; }
         public string Name { get; set; }
         public bool HighBandwidthWifi { get; set; }
         public bool UnlimitedBeverages { get; set; }

@@ -9,21 +9,23 @@ namespace cowork.usecases.Auth {
 
     public class AuthUser : IUseCase<AuthOutput> {
 
-        private ILoginRepository loginRepository;
-        private IUserRepository userRepository;
-        private ISubscriptionRepository subscriptionRepository;
-        private ITokenHandler tokenHandler;
+        private readonly ILoginRepository loginRepository;
+        private readonly IUserRepository userRepository;
+        private readonly ISubscriptionRepository subscriptionRepository;
+        private readonly ITokenHandler tokenHandler;
+        private ISubscriptionTypeRepository subscriptionTypeRepository;
         public readonly CredentialsInput CredentialsInput;
 
 
         public AuthUser(ILoginRepository loginRepository, IUserRepository userRepository, 
                         ISubscriptionRepository subscriptionRepository, ITokenHandler tokenHandler,
-                        CredentialsInput credentialsInput) {
+                        ISubscriptionTypeRepository subscriptionTypeRepository, CredentialsInput credentialsInput) {
             this.loginRepository = loginRepository;
             this.userRepository = userRepository;
             this.subscriptionRepository = subscriptionRepository;
             this.tokenHandler = tokenHandler;
             CredentialsInput = credentialsInput;
+            this.subscriptionTypeRepository = subscriptionTypeRepository;
         }
 
 
@@ -37,7 +39,10 @@ namespace cowork.usecases.Auth {
                 new Claim("Role", user.Type.ToString()),
                 new Claim("Id", user.Id.ToString())
             });
-            if (sub != null && sub.FixedContract && sub.LatestRenewal.AddMonths(sub.Type.FixedContractDurationMonth) < DateTime.Today) {
+            if (sub != null && sub.FixedContract 
+                            && sub.LatestRenewal.AddMonths(
+                                subscriptionTypeRepository.GetById(sub.TypeId)
+                                    .FixedContractDurationMonth) < DateTime.Today) {
                 subscriptionRepository.Delete(sub.Id);
                 sub = null;
             } 

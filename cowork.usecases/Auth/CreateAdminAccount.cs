@@ -1,4 +1,5 @@
-﻿using cowork.domain;
+﻿using System;
+using cowork.domain;
 using cowork.domain.Interfaces;
 
 namespace cowork.usecases.Auth {
@@ -21,6 +22,7 @@ namespace cowork.usecases.Auth {
 
 
         public int Execute() {
+            if(user.Type != UserType.Admin) throw new Exception("l'utilisateur n'a pas le rang nécéssaire");
             var result = userRepository.Create(user);
             if (result == -1) return -1;
             user.Id = result;

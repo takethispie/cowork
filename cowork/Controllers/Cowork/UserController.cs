@@ -16,13 +16,17 @@ namespace cowork.Controllers.Cowork {
         public IUserRepository Repository;
         public ISubscriptionRepository SubscriptionRepository;
         public AuthTokenHandler AuthTokenHandler;
+        private readonly ISubscriptionTypeRepository subscriptionTypeRepository;
+
 
         public UserController(IUserRepository repository, ILoginRepository loginRepository,
-                              ISubscriptionRepository subscriptionRepository, AuthTokenHandler authTokenHandler) {
+                              ISubscriptionRepository subscriptionRepository, AuthTokenHandler authTokenHandler, 
+                              ISubscriptionTypeRepository subscriptionTypeRepository) {
             Repository = repository;
             this.loginRepository = loginRepository;
             SubscriptionRepository = subscriptionRepository;
             AuthTokenHandler = authTokenHandler;
+            this.subscriptionTypeRepository = subscriptionTypeRepository;
         }
 
 
@@ -69,8 +73,8 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPost("auth")]
         public IActionResult Auth([FromBody] CredentialsInput credentialsInput) {
-            var cmd = new AuthUser(loginRepository, Repository, SubscriptionRepository, AuthTokenHandler,
-                credentialsInput);
+            var cmd = new AuthUser(loginRepository, Repository, SubscriptionRepository, AuthTokenHandler, 
+                subscriptionTypeRepository, credentialsInput);
             return Ok(cmd.Execute());
         }
 
@@ -86,7 +90,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = new GetUsersWithPaging(Repository, page, amount);
+            var result = new GetUsersWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 
