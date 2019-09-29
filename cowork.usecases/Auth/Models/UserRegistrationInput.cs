@@ -1,8 +1,8 @@
 using cowork.domain;
 
-namespace cowork.Controllers.RequestArguments {
+namespace cowork.usecases.Auth.Models {
 
-    public class UserRegistration {
+    public class UserRegistrationInput {
 
         public User User { get; set; }
         public string Password { get; set; }

@@ -1,8 +1,8 @@
 using System;
 
-namespace cowork.Controllers.RequestArguments {
+namespace cowork.usecases.Meal.Models {
 
-    public class MealArgument {
+    public class MealFilterInput {
 
         public DateTime Date { get; set; }
         public long PlaceId { get; set; }

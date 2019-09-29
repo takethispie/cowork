@@ -1,6 +1,6 @@
-﻿namespace cowork.Controllers.RequestArguments {
+﻿namespace cowork.usecases.Auth.Models {
 
-    public class LoginClearPassword {
+    public class LoginInput {
 
         public long Id { get; set; }
         public string Email { get; set; }

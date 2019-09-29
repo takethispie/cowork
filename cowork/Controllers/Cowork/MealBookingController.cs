@@ -1,6 +1,6 @@
-using cowork.Controllers.RequestArguments;
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.Meal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,8 +65,8 @@ namespace cowork.Controllers.Cowork {
 
 
         [HttpPost("FromDateAndPlace")]
-        public IActionResult AllFromDateAndPlace([FromBody] MealArgument mealArgument) {
-            var result = Repository.GetAllFromDateAndPlace(mealArgument.Date, mealArgument.PlaceId);
+        public IActionResult AllFromDateAndPlace([FromBody] MealFilterInput mealFilterInput) {
+            var result = Repository.GetAllFromDateAndPlace(mealFilterInput.Date, mealFilterInput.PlaceId);
             return Ok(result);
         }
 
