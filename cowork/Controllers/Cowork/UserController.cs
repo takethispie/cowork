@@ -65,7 +65,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = new DeleteUser(Repository, id).Execute();
+            var result = new DeleteUser(Repository, SubscriptionRepository, id).Execute();
             if (!result) return Conflict();
             return Ok();
         }
