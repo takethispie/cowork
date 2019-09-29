@@ -8,4 +8,8 @@
       <ProjectReference Include="..\cowork.domain\cowork.domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="SubscriptionType\Models" />
+    </ItemGroup>
+
 </Project>

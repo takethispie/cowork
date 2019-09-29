@@ -11,7 +11,7 @@ namespace cowork.usecases.Subscription.Models {
         public long PlaceId { get; set; }
         public DateTime LatestRenewal { get; set; }
         public bool FixedContract { get; set; }
-        public SubscriptionType Type { get; set; }
+        public domain.SubscriptionType Type { get; set; }
 
     }
 

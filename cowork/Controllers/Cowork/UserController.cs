@@ -3,6 +3,7 @@ using cowork.domain;
 using cowork.domain.Interfaces;
 using cowork.usecases.Auth;
 using cowork.usecases.Auth.Models;
+using cowork.usecases.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("{id}")]
         public IActionResult GetById(long id) {
-            return Ok(Repository.GetById(id));
+            return Ok(new GetUserById(Repository, id).Execute());
         }
 
 
@@ -42,7 +43,7 @@ namespace cowork.Controllers.Cowork {
         public IActionResult Create([FromBody] User user) {
             if (!User.Claims.Any(claim => claim.Type == "Role" && claim.Value == UserType.Admin.ToString()))
                 return Unauthorized();
-            var result = Repository.Create(user);
+            var result = new CreateUser(Repository, user).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }
@@ -51,7 +52,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpPut]
         public IActionResult Update([FromBody] User user) {
-            var result = Repository.Update(user);
+            var result = new UpdateUser(Repository, user).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }
@@ -60,7 +61,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.DeleteById(id);
+            var result = new DeleteUser(Repository, id).Execute();
             if (!result) return Conflict();
             return Ok();
         }
@@ -77,7 +78,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpGet("all")]
         public IActionResult All() {
-            var result = Repository.GetAll();
+            var result = new GetAllUsers(Repository).Execute();
             return Ok(result);
         }
 
@@ -85,7 +86,7 @@ namespace cowork.Controllers.Cowork {
         [Authorize]
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = Repository.GetAllWithPaging(page, amount);
+            var result = new GetUsersWithPaging(Repository, page, amount);
             return Ok(result);
         }
 

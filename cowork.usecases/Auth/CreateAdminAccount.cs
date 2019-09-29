@@ -7,11 +7,11 @@ namespace cowork.usecases.Auth {
 
         private ILoginRepository loginRepository;
         private IUserRepository userRepository;
-        private User user;
+        private domain.User user;
         public readonly string Email;
         public readonly string Password;
 
-        public CreateAdminAccount(ILoginRepository loginRepository, IUserRepository userRepository, User user, string email, string password) {
+        public CreateAdminAccount(ILoginRepository loginRepository, IUserRepository userRepository, domain.User user, string email, string password) {
             this.loginRepository = loginRepository;
             this.userRepository = userRepository;
             this.user = user;

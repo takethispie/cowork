@@ -24,11 +24,6 @@ namespace cowork.test.InMemoryRepositories {
         }
 
 
-        public SubscriptionType GetByName(string name) {
-            return SubscriptionTypes.Find(s => s.Name == name);
-        }
-
-
         public bool Delete(long id) {
             var item = SubscriptionTypes.Find(b => b.Id == id);
             if (item == null) return false;
