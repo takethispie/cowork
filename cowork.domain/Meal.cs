@@ -13,6 +13,13 @@ namespace cowork.domain {
             Description = description;
             PlaceId = placeId;
         }
+        
+        public Meal(DateTime date, string description, long placeId) {
+            Id = -1;
+            Date = date;
+            Description = description;
+            PlaceId = placeId;
+        }
 
 
         public long Id { get; set; }

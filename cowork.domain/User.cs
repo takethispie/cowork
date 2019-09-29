@@ -18,7 +18,6 @@ namespace cowork.domain {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsAStudent { get; set; }
-        public string Token { get; set; }
         public UserType Type { get; set; }
 
     }

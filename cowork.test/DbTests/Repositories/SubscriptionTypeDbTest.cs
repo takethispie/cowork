@@ -51,13 +51,6 @@ namespace cowork.test.DbTests.Repositories {
 
 
         [Test]
-        public void GetByName() {
-            var result = repo.GetByName("test");
-            Assert.NotNull(result);
-        }
-
-
-        [Test]
         public void Update() {
             var current = repo.GetById(subtypeId);
             Assert.NotNull(current);

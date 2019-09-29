@@ -14,6 +14,17 @@ namespace cowork.domain {
             EndMinutes = endMinutes;
             PlaceId = placeId;
         }
+        
+        public TimeSlot(DayOfWeek day, short startHour, short startMinutes, short endHour, short endMinutes,
+                        long placeId) {
+            Id = -1;
+            Day = day;
+            StartHour = startHour;
+            StartMinutes = startMinutes;
+            EndHour = endHour;
+            EndMinutes = endMinutes;
+            PlaceId = placeId;
+        }
 
 
         public TimeSlot() { }

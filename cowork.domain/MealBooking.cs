@@ -11,6 +11,13 @@ namespace cowork.domain {
             UserId = userId;
             Note = note;
         }
+        
+        public MealBooking(long mealId, long userId, string note) {
+            Id = -1;
+            MealId = mealId;
+            UserId = userId;
+            Note = note;
+        }
 
 
         public long Id { get; set; }

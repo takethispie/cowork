@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using cowork.services.Login;
 using Microsoft.IdentityModel.Tokens;
 
 namespace cowork {
 
-    public class AuthTokenHandler {
+    public class AuthTokenHandler : ITokenHandler{
 
         public string Secret { get; set; }
         

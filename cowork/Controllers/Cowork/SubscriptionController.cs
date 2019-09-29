@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.Subscription;
+using cowork.usecases.Subscription.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,17 +25,14 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet]
         public IActionResult All() {
-            var result = Repository.GetAll().Select(sub => {
-                sub.Place.OpenedTimes = TimeSlotRepository.GetAllOfPlace(sub.Place.Id);
-                return sub;
-            });
+            var result = new GetAllSubscriptions(Repository, TimeSlotRepository).Execute();
             return Ok(result);
         }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] Subscription sub) {
-            var res = Repository.Create(sub);
+        public IActionResult Create([FromBody] CreateSubscriptionInput sub) {
+            var res = new CreateSubscription(Repository, sub).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -41,15 +40,15 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPut]
         public IActionResult Update([FromBody] Subscription sub) {
-            var res = Repository.Update(sub);
-            if (res == -1) return Conflict();
+            var res = new UpdateSubscription(Repository, sub).Execute();
+            if (res == -1) return BadRequest("Impossible de creer l'abonnement");
             return Ok(res);
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.Delete(id);
+            var result = new DeleteSubscription(Repository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -57,30 +56,21 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("ById/{id}")]
         public IActionResult ById(long id) {
-            var result = Repository.GetById(id);
-            if (result == null) return NotFound();
-            result.Place.OpenedTimes = TimeSlotRepository.GetAllOfPlace(result.Place.Id);
+            var result = new GetSubscriptionById(Repository, TimeSlotRepository, id).Execute();
             return Ok(result);
         }
 
 
         [HttpGet("OfUser/{userId}")]
         public IActionResult OfUser(long userId) {
-            var res = Repository.GetOfUser(userId);
-            if (res == null) return NotFound();
-            res.Place.OpenedTimes = TimeSlotRepository.GetAllOfPlace(res.Place.Id);
-            if (res.FixedContract &&
-                res.LatestRenewal.AddMonths(res.Type.FixedContractDurationMonth) < DateTime.Today) {
-                Repository.Delete(res.Id);
-                return Ok(null);
-            }
+            var res = new GetSubscriptionOfUser(Repository, TimeSlotRepository, userId).Execute();
             return Ok(res);
         }
 
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = Repository.GetAllWithPaging(page, amount);
+            var result = new GetSubscriptionsWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 
