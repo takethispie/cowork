@@ -1,6 +1,7 @@
 using System.Linq;
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.Ticket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,14 @@ namespace cowork.Controllers.TicketingSystem {
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
             });
+            return Ok(res);
+        }
+        
+        
+        [HttpGet("AttributedTo/{personnalId}")]
+        public IActionResult AllTicketsAttributedTo(long personnalId) {
+            var res = new GetTicketsAttributedToUser(userRepository, ticketAttributionRepository, repository,
+                ticketCommentRepository, personnalId).Execute();
             return Ok(res);
         }
 
