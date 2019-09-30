@@ -18,7 +18,7 @@ namespace cowork.usecases.Subscription {
 
         public domain.Subscription Execute() {
             var sub = subscriptionRepository.GetById(Id);
-            if(sub == null) throw new ArgumentNullException("aucun abonnement ne correspond à l'id");
+            if (sub == null) return null;
             sub.Place.OpenedTimes = timeSlotRepository.GetAllOfPlace(sub.PlaceId);
             return sub;
         }

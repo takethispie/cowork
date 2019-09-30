@@ -5,7 +5,17 @@ namespace cowork.usecases.Subscription.Models {
 
     public class CreateSubscriptionInput {
 
-        public long Id { get; set; }
+        public CreateSubscriptionInput(long typeId, long clientId, long placeId, DateTime latestRenewal, bool fixedContract, domain.SubscriptionType type) {
+            TypeId = typeId;
+            ClientId = clientId;
+            PlaceId = placeId;
+            LatestRenewal = latestRenewal;
+            FixedContract = fixedContract;
+            Type = type;
+        }
+        
+        public CreateSubscriptionInput() {}
+        
         public long TypeId { get; set; }
         public long ClientId { get; set; }
         public long PlaceId { get; set; }

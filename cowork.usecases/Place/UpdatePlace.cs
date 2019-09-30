@@ -14,7 +14,7 @@ namespace cowork.usecases.Place {
 
 
         public long Execute() {
-            return placeRepository.Create(Place);
+            return placeRepository.Update(Place);
         }
 
     }

@@ -18,8 +18,8 @@ namespace cowork.test.Usercases.Auth {
         [Test]
         public void ShouldAuth() {
             var user = new User(0, "alexandre", "felix", false, UserType.User);
-            var sub = new Subscription(0, 0, DateTime.Now, 0, true);
-            var subType = new SubscriptionType(0, "resident", 8, 3, 2, 20, 15, 20, 25, "test");
+            var sub = new domain.Subscription(0, 0, DateTime.Now, 0, true);
+            var subType = new domain.SubscriptionType(0, "resident", 8, 3, 2, 20, 15, 20, 25, "test");
             sub.Type = subType;
             var mockTokenhandler = new Mock<ITokenHandler>();
             mockTokenhandler.Setup(mock => mock.EncryptToken(It.IsAny<List<Claim>>())).Returns("authtokens");
