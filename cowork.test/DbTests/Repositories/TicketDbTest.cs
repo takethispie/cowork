@@ -120,7 +120,7 @@ namespace cowork.test.DbTests.Repositories {
 
         [Test]
         public void GetAllOpenedBy() {
-            var result = repo.GetAllOpenedBy(user);
+            var result = repo.GetAllOpenedBy(userId);
             Assert.NotNull(result);
         }
 

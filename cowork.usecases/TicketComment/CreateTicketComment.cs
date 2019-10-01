@@ -1,14 +1,13 @@
-﻿using cowork.domain;
-using cowork.domain.Interfaces;
+﻿using cowork.domain.Interfaces;
 
-namespace cowork.usecases.Ticket {
+namespace cowork.usecases.TicketComment {
 
     public class CreateTicketComment : IUseCase<long> {
 
         private readonly ITicketCommentRepository ticketCommentRepository;
-        public readonly TicketComment TicketComment;
+        public readonly domain.TicketComment TicketComment;
 
-        public CreateTicketComment(ITicketCommentRepository ticketCommentRepository, TicketComment ticketComment) {
+        public CreateTicketComment(ITicketCommentRepository ticketCommentRepository, domain.TicketComment ticketComment) {
             this.ticketCommentRepository = ticketCommentRepository;
             TicketComment = ticketComment;
         }

@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using cowork.domain;
+﻿using System.Collections.Generic;
 using cowork.domain.Interfaces;
 
-namespace cowork.usecases.Ticket {
+namespace cowork.usecases.TicketComment {
 
-    public class GetLastCommentsFromUser : IUseCase<IEnumerable<TicketComment>> {
+    public class GetLastCommentsFromUser : IUseCase<IEnumerable<domain.TicketComment>> {
 
         private readonly ITicketCommentRepository ticketCommentRepository;
         public readonly int Amount;
@@ -18,7 +16,7 @@ namespace cowork.usecases.Ticket {
         }
 
 
-        public IEnumerable<TicketComment> Execute() {
+        public IEnumerable<domain.TicketComment> Execute() {
             return ticketCommentRepository.LastCommentsFromUser(UserId, Amount);
         }
 

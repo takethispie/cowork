@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using cowork.domain;
+﻿using System.Collections.Generic;
 using cowork.domain.Interfaces;
 
-namespace cowork.usecases.Ticket {
+namespace cowork.usecases.TicketComment {
 
-    public class GetTicketCommentsWithPaging : IUseCase<IEnumerable<TicketComment>> {
+    public class GetTicketCommentsWithPaging : IUseCase<IEnumerable<domain.TicketComment>> {
 
         private readonly ITicketCommentRepository ticketCommentRepository;
         public readonly int Page;
@@ -18,7 +16,7 @@ namespace cowork.usecases.Ticket {
         }
 
 
-        public IEnumerable<TicketComment> Execute() {
+        public IEnumerable<domain.TicketComment> Execute() {
             return ticketCommentRepository.GetAllWithPaging(Page, Amount);
         }
 

@@ -116,7 +116,7 @@ namespace cowork.Controllers.TicketingSystem {
         public IActionResult AllOpenedBy(long userId) {
             var user = userRepository.GetById(userId);
             if (user == null) return NotFound("Utilisateur introuvable");
-            var res = repository.GetAllOpenedBy(user).Select(ticket => {
+            var res = repository.GetAllOpenedBy(userId).Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
                 if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);

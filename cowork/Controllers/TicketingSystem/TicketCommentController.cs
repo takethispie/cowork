@@ -1,6 +1,7 @@
 ﻿using cowork.domain;
 using cowork.domain.Interfaces;
 using cowork.usecases.Ticket;
+using cowork.usecases.TicketComment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

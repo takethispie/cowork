@@ -7,7 +7,7 @@ namespace cowork.domain.Interfaces {
         List<Ticket> GetAll();
         List<Ticket> GetAllOfPlace(long placeId);
         Ticket GetById(long id);
-        List<Ticket> GetAllOpenedBy(User user);
+        List<Ticket> GetAllOpenedBy(long userId);
         List<Ticket> GetAllByPaging(int page, int amount);
         List<Ticket> GetAllWithState(int state);
         bool Delete(long id);

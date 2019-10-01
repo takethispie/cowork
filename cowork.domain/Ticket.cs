@@ -10,6 +10,16 @@ namespace cowork.domain {
         }
 
 
+        public Ticket(long openedById, TicketState state, string description, long placeId, string title, DateTime created) {
+            OpenedById = openedById;
+            State = state;
+            Description = description;
+            PlaceId = placeId;
+            Title = title;
+            Created = created;
+        }
+
+
         public Ticket(long id, long openedById, TicketState state, string description, long placeId, string title,
                       DateTime created) {
             Id = id;

@@ -1,6 +1,6 @@
 ﻿using cowork.domain.Interfaces;
 
-namespace cowork.usecases.Ticket {
+namespace cowork.usecases.TicketComment {
 
     public class DeleteTicketComment : IUseCase<bool> {
 
