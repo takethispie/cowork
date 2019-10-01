@@ -24,6 +24,7 @@ namespace cowork.usecases.Ticket {
 
         public domain.Ticket Execute() {
             var result = ticketRepository.GetById(Id);
+            if (result == null) return null;
             var ticketAttribution = ticketAttributionRepository.GetFromTicket(result.Id);
             if (ticketAttribution != null)
                 result.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
