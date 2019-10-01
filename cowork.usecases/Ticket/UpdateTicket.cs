@@ -23,7 +23,7 @@ namespace cowork.usecases.Ticket {
         public long Execute() {
             if (Input == null) return -1;
             var attr = ticketAttributionRepository.GetFromTicket(Input.Id);
-            if (attr.StaffId != userId) return -1;
+            if (attr?.StaffId != userId) return -1;
             var ticket = new domain.Ticket(Input.OpenedById, Input.State, Input.Description, Input.PlaceId, Input.Title,
                 Input.Created);
             return ticketRepository.Update(ticket);
