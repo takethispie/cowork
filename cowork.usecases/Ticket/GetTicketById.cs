@@ -5,16 +5,30 @@ namespace cowork.usecases.Ticket {
     public class GetTicketById : IUseCase<domain.Ticket> {
 
         private readonly ITicketRepository ticketRepository;
+        private readonly ITicketAttributionRepository ticketAttributionRepository;
+        private readonly IUserRepository userRepository;
+        private readonly ITicketCommentRepository ticketCommentRepository;
         public readonly long Id;
 
-        public GetTicketById(ITicketRepository ticketRepository, long id) {
+        public GetTicketById(ITicketRepository ticketRepository, 
+                             ITicketAttributionRepository ticketAttributionRepository, 
+                             IUserRepository userRepository, 
+                             ITicketCommentRepository ticketCommentRepository, long id) {
             this.ticketRepository = ticketRepository;
+            this.ticketAttributionRepository = ticketAttributionRepository;
+            this.userRepository = userRepository;
+            this.ticketCommentRepository = ticketCommentRepository;
             Id = id;
         }
 
 
         public domain.Ticket Execute() {
-            return Id == -1 ? null : ticketRepository.GetById(Id);
+            var result = ticketRepository.GetById(Id);
+            var ticketAttribution = ticketAttributionRepository.GetFromTicket(result.Id);
+            if (ticketAttribution != null)
+                result.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
+            result.Comments = ticketCommentRepository.GetByTicketId(result.Id);
+            return result;
         }
 
     }

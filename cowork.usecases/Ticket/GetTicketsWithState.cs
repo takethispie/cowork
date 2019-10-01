@@ -4,25 +4,28 @@ using cowork.domain.Interfaces;
 
 namespace cowork.usecases.Ticket {
 
-    public class GetTicketsOfPlace : IUseCase<IEnumerable<domain.Ticket>> {
+    public class GetTicketsWithState {
 
+        private readonly ITicketRepository ticketRepository;
         private readonly IUserRepository userRepository;
         private readonly ITicketAttributionRepository ticketAttributionRepository;
-        private readonly ITicketRepository ticketRepository;
         private readonly ITicketCommentRepository ticketCommentRepository;
-        public readonly long PlaceId;
+        public readonly int State;
 
-        public GetTicketsOfPlace(IUserRepository userRepository, ITicketAttributionRepository ticketAttributionRepository, ITicketRepository ticketRepository, ITicketCommentRepository ticketCommentRepository, long placeId) {
+
+        public GetTicketsWithState(ITicketRepository ticketRepository, IUserRepository userRepository,
+                                    ITicketAttributionRepository ticketAttributionRepository, 
+                                    ITicketCommentRepository ticketCommentRepository, int state) {
+            this.ticketRepository = ticketRepository;
             this.userRepository = userRepository;
             this.ticketAttributionRepository = ticketAttributionRepository;
-            this.ticketRepository = ticketRepository;
             this.ticketCommentRepository = ticketCommentRepository;
-            PlaceId = placeId;
+            State = state;
         }
 
 
         public IEnumerable<domain.Ticket> Execute() {
-            return ticketRepository.GetAllOfPlace(PlaceId).Select(ticket => {
+            return ticketRepository.GetAllWithState(State).Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
                 if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);

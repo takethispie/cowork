@@ -1,34 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using cowork.domain.Interfaces;
 
 namespace cowork.usecases.Ticket {
 
-    public class GetTicketsOfPlace : IUseCase<IEnumerable<domain.Ticket>> {
+    public class GetTicketsWithPaging : IUseCase<IEnumerable<domain.Ticket>> {
 
+        private readonly ITicketRepository ticketRepository;
         private readonly IUserRepository userRepository;
         private readonly ITicketAttributionRepository ticketAttributionRepository;
-        private readonly ITicketRepository ticketRepository;
         private readonly ITicketCommentRepository ticketCommentRepository;
-        public readonly long PlaceId;
+        public readonly int Page;
+        public readonly int Amount;
 
-        public GetTicketsOfPlace(IUserRepository userRepository, ITicketAttributionRepository ticketAttributionRepository, ITicketRepository ticketRepository, ITicketCommentRepository ticketCommentRepository, long placeId) {
+
+        public GetTicketsWithPaging(ITicketRepository ticketRepository, IUserRepository userRepository,
+                                      ITicketAttributionRepository ticketAttributionRepository, 
+                                      ITicketCommentRepository ticketCommentRepository, int page, int amount) {
+            this.ticketRepository = ticketRepository;
             this.userRepository = userRepository;
             this.ticketAttributionRepository = ticketAttributionRepository;
-            this.ticketRepository = ticketRepository;
             this.ticketCommentRepository = ticketCommentRepository;
-            PlaceId = placeId;
+            Page = page;
+            Amount = amount;
         }
 
 
         public IEnumerable<domain.Ticket> Execute() {
-            return ticketRepository.GetAllOfPlace(PlaceId).Select(ticket => {
+            var result = ticketRepository.GetAllByPaging(Page, Amount).Select(ticket => {
                 var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
                 if (ticketAttribution != null)
                     ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
                 ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                 return ticket;
             });
+            return result;
         }
 
     }

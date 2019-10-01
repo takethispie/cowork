@@ -6,9 +6,9 @@ namespace cowork.usecases.Ticket {
     public class CreateTicket : IUseCase<long> {
 
         private readonly ITicketRepository ticketRepository;
-        public readonly TicketInput Input;
+        public readonly CreateTicketInput Input;
 
-        public CreateTicket(ITicketRepository ticketRepository, TicketInput input) {
+        public CreateTicket(ITicketRepository ticketRepository, CreateTicketInput input) {
             this.ticketRepository = ticketRepository;
             Input = input;
         }

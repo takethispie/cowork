@@ -5,7 +5,7 @@ using cowork.domain.Interfaces;
 using cowork.test.InMemoryRepositories;
 using NUnit.Framework;
 
-namespace cowork.test.DbTests {
+namespace cowork.test {
 
     [TestFixture]
     public class SubscriptionExpirationManagerTest {

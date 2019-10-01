@@ -33,8 +33,7 @@ namespace cowork.usecases.Ticket {
                     return ticket;
                 })
                 .Select(ticket => {
-                    ticket.Comments =
-                        ticketCommentRepository.GetByTicketId(ticket.Id);
+                    ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
                     return ticket;
                 });
         }
