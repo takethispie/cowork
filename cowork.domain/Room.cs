@@ -8,6 +8,13 @@ namespace cowork.domain {
             Name = name;
             Type = type;
         }
+        
+        public Room(long placeId, string name, RoomType type) {
+            Id = -1;
+            PlaceId = placeId;
+            Name = name;
+            Type = type;
+        }
 
 
         public Room() { }

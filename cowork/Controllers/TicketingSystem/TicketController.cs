@@ -1,6 +1,8 @@
 using System.Linq;
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.Ticket;
+using cowork.usecases.Ticket.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,49 +32,45 @@ namespace cowork.Controllers.TicketingSystem {
 
         [HttpGet]
         public IActionResult All() {
-            var res = repository.GetAll().Select(ticket => {
-                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if (ticketAttribution != null)
-                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                return ticket;
-            });
+            var res = new GetAllTickets(userRepository, ticketAttributionRepository, repository,
+                ticketCommentRepository).Execute();
+            return Ok(res);
+        }
+        
+        
+        [HttpGet("AttributedTo/{personnalId}")]
+        public IActionResult AllTicketsAttributedTo(long personnalId) {
+            var res = new GetTicketsAttributedToUser(userRepository, ticketAttributionRepository, repository,
+                ticketCommentRepository, personnalId).Execute();
             return Ok(res);
         }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] Ticket ticket) {
-            var res = repository.Create(ticket);
+        public IActionResult Create([FromBody] CreateTicketInput createTicket) {
+            var res = new CreateTicket(repository, createTicket).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
 
 
         [HttpPut]
-        public IActionResult Update([FromBody] Ticket ticket) {
-            var userClaim = HttpContext.User;
+        public IActionResult Update([FromBody] UpdateTicketInput createTicket) {
             var userIdClaim = User.Identities
                                   .FirstOrDefault(identity => identity.HasClaim(claim => claim.Type == "Id" || claim.Type == "Role"))
-                                  ?.Claims
-                                  .FirstOrDefault(claim => claim.Type == "Id");
-            if (ticket.AttributedTo == null 
-                || (userIdClaim == null 
-                || string.IsNullOrEmpty(userIdClaim.Value)
-                || !long.TryParse(userIdClaim.Value, out var id)
-                || ticket.AttributedTo.Id != id)) 
-                return BadRequest("User can't modify status of a ticket not attributed to him");
-            var res = repository.Update(ticket);
-            if (res == -1) return Conflict();
+                                  ?.Claims.FirstOrDefault(claim => claim.Type == "Id");
+            var succeedParsing = long.TryParse(userIdClaim?.Value, out var value);
+            if (!succeedParsing) return Unauthorized();
+            var res = new UpdateTicket(repository, ticketAttributionRepository, createTicket, value).Execute();
+            if (res == -1) return BadRequest();
             return Ok(res);
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var comments = ticketCommentRepository.GetByTicketId(id);
-            comments.ForEach(comment => ticketCommentRepository.Delete(comment.Id));
-            var result = repository.Delete(id);
+            var result = new DeleteTicket(repository, ticketCommentRepository, ticketAttributionRepository, 
+                ticketWareRepository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -80,67 +78,40 @@ namespace cowork.Controllers.TicketingSystem {
 
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
-            var result = repository.GetById(id);
-            if (result == null) return NotFound();
-            var ticketAttribution = ticketAttributionRepository.GetFromTicket(result.Id);
-            if (ticketAttribution != null)
-                result.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-            result.Comments = ticketCommentRepository.GetByTicketId(result.Id);
-            return Ok();
+            var result = new GetTicketById(repository, ticketAttributionRepository, userRepository, 
+                ticketCommentRepository, id).Execute();
+            return Ok(result);
         }
 
 
         [HttpGet("FromPlace/{placeId}")]
         public IActionResult AllFromPlace(long placeId) {
-            var res = repository.GetAllOfPlace(placeId).Select(ticket => {
-                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if (ticketAttribution != null)
-                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                return ticket;
-            });
+            var res = new GetTicketsOfPlace(userRepository, ticketAttributionRepository, repository, 
+                ticketCommentRepository, placeId).Execute();
             return Ok(res);
         }
 
 
         [HttpGet("OpenedBy/{userId}")]
         public IActionResult AllOpenedBy(long userId) {
-            var user = userRepository.GetById(userId);
-            if (user == null) return NotFound("Utilisateur introuvable");
-            var res = repository.GetAllOpenedBy(user).Select(ticket => {
-                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if (ticketAttribution != null)
-                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                return ticket;
-            });
+            var res = new GetTicketsOpenedByUser(repository, userRepository, ticketAttributionRepository, 
+                ticketCommentRepository, userId).Execute();
             return Ok(res);
         }
 
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
-            var result = repository.GetAllByPaging(page, amount).Select(ticket => {
-                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if (ticketAttribution != null)
-                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                return ticket;
-            });
+            var result = new GetTicketsWithPaging(repository, userRepository, ticketAttributionRepository,
+                ticketCommentRepository, page, amount).Execute();
             return Ok(result);
         }
 
 
         [HttpGet("WithState/{state}")]
         public IActionResult AllWithState(int state) {
-            var result = repository.GetAllWithState(state).Select(ticket => {
-                var ticketAttribution = ticketAttributionRepository.GetFromTicket(ticket.Id);
-                if (ticketAttribution != null)
-                    ticket.AttributedTo = userRepository.GetById(ticketAttribution.StaffId);
-                ticket.Comments = ticketCommentRepository.GetByTicketId(ticket.Id);
-                return ticket;
-            });
-            
+            var result = new GetTicketsWithState(repository, userRepository, ticketAttributionRepository,
+                ticketCommentRepository, state).Execute();
             return Ok(result);
         }
     }

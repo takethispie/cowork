@@ -7,9 +7,7 @@ namespace cowork.domain.Interfaces {
         List<SubscriptionType> GetAll();
 
         SubscriptionType GetById(long id);
-
-        SubscriptionType GetByName(string name);
-
+        
         bool Delete(long id);
 
         long Create(SubscriptionType type);

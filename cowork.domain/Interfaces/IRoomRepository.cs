@@ -7,9 +7,7 @@ namespace cowork.domain.Interfaces {
         List<Room> GetAll();
 
         Room GetById(long id);
-
-        Room GetByName(string name);
-
+        
         List<Room> GetAllFromPlace(long placeId);
         List<Room> GetAllWithPaging(int page, int amount);
 

@@ -1,5 +1,6 @@
 ﻿using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.StaffLocation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +20,14 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet]
         public IActionResult All() {
-            var result = repository.GetAll();
+            var result = new GetAllStaffLocations(repository).Execute();
             return Ok(result);
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = repository.Delete(id);
+            var result = new DeleteStaffLocation(repository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -34,7 +35,7 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpPost]
         public IActionResult Create([FromBody] StaffLocation staffLocation) {
-            var result = repository.Create(staffLocation);
+            var result = new CreateStaffLocation(repository, staffLocation).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }
@@ -42,7 +43,7 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = repository.GetAllWithPaging(page, amount);
+            var result = new GetStaffLoationsWithPaging(repository, page, amount).Execute();
             return Ok(result);
         }
 

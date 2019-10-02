@@ -10,6 +10,12 @@ namespace cowork.domain {
             TicketId = ticketId;
             WareId = wareId;
         }
+        
+        public TicketWare(long ticketId, long wareId) {
+            Id = -1;
+            TicketId = ticketId;
+            WareId = wareId;
+        }
 
 
         public long Id { get; set; }

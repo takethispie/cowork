@@ -16,6 +16,8 @@ using System.Linq;
 using cowork.domain;
 using cowork.domain.Interfaces;
 using cowork.persistence.Repositories;
+using cowork.services.Login;
+using cowork.usecases.Auth;
 
 namespace cowork {
 
@@ -65,9 +67,10 @@ namespace cowork {
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+
+            // REPOSITORIES
             var userRepo = new UserRepository(conn);
             var loginRepo = new LoginRepository(conn);
-            //instancing all repositories 
             services.AddSingleton<IMealRepository>(ctx => new MealRepository(conn));
             services.AddSingleton<IMealBookingRepository>(ctx => new MealBookingRepository(conn));
             services.AddSingleton<IPlaceRepository>(ctx => new PlaceRepository(conn));
@@ -87,14 +90,17 @@ namespace cowork {
             services.AddSingleton<IStaffLocationRepository>(ctx => new StaffLocationRepository(conn));
             services.AddSingleton(new AuthTokenHandler() {Secret = secretKey});
             services.AddSingleton<IScheduledService, ExpiredSubscriptionDeletionService>();
+            
+            //SERVICES
+            services.AddSingleton<ITokenHandler, AuthTokenHandler>();
 
             var adminEmail = Configuration["AdminAccount:Email"];
             var adminPassword = Configuration["AdminAccount:Password"];
             var hasAdmin = userRepo.GetAll().Any(user => user.FirstName == "admin" && user.LastName == "admin");
             if (hasAdmin) return;
-            var result = CreateAdmin(loginRepo, userRepo,
-                new User(-1, "admin", "admin", false, UserType.Admin), adminEmail, adminPassword);
-            if (result == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
+            var adminUser = new User(-1, "admin", "admin", false, UserType.Admin);
+            var result = new CreateAdminAccount(loginRepo, userRepo, adminUser, adminEmail, adminPassword);
+            if (result.Execute() == -1) throw new Exception("Impossible de creer le compte administrateur par défaut");
         }
 
 
@@ -123,20 +129,6 @@ namespace cowork {
             });
             app.UseHangfireServer();
         }
-
-
-        public int CreateAdmin(ILoginRepository loginRepository, IUserRepository userRepository, User user,
-                               string email, string password) {
-            var result = userRepository.Create(user);
-            if (result == -1) return -1;
-            user.Id = result;
-            PasswordHashing.CreatePasswordHash(password, out var hash, out var salt);
-            result = loginRepository.Create(new Login(-1, hash, salt, email, result));
-            if (result > -1) return 0;
-            userRepository.DeleteById(user.Id);
-            return -1;
-        }
-
     }
 
 }

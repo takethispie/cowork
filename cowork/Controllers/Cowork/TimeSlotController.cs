@@ -1,5 +1,7 @@
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.TimeSlot;
+using cowork.usecases.TimeSlot.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,21 +21,21 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet]
         public IActionResult All() {
-            var res = Repository.GetAll();
+            var res = new GetAllTimeSlots(Repository).Execute();
             return Ok(res);
         }
 
 
-        [HttpGet("OfPlace/{roomId}")]
-        public IActionResult AllOfPlace(long roomId) {
-            var res = Repository.GetAllOfPlace(roomId);
+        [HttpGet("OfPlace/{placeId}")]
+        public IActionResult AllOfPlace(long placeId) {
+            var res = new GetTimeSlotsOfPlace(Repository, placeId).Execute();
             return Ok(res);
         }
 
 
         [HttpPost]
-        public IActionResult Create([FromBody] TimeSlot timeSlot) {
-            var res = Repository.Create(timeSlot);
+        public IActionResult Create([FromBody] CreateTimeSlotInput timeSlot) {
+            var res = new CreateTimeSlot(Repository, timeSlot).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -41,7 +43,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPut]
         public IActionResult Update([FromBody] TimeSlot timeSlot) {
-            var res = Repository.Update(timeSlot);
+            var res = new UpdateTimeSlot(Repository, timeSlot).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -49,7 +51,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.Delete(id);
+            var result = new DeleteTimeSlot(Repository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -57,7 +59,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("{id}")]
         public IActionResult ById(long id) {
-            var result = Repository.GetById(id);
+            var result = new GetTimeSlotById(Repository, id).Execute();
             if (result == null) return NotFound();
             return Ok(result);
         }
@@ -65,7 +67,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = Repository.GetAllByPaging(page, amount);
+            var result = new GetTimeSlotsWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 

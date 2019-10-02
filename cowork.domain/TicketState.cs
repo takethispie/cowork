@@ -4,7 +4,7 @@ namespace cowork.domain {
 
         New,
 
-        //ticket accépté comme traitable
+        //ticket accepté comme traitable
         Open,
 
         //ticket en cours de résolution
@@ -13,7 +13,7 @@ namespace cowork.domain {
         //ticket résolu
         Closed,
 
-        //resolution du ticket en retard sur les prévisions
+        //resolution du ticket en retard
         Late
 
     }

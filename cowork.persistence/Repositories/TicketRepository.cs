@@ -47,10 +47,10 @@ namespace cowork.persistence.Repositories {
         }
 
 
-        public List<Ticket> GetAllOpenedBy(User user) {
+        public List<Ticket> GetAllOpenedBy(long userId) {
             const string sql = "SELECT * FROM public.\"Tickets\"" + InnerJoin + "WHERE \"Tickets\".\"OpenedBy\"= @id;";
             var par = new List<DbParameter> {
-                new NpgsqlParameter("id", user.Id)
+                new NpgsqlParameter("id", userId)
             };
             return dataMapper.MultiItemCommand(sql, par);
         }
