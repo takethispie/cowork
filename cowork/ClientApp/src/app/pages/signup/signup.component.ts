@@ -25,7 +25,7 @@ export class SignupComponent implements OnInit {
       user.LastName = form.value.lastName;
       this.loading.Loading = true;
       this.authService.Register(user, form.value.password, form.value.email).subscribe( {
-        next: async result => {
+        next: async () => {
           this.toast.PresentToast("Création du compte réussie");
           form.resetForm();
           this.loading.Loading = false;

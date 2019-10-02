@@ -1,5 +1,6 @@
 using cowork.domain;
 using cowork.domain.Interfaces;
+using cowork.usecases.SubscriptionType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +20,14 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet]
         public IActionResult All() {
-            var result = Repository.GetAll();
+            var result = new GetAllSubscriptionTypes(Repository).Execute();
             return Ok(result);
         }
 
 
         [HttpPost]
         public IActionResult Create([FromBody] SubscriptionType sub) {
-            var res = Repository.Create(sub);
+            var res = new CreateSubscriptionType(Repository, sub).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -34,7 +35,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPut]
         public IActionResult Update([FromBody] SubscriptionType sub) {
-            var res = Repository.Update(sub);
+            var res = new UpdateSubscriptionType(Repository, sub).Execute();
             if (res == -1) return Conflict();
             return Ok(res);
         }
@@ -42,7 +43,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id) {
-            var result = Repository.Delete(id);
+            var result = new DeleteSubscriptionType(Repository, id).Execute();
             if (!result) return NotFound();
             return Ok();
         }
@@ -50,15 +51,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("ById/{id}")]
         public IActionResult ById(long id) {
-            var result = Repository.GetById(id);
-            if (result == null) return NotFound();
-            return Ok(result);
-        }
-
-
-        [HttpGet("ByName/{name}")]
-        public IActionResult ByName(string name) {
-            var result = Repository.GetByName(name);
+            var result = new GetSubscriptionTypeById(Repository, id).Execute();
             if (result == null) return NotFound();
             return Ok(result);
         }
@@ -66,7 +59,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult AllWithPaging(int page, int amount) {
-            var result = Repository.GetAllWithPaging(page, amount);
+            var result = new GetSubscriptionTypesWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 

@@ -68,6 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\cowork.domain\cowork.domain.csproj" />
     <ProjectReference Include="..\cowork.persistence\cowork.persistence.csproj" />
+    <ProjectReference Include="..\cowork.usecases\cowork.usecases.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

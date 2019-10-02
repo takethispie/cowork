@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\cowork.domain\cowork.domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="SubscriptionType\Models" />
+    </ItemGroup>
+
+</Project>

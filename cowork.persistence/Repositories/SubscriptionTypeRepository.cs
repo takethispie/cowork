@@ -33,17 +33,8 @@ namespace cowork.persistence.Repositories {
             };
             return dataMapper.OneItemCommand(sql, parameters);
         }
-
-
-        public SubscriptionType GetByName(string name) {
-            const string sql = "SELECT * FROM public.\"SubscriptionType\" WHERE \"Name\"= @name;";
-            var parameters = new List<DbParameter> {
-                new NpgsqlParameter("name", name)
-            };
-            return dataMapper.OneItemCommand(sql, parameters);
-        }
-
-
+        
+        
         public bool Delete(long id) {
             const string sql = "DELETE FROM public.\"SubscriptionType\" WHERE  \"Id\"= @id RETURNING \"Id\";";
             var parameters = new List<DbParameter> {

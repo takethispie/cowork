@@ -14,6 +14,15 @@ namespace cowork.domain {
             Start = start;
             End = end;
         }
+        
+        
+        public WareBooking(long userId, long wareId, DateTime start, DateTime end) {
+            Id = -1;
+            UserId = userId;
+            WareId = wareId;
+            Start = start;
+            End = end;
+        }
 
 
         public long Id { get; set; }

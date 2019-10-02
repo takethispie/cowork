@@ -14,6 +14,14 @@ namespace cowork.domain {
             RoomId = roomId;
             ClientId = clientId;
         }
+        
+        public RoomBooking(DateTime start, DateTime end, long roomId, long clientId) {
+            Id = -1;
+            Start = start;
+            End = end;
+            RoomId = roomId;
+            ClientId = clientId;
+        }
 
 
         public long Id { get; set; }

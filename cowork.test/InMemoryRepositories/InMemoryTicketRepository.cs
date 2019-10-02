@@ -29,8 +29,8 @@ namespace cowork.test.InMemoryRepositories {
         }
 
 
-        public List<Ticket> GetAllOpenedBy(User user) {
-            return Tickets.FindAll(t => t.OpenedById == user.Id);
+        public List<Ticket> GetAllOpenedBy(long userId) {
+            return Tickets.FindAll(t => t.OpenedById == userId);
         }
 
 

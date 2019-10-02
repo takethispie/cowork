@@ -4,6 +4,13 @@ namespace cowork.domain {
 
         public User() { }
 
+        public User(string firstName, string lastName, bool isAStudent, UserType type) {
+            FirstName = firstName;
+            LastName = lastName;
+            IsAStudent = isAStudent;
+            Type = type;
+        }
+
 
         public User(long id, string firstName, string lastName, bool isAStudent, UserType type) {
             Id = id;
@@ -18,7 +25,6 @@ namespace cowork.domain {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsAStudent { get; set; }
-        public string Token { get; set; }
         public UserType Type { get; set; }
 
     }
