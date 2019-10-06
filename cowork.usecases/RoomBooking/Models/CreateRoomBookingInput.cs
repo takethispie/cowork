@@ -3,9 +3,6 @@
 namespace cowork.usecases.RoomBooking.Models {
 
     public class CreateRoomBookingInput {
-
-        public CreateRoomBookingInput() { }
-
         public CreateRoomBookingInput(DateTime start, DateTime end, long roomId, long clientId) {
             Start = start;
             End = end;

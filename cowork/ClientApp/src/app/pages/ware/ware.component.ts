@@ -24,7 +24,7 @@ export class WareComponent implements OnInit {
   SelectedWare: Ware;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
-  view: CalendarView = CalendarView.Week;85
+  view: CalendarView = CalendarView.Week;
   refresh: Subject<any> = new Subject();
 
   constructor(private modalCtrl: ModalController, public loading: LoadingService, public timeSlotService: TimeSlotService,

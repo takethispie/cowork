@@ -11,9 +11,7 @@
             PrinterAmount = printerAmount;
             LaptopAmount = laptopAmount;
         }
-        
-        public CreatePlaceInput() {}
-        
+
         public string Name { get; set; }
         public bool HighBandwidthWifi { get; set; }
         public bool UnlimitedBeverages { get; set; }

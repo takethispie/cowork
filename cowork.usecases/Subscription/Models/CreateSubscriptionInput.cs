@@ -13,9 +13,6 @@ namespace cowork.usecases.Subscription.Models {
             FixedContract = fixedContract;
             Type = type;
         }
-        
-        public CreateSubscriptionInput() {}
-        
         public long TypeId { get; set; }
         public long ClientId { get; set; }
         public long PlaceId { get; set; }
