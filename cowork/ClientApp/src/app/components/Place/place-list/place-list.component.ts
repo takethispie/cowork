@@ -36,6 +36,7 @@ export class PlaceListComponent implements OnInit {
   }
 
   OrderByDay(OpenedTimes: TimeSlot[]) {
+    if(OpenedTimes == null || OpenedTimes.length === 0) return [];
     return TimeSlot.OrderByDay(OpenedTimes);
   }
 }
