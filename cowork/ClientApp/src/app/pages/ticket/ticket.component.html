@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content color="dark">
-  <app-add-ticket slot="fixed"></app-add-ticket>
+  <app-add-ticket slot="fixed" (TicketCreated)="TicketCreated()"></app-add-ticket>
   <ion-grid>
     <ion-row>
       <ion-col offset="4" size="4">

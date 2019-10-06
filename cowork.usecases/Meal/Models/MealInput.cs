@@ -9,9 +9,7 @@ namespace cowork.usecases.Meal.Models {
             Description = description;
             PlaceId = placeId;
         }
-        
-        public MealInput() {}
-        
+
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public long PlaceId { get; set; }

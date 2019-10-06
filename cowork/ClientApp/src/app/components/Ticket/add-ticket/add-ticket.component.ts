@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ModalController} from '@ionic/angular';
 import {Ticket} from '../../../models/Ticket';
@@ -16,7 +16,6 @@ import {WareListModalComponent} from '../../Ware/ware-list-modal/ware-list-modal
 import {TicketWareService} from '../../../services/ticket-ware.service';
 import {TicketWare} from '../../../models/TicketWare';
 import {UserType} from '../../../models/UserType';
-import {tick} from '@angular/core/testing';
 
 @Component({
   selector: 'app-add-ticket',
@@ -24,8 +23,10 @@ import {tick} from '@angular/core/testing';
   styleUrls: ['./add-ticket.component.scss'],
 })
 export class AddTicketComponent implements OnInit {
-    public title: string;
-    public SelectedWare: Ware;
+
+  @Output() public TicketCreated: EventEmitter<Ticket> = new EventEmitter<Ticket>();
+  public title: string;
+  public SelectedWare: Ware;
 
   constructor(private addTicketModalCtrl: ModalController, public auth: AuthService, public subService: SubscriptionService,
               public ticketService: TicketService, public toast: ToastService, public load: LoadingService,
@@ -70,7 +71,7 @@ export class AddTicketComponent implements OnInit {
     ).subscribe({
       next: id => {
         if (id === -1) this.toast.PresentToast("Impossible d'ajouter le ticket");
-        else this.ngOnInit();
+        else this.TicketCreated.emit(ticket);
       },
       error: () => {
         this.toast.PresentToast("Erreur lors de l'ajout");

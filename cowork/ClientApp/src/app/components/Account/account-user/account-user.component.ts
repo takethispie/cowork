@@ -128,6 +128,7 @@ export class AccountUserComponent {
                 if(subId !== -1) {
                     this.userSub.Id = subId;
                     this.auth.Subscription = this.userSub;
+                    this.auth.PlaceId = res.data.Place.Id;
                     this.toast.PresentToast("Abonnement enrengistré avec succès");
                 } else this.toast.PresentToast("Erreur lors de l'abonnement");
             });
@@ -146,7 +147,12 @@ export class AccountUserComponent {
             this.userSub.PlaceId = res.data.Id;
             this.userSub.Place = res.data;
             this.sub.Update(this.userSub).subscribe(subId => {
-                if(subId !== -1) this.toast.PresentToast("Changement d'espace Co'Work enrengistré avec succès");
+                if(subId !== -1) {
+                    this.toast.PresentToast("Changement d'espace Co'Work enrengistré avec succès");
+                    this.auth.PlaceId = res.data.Id;
+                    this.auth.Subscription.PlaceId = res.data.Id;
+                    this.auth.Subscription.Place = res.data;
+                }
                 else this.toast.PresentToast("Erreur lors du changement d'espace Co'Work");
             });
         });

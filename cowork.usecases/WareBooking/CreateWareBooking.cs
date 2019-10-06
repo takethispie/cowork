@@ -27,7 +27,8 @@ namespace cowork.usecases.WareBooking {
                 .Where(booking => booking.WareId == Input.WareId)
                 .Any(slot => slot.End >= Input.End && slot.Start <= Input.Start);
             if (existing) throw new Exception("Erreur: créneau déjà pris");
-            var placeId = wareRepository.GetById(Input.WareId).PlaceId;
+            var ware = wareRepository.GetById(Input.WareId);
+            var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == Input.Start.DayOfWeek);
             if (Input.Start.Hour < openings.StartHour && Input.Start.Minute < openings.StartMinutes
