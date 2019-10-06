@@ -9,33 +9,41 @@ import {LoadingService} from '../../services/loading.service';
 
 
 @Component({
-  selector: 'app-ticket',
-  templateUrl: 'ticket.component.html',
-  styleUrls: ['ticket.component.scss']
+    selector: 'app-ticket',
+    templateUrl: 'ticket.component.html',
+    styleUrls: ['ticket.component.scss']
 })
 export class TicketComponent implements OnInit {
-  public Tickets: Ticket[];
-  placeId: number;
-  userId: number;
+    public Tickets: Ticket[];
+    placeId: number;
+    userId: number;
 
-  constructor(public auth: AuthService, private ticketService: TicketService, public toast: ToastService,
-              private pageModal: ModalController, private subService: SubscriptionService, public load: LoadingService) {
-    this.Tickets = [];
-  }
+    constructor(public auth: AuthService, private ticketService: TicketService, public toast: ToastService,
+                private pageModal: ModalController, private subService: SubscriptionService, public load: LoadingService) {
+        this.Tickets = [];
+    }
 
-  ngOnInit() {
-      this.load.Loading = true;
-      this.userId = this.auth.UserId;
-      this.ticketService.OpenedBy(this.auth.UserId).subscribe(res => {
-          this.Tickets = res;
-          this.load.Loading = false;
-      });
+    ngOnInit() {
+        this.load.Loading = true;
+        this.userId = this.auth.UserId;
+        this.ticketService.OpenedBy(this.auth.UserId).subscribe(res => {
+            this.Tickets = res;
+            this.load.Loading = false;
+        });
 
-      this.placeId = this.auth.PlaceId;
-  }
+        this.placeId = this.auth.PlaceId;
+    }
 
 
-  ionViewWillEnter() {
-    this.ngOnInit();
-  }
+    ionViewWillEnter() {
+        this.ngOnInit();
+    }
+
+    TicketCreated() {
+        this.load.Loading = true;
+        this.ticketService.OpenedBy(this.auth.UserId).subscribe(res => {
+            this.Tickets = res;
+            this.load.Loading = false;
+        });
+    }
 }
