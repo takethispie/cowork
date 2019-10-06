@@ -3,8 +3,7 @@
 namespace cowork.usecases.WareBooking.Models {
 
     public class CreateWareBookingInput {
-
-        public CreateWareBookingInput() { }
+        
 
         public CreateWareBookingInput(long userId, long wareId, DateTime start, DateTime end) {
             UserId = userId;

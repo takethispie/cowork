@@ -29,6 +29,7 @@ namespace cowork.domain {
             PasswordHash = hash;
             PasswordSalt = salt;
             UserId = userId;
+            Email = email;
         }
         
         public Login(long id, string password, string email, long userId) {
@@ -39,6 +40,7 @@ namespace cowork.domain {
             PasswordSalt = salt;
             UserId = userId;
             Id = id;
+            Email = email;
         }
 
         private bool isEmailInvalid(string email) {
