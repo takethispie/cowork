@@ -5,6 +5,7 @@ import {BookingToUtc, CONTENTJSON} from '../Utils';
 import {DateTime} from "luxon";
 import {map} from 'rxjs/operators';
 import {MealBooking} from '../models/MealBooking';
+import {of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class RoomBookingService {
 
 
   public Create(roomBooking: RoomBooking) {
+    if(roomBooking.Start.day !== roomBooking.End.day) return of(-1);
     roomBooking = BookingToUtc<RoomBooking>(roomBooking);
     return this.http.post<number>("api/RoomBooking", roomBooking, CONTENTJSON);
   }

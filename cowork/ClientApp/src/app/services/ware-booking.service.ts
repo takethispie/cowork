@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {WareBooking} from '../models/WareBooking';
 import {DateTime} from 'luxon';
 import {BookingToUtc, CONTENTJSON} from '../Utils';
@@ -71,6 +71,7 @@ export class WareBookingService {
   }
 
   public Create(wareBooking: WareBooking) {
+    if(wareBooking.Start.day !== wareBooking.End.day) return of(-1);
     wareBooking = BookingToUtc<WareBooking>(wareBooking);
     return this.http.post<number>("api/WareBooking", wareBooking, CONTENTJSON);
   }

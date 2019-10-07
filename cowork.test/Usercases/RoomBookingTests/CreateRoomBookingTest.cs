@@ -15,7 +15,7 @@ namespace cowork.test.Usercases.RoomBookingTests {
         [Test]
         public void ShouldCreateRoombooking() {
 
-            var date = new DateTime(2019, 10, 2, 10, 0,0);
+            var date = new DateTime(2019, 10, 2, 8, 0,0);
             var input = new CreateRoomBookingInput(date, date.AddHours(1), 0, 0);
             var domain = new RoomBooking(input.Start, input.End, input.RoomId, input.ClientId);
             var timeSlotRepo = new Mock<ITimeSlotRepository>();
@@ -33,8 +33,8 @@ namespace cowork.test.Usercases.RoomBookingTests {
                 new CreateRoomBooking(roomBookingRepo.Object, timeSlotRepo.Object, roomRepo.Object, input).Execute();
             Assert.AreEqual(0, res);
         }
-        
-        
+
+
         [Test]
         public void ShouldFailOtherRoomBookedAtSameTime() {
 
