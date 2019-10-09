@@ -16,6 +16,7 @@ namespace cowork.usecases.RoomBooking {
 
 
         public long Execute() {
+            if (roomBooking.Start.Day != roomBooking.End.Date.Day) return -1;
             var possibleConflicts = roomBookingRepository.GetAllFromGivenDate(roomBooking.Start.Date)
                 .Where(rb => rb.Id != roomBooking.Id).ToList();
             var hasNoConflict = possibleConflicts.All(booking =>
