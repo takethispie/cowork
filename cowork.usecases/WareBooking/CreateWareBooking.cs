@@ -23,6 +23,7 @@ namespace cowork.usecases.WareBooking {
 
 
         public long Execute() {
+            if (Input.Start.Day != Input.End.Day) return -1;
             var existing = wareBookingRepository.GetStartingAt(Input.Start.Date)
                 .Where(booking => booking.WareId == Input.WareId)
                 .Any(slot => slot.End >= Input.End && slot.Start <= Input.Start);
@@ -31,8 +32,8 @@ namespace cowork.usecases.WareBooking {
             var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == Input.Start.DayOfWeek);
-            if (Input.Start.Hour < openings.StartHour && Input.Start.Minute < openings.StartMinutes
-                || Input.End.Hour < openings.EndHour && Input.End.Minute < openings.EndMinutes)
+            if (Input.Start.ToLocalTime().Hour < openings.StartHour || new TimeSpan(0, Input.End.ToLocalTime().Hour, Input.End.ToLocalTime().Minute, 0) 
+                > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))
                 throw new Exception("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");
             var wareBooking = new domain.WareBooking(Input.UserId, Input.WareId, Input.Start, Input.End);
             return wareBookingRepository.Create(wareBooking);

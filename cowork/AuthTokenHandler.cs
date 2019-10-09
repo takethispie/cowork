@@ -19,7 +19,7 @@ namespace cowork {
                 "http://localhost:5001",
                 "http://localhost:5001",
                 claims ?? new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
