@@ -29,7 +29,7 @@ namespace cowork.usecases.RoomBooking {
                 .Find(op => op.Day == Input.Start.DayOfWeek);
             if (Input.Start.Hour < openings.StartHour || new TimeSpan(0, Input.End.Hour, Input.End.Minute, 0) 
                 > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))
-                throw new Exception("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");
+                throw new Exception("Erreur: Impossible de réserver une salle hors des heures d'ouvertures");
             var otherSlots = roomBookingRepository.GetAllFromGivenDate(Input.Start.Date);
             if (otherSlots != null) {
                 var overlapping = otherSlots.Where(slot => slot.End >= Input.End && slot.Start <= Input.Start)
