@@ -25,6 +25,7 @@ export class TimeSlotService {
   }
 
   public Create(timeslot: TimeSlot) {
+
     return this.http.post<number>("api/TimeSlot", timeslot, CONTENTJSON);
   }
 
