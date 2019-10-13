@@ -66,7 +66,7 @@ namespace cowork.Controllers.InventoryManagement {
 
         [HttpPut]
         public IActionResult Update([FromBody] WareBooking wareBooking) {
-            var result = new UpdateWareBooking(bookingRepository, wareBooking).Execute();
+            var result = new UpdateWareBooking(bookingRepository, timeSlotRepository, wareRepository, wareBooking).Execute();
             if (result == -1) return Conflict();
             return Ok(result);
         }

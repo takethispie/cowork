@@ -43,7 +43,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpPut]
         public IActionResult Update([FromBody] RoomBooking roomBooking) {
-            var result = new UpdateRoomBooking(repository, roomBooking).Execute();
+            var result = new UpdateRoomBooking(repository, roomRepository, timeSlotRepository, roomBooking).Execute();
             if (result == -1) return BadRequest("Impossible de mettre à jour la réservation");
             return Ok(result);
         }

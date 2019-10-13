@@ -62,24 +62,21 @@ export class WareComponent implements OnInit {
     const newEvent = this.CreateBaseCalendarEvent(ev);
     const wareBooking = this.InitWareBooking(newEvent);
     this.loading.Loading = true;
-    this.OverlappingBookingFromOtherBooking(this.auth.UserId, wareBooking).subscribe((otherBookings: CalendarBooking[]) => {
-      if (otherBookings.length > 0) {
-        this.toast.PresentToast("Vous avez déjà réservé " + otherBookings[0].Ware.Name + " pour cet horaire");
+    this.wareBooking.Create(wareBooking).subscribe({
+      next: res => {
+        if (res !== -1) {
+          newEvent.id = res;
+          this.events.push(newEvent);
+          this.refresh.next();
+        } else this.toast.PresentToast("Erreur lors de la création de la réservation");
+      },
+      error: () => {
+        this.toast.PresentToast("Erreur lors de l'ajout de la réservation");
         this.loading.Loading = false;
-      } else this.wareBooking.Create(wareBooking).subscribe({
-        next: res => {
-          if (res !== -1) {
-            newEvent.id = res;
-            this.events.push(newEvent);
-            this.refresh.next();
-          } else this.toast.PresentToast("Erreur lors de la création de la réservation");
-        },
-        error: () => {
-          this.toast.PresentToast("Erreur lors de l'ajout de la réservation");
-          this.loading.Loading = false;
-        },
-        complete: () => this.loading.Loading = false
-      });
+        this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
+        this.refresh.next();
+      },
+      complete: () => this.loading.Loading = false
     });
   }
 
@@ -105,18 +102,6 @@ export class WareComponent implements OnInit {
     this.viewDate = dateTime.toJSDate();
   }
 
-  public OverlappingBookingFromOtherBooking(userId: number, wareBooking: WareBooking): Observable<CalendarBooking[]> {
-    const calendarBooking = CalendarBooking.FromWareBooking(wareBooking);
-    return this.wareBooking.AllOfUser(userId).pipe(
-        map((data: WareBooking[]) => data.map(wareB => CalendarBooking.FromWareBooking(wareB))),
-        map((bookings: CalendarBooking[]) => {
-          return bookings
-              .filter(b => b.id !== wareBooking.Id)
-              .filter(booking => !(booking.end.valueOf() <= calendarBooking.start.valueOf()
-                  || booking.start.valueOf() >= calendarBooking.end.valueOf()));
-        })
-    );
-  }
 
   eventTimesChanged({event, newStart, newEnd}: CalendarEventTimesChangedEvent<CalendarBooking>) {
     if (event.start.valueOf() === newStart.valueOf() && event.end.valueOf() === newEnd.valueOf()) return;
@@ -124,22 +109,18 @@ export class WareComponent implements OnInit {
     event.end = newEnd;
     const newWareBooking = this.InitWareBooking(event);
     this.loading.Loading = true;
-    //TODO remove sub inside sub
-    this.OverlappingBookingFromOtherBooking(this.auth.UserId, newWareBooking).subscribe(otherBookings => {
-      if (otherBookings.length > 0) {
-        this.toast.PresentToast("Vous avez déjà réservé " + otherBookings[0].Ware.Name + " pour cet horaire");
+    this.wareBooking.Update(newWareBooking).subscribe({
+      next: () => {
+        this.loading.Loading = true;
+        this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
+      },
+      error: () => {
+        this.toast.PresentToast("Erreur lors de la modification");
         this.loading.Loading = false;
-      } else this.wareBooking.Update(newWareBooking).subscribe({
-        next: () => {
-          this.loading.Loading = true;
-          this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
-        },
-        error: () => {
-          this.toast.PresentToast("Erreur lors de la modification");
-          this.loading.Loading = false;
-        },
-        complete: () => this.loading.Loading = false
-      });
+        this.refresh.next();
+        this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
+      },
+      complete: () => this.loading.Loading = false
     });
   }
 
