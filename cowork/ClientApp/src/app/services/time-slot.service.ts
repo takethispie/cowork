@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CONTENTJSON} from "../Utils";
 import {TimeSlot} from "../models/TimeSlot";
+import {DateTime} from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,18 @@ export class TimeSlotService {
   }
 
   public Create(timeslot: TimeSlot) {
-
+    let start = DateTime.local();
+    start = start.set({minute: timeslot.StartMinutes});
+    start = start.set({hour: timeslot.StartHour});
+    let end = DateTime.local();
+    end = end.set({minute: timeslot.EndMinutes});
+    end = end.set({hour: timeslot.EndHour});
+    start = start.toUTC();
+    end = end.toUTC();
+    timeslot.StartHour = start.hour;
+    timeslot.StartMinutes = start.minute;
+    timeslot.EndHour = end.hour;
+    timeslot.EndMinutes = end.minute;
     return this.http.post<number>("api/TimeSlot", timeslot, CONTENTJSON);
   }
 
