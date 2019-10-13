@@ -31,11 +31,11 @@ export class RoomCalendarComponent implements OnInit {
                 public roomBookingService: RoomBookingService, public auth: AuthService, public timeSlotService: TimeSlotService) { }
 
     ngOnInit() {
-        this.loading.Loading = true;
         this.loadEvents(DateTime.local().minus({months: 3 }));
     }
 
     loadEvents(date: DateTime) {
+        this.loading.Loading = true;
         this.roomBookingService.AllOfRoomStartingAtDate(this.room.Id, date).pipe(
             map((data: RoomBooking[]) => data.map(roomBooking => {
                 const ret: CalendarBooking & CalendarEvent = CalendarBooking.FromRoomBooking(roomBooking);
@@ -46,7 +46,7 @@ export class RoomCalendarComponent implements OnInit {
         ).subscribe({
             next: res => {
                 this.events = res;
-                this.loadOpeningTimeEvents();
+                this.refresh.next();
             },
             error: () => {
                 this.toast.PresentToast("Erreur lors du chargement des réservations");
@@ -55,28 +55,6 @@ export class RoomCalendarComponent implements OnInit {
             complete: () => this.loading.Loading = false
         });
     }
-
-    loadOpeningTimeEvents = () => {
-        this.timeSlotService.AllFromPlace(this.room.Id).subscribe(res => {
-            let loopDay = startOfWeek(this.viewDate, {weekStartsOn: 1});
-            console.log(loopDay);
-            res.forEach(time => {
-                const lock: CalendarEvent = {
-                    id: 1,
-                    title: "fermé",
-                    start: DateTime.local(loopDay.getFullYear(), loopDay.getMonth() + 1, loopDay.getDay(), 7, 0, 0, 0).toJSDate(),
-                    end: DateTime.local(loopDay.getFullYear(), loopDay.getMonth() + 1, loopDay.getDay(), time.StartHour, time.StartMinutes, 0, 0).toJSDate(),
-                    color: colors.blue,
-                    resizable: { beforeStart: false, afterEnd: true },
-                    draggable: false
-                };
-                this.events.push(lock);
-                loopDay = DateTime.fromJSDate(loopDay).plus({ day: 1}).toJSDate();
-            });
-            this.refresh.next();
-            console.log(this.events);
-        });
-    };
 
     GoBack = () => this.modalCtrl.dismiss(null);
 
@@ -102,6 +80,7 @@ export class RoomCalendarComponent implements OnInit {
                 error: () => {
                     this.toast.PresentToast("Erreur lors de l'ajout de la réservation");
                     this.loading.Loading = false;
+                    this.refresh.next();
                 },
                 complete: () => this.loading.Loading = false
             });
@@ -208,6 +187,7 @@ export class RoomCalendarComponent implements OnInit {
                 error: () => {
                     this.toast.PresentToast("Erreur lors de la modification");
                     this.loading.Loading = false;
+                    this.refresh.next();
                     this.ngOnInit();
                 },
                 complete: () => this.loading.Loading = false

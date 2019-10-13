@@ -37,7 +37,10 @@ export class ReservationTabPage implements OnInit {
     this.loading.Loading = true;
     this.roomService.AllFromPlace(this.userSub.Place.Id).subscribe({
       next: res => this.rooms = res,
-      error: () => this.toast.PresentToast("Une erreur est survenue lors du chargement des salles"),
+      error: () => {
+        this.toast.PresentToast("Une erreur est survenue lors du chargement des salles")
+        this.loading.Loading = false;
+      },
       complete: () => this.loading.Loading = false
     });
   }

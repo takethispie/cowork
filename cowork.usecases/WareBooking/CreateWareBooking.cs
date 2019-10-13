@@ -32,7 +32,7 @@ namespace cowork.usecases.WareBooking {
             var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == Input.Start.DayOfWeek);
-            if (Input.Start.ToLocalTime().Hour < openings.StartHour || new TimeSpan(0, Input.End.ToLocalTime().Hour, Input.End.ToLocalTime().Minute, 0) 
+            if (Input.Start.Hour < openings.StartHour || new TimeSpan(0, Input.End.Hour, Input.End.Minute, 0) 
                 > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))
                 throw new Exception("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");
             var wareBooking = new domain.WareBooking(Input.UserId, Input.WareId, Input.Start, Input.End);
