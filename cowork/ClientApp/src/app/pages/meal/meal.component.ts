@@ -21,7 +21,7 @@ export class MealComponent {
   }
 
   ionViewWillEnter() {
-      this.mealService.FromPlaceAndDate(DateTime.local().plus({ days: 1 }), this.auth.Subscription.Place.Id)
+      this.mealService.FromPlaceAndStartingAtDate(DateTime.local().plus({ days: 1 }), this.auth.Subscription.Place.Id)
           .pipe(catchError(err => []))
           .subscribe(res => this.AvailableMeals = res);
   }

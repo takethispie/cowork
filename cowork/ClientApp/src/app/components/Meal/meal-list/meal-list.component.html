@@ -8,11 +8,11 @@
         <ion-col offset="3" size="6">
             <ion-card color="light">
                 <ion-card-header color="primary">
-                    <ion-label>{{ item.Date.toFormat("dd/MM/yyyy") }}</ion-label>
+                    <ion-label><h2>{{ item.Date.toFormat("dd/MM/yyyy") }}</h2></ion-label>
                 </ion-card-header>
                 <ion-card-content>
                     <ion-label>
-                        <p>{{ item.Description }}</p>
+                        <ion-label><h3>{{ item.Description }}</h3></ion-label>
                     </ion-label>
                     <ion-button *ngIf="IsAlreadyBooked(item)" slot="end" disabled="true">Déjà Reservé</ion-button>
                     <ion-button *ngIf="IsAlreadyBooked(item)" slot="end" (click)="Unbookmeal(item)">Annuler Reservation</ion-button>
