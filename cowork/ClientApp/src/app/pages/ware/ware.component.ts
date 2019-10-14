@@ -20,7 +20,7 @@ import {TimeSlotService} from '../../services/time-slot.service';
   templateUrl: './ware.component.html',
   styleUrls: ['./ware.component.scss'],
 })
-export class WareComponent implements OnInit {
+export class WareComponent {
   SelectedWare: Ware;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
@@ -32,7 +32,10 @@ export class WareComponent implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ionViewWillEnter() {
+    this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
+  }
+
 
   loadEvents(wareId: number, dateTime: DateTime) {
     if(this.SelectedWare == null) return;
@@ -66,15 +69,13 @@ export class WareComponent implements OnInit {
       next: res => {
         if (res !== -1) {
           newEvent.id = res;
-          this.events.push(newEvent);
-          this.refresh.next();
+          this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
         } else this.toast.PresentToast("Erreur lors de la création de la réservation");
       },
       error: () => {
         this.toast.PresentToast("Erreur lors de l'ajout de la réservation");
         this.loading.Loading = false;
         this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
-        this.refresh.next();
       },
       complete: () => this.loading.Loading = false
     });
@@ -117,7 +118,6 @@ export class WareComponent implements OnInit {
       error: () => {
         this.toast.PresentToast("Erreur lors de la modification");
         this.loading.Loading = false;
-        this.refresh.next();
         this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
       },
       complete: () => this.loading.Loading = false
@@ -166,6 +166,7 @@ export class WareComponent implements OnInit {
             error: () => {
               this.toast.PresentToast("Erreur lors de la suppression");
               this.loading.Loading = false;
+              this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
             },
             complete: () => {
               this.loading.Loading = false;
