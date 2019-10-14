@@ -50,14 +50,12 @@ namespace cowork.persistence.Repositories {
         }
 
 
-        public List<MealBooking> GetAllWithPaging(int page, int amount, bool byDateAscending) {
-            const string sql = "SELECT * FROM \"MealReservation\"" + InnerJoin +
-                               "ORDER BY \"Meal\".\"Date\" @order LIMIT @amount OFFSET @skip;";
+        public List<MealBooking> GetAllWithPaging(int page, int amount) {
+            const string sql = "SELECT * FROM \"MealReservation\" INNER JOIN \"Meal\" M on \"MealReservation\".\"MealId\" = M.\"Id\" INNER JOIN \"Users\" U on \"MealReservation\".\"UserId\" = U.\"Id\" ORDER BY M.\"Date\" DESC LIMIT @amount OFFSET @skip;";
 
             var par = new List<DbParameter> {
                 new NpgsqlParameter("amount", amount),
                 new NpgsqlParameter("skip", amount * page),
-                new NpgsqlParameter("order", byDateAscending ? "ASC" : "DESC")
             };
             return datamapper.MultiItemCommand(sql, par);
         }

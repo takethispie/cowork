@@ -31,7 +31,7 @@ namespace cowork.test.InMemoryRepositories {
 
 
         //cant use date 
-        public List<MealBooking> GetAllWithPaging(int page, int amount, bool byDateAscending) {
+        public List<MealBooking> GetAllWithPaging(int page, int amount) {
             return MealBookings.Skip(page * amount).Take(amount).ToList();
         }
 

@@ -76,7 +76,7 @@ namespace cowork.Controllers.Cowork {
 
         [HttpGet("WithPaging/{page}/{amount}")]
         public IActionResult WithPaging(int page, int amount) {
-            var result = new GetMealBookingsWithPaging(Repository, page, amount, true).Execute();
+            var result = new GetMealBookingsWithPaging(Repository, page, amount).Execute();
             return Ok(result);
         }
 
