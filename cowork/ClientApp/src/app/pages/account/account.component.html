@@ -8,7 +8,7 @@
 <ion-content color="dark">
     <ion-progress-bar *ngIf="loading.Loading" type="indeterminate"></ion-progress-bar>
     <span [ngSwitch]="GetTypeName(auth.UserType)">
-        <account-user *ngSwitchCase="'User'"></account-user>
+        <account-user [Refresher]="Refresher" *ngSwitchCase="'User'"></account-user>
         <account-staff [Refresher]="Refresher" *ngSwitchCase="'Staff'"></account-staff>
         <account-admin *ngSwitchCase="'Admin'"></account-admin>
     </span>
