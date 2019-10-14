@@ -9,18 +9,16 @@ namespace cowork.usecases.MealBooking {
         private readonly IMealBookingRepository mealBookingRepository;
         public readonly int Page;
         public readonly int Amount;
-        public readonly bool ByDateDescending;
 
-        public GetMealBookingsWithPaging(IMealBookingRepository mealBookingRepository, int page, int amount, bool byDateDescending) {
+        public GetMealBookingsWithPaging(IMealBookingRepository mealBookingRepository, int page, int amount) {
             this.mealBookingRepository = mealBookingRepository;
             Page = page;
             Amount = amount;
-            ByDateDescending = byDateDescending;
         }
 
 
         public IEnumerable<domain.MealBooking> Execute() {
-            return mealBookingRepository.GetAllWithPaging(Page, Amount, ByDateDescending);
+            return mealBookingRepository.GetAllWithPaging(Page, Amount);
         }
 
     }

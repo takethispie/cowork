@@ -4,14 +4,12 @@
     <ion-col>Id du personnel</ion-col>
     <ion-col>Id du ticket</ion-col>
     <ion-col>
-      <ion-buttons>
         <ion-button size="small" (click)="dataHandler.AddItem()">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
         <ion-button size="small" (click)="dataHandler.Refresh()">
           <ion-icon name="refresh"></ion-icon>
         </ion-button>
-      </ion-buttons>
     </ion-col>
   </ion-row>
   <ion-row *ngFor="let row of dataHandler.Data">

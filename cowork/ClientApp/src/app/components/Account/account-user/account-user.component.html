@@ -10,9 +10,9 @@
                     <ion-item-divider>
                         <ion-label> Coût mensuel</ion-label>
                     </ion-item-divider>
-                    <ion-item *ngIf="!userSub.FixedContract"> {{ userSub.Type.MonthlyFeeContractFree }}Euros/mois
+                    <ion-item *ngIf="!userSub.FixedContract"> {{ userSub.Type.MonthlyFeeContractFree }}€/mois
                     </ion-item>
-                    <ion-item *ngIf="userSub.FixedContract"> {{ userSub.Type.MonthlyFeeFixedContract }}Euros/mois
+                    <ion-item *ngIf="userSub.FixedContract"> {{ userSub.Type.MonthlyFeeFixedContract }}€/mois
                     </ion-item>
                     <span *ngIf="userSub.FixedContract">
                             <ion-item-divider>

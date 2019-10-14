@@ -19,7 +19,7 @@ namespace cowork.usecases.Meal {
 
 
         public IEnumerable<domain.Meal> Execute() {
-            return mealRepository.GetAllFromDateAndPlace(DateTime, PlaceId);
+            return mealRepository.GetAllFromPlaceStartingAtDate(PlaceId, DateTime);
         }
 
     }
