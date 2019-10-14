@@ -16,13 +16,11 @@ import {ToastService} from '../../services/toast.service';
   styleUrls: ['reservation.component.scss']
 })
 export class ReservationTabPage implements OnInit {
-  public userSub: Subscription;
   public bookedRooms: RoomBooking[];
   public rooms: Room[];
 
   constructor(public auth: AuthService, public loading: LoadingService,
               public roomService: RoomService, public toast: ToastService) {
-    this.userSub = this.auth.Subscription;
   }
 
   ngOnInit() {
@@ -33,9 +31,8 @@ export class ReservationTabPage implements OnInit {
   }
 
   Refresh() {
-    if(this.userSub == null) return;
     this.loading.Loading = true;
-    this.roomService.AllFromPlace(this.userSub.Place.Id).subscribe({
+    this.roomService.AllFromPlace(this.auth.PlaceId).subscribe({
       next: res => this.rooms = res,
       error: () => {
         this.toast.PresentToast("Une erreur est survenue lors du chargement des salles")

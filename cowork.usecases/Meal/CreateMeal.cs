@@ -1,4 +1,5 @@
-﻿using cowork.domain.Interfaces;
+﻿using System;
+using cowork.domain.Interfaces;
 using cowork.usecases.Meal.Models;
 
 namespace cowork.usecases.Meal {
@@ -11,7 +12,8 @@ namespace cowork.usecases.Meal {
 
         public CreateMeal(IMealRepository mealRepository, MealInput meal) {
             this.mealRepository = mealRepository;
-            Meal = new domain.Meal(meal.Date, meal.Description, meal.PlaceId);
+            var date = new DateTime(meal.Date.Year, meal.Date.Month, meal.Date.Day);
+            Meal = new domain.Meal(date, meal.Description, meal.PlaceId);
         }
 
 

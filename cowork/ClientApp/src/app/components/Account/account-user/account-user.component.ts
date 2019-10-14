@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from '../../../models/Subscription';
 import {MealBooking} from '../../../models/MealBooking';
 import {RoomBooking} from '../../../models/RoomBooking';
@@ -17,14 +17,16 @@ import {SubscriptionCreatorComponent} from '../../Subscription/subscription-crea
 import {PlacePickerComponent} from '../../Place/place-picker/place-picker.component';
 import {Place} from '../../../models/Place';
 import {TimeSlot} from '../../../models/TimeSlot';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'account-user',
     templateUrl: './account-user.component.html',
     styleUrls: ['./account-user.component.scss'],
 })
-export class AccountUserComponent {
+export class AccountUserComponent implements OnInit{
 
+    @Input() Refresher: Observable<object> = new Observable<object>();
     public userSub: Subscription;
     public userMeals: MealBooking[];
     public roomBookings: RoomBooking[];
@@ -37,10 +39,16 @@ export class AccountUserComponent {
     }
 
 
+    ngOnInit(): void {
+        this.Refresher.subscribe({
+            next: () => this.load()
+        });
+    }
 
-    ionViewWillEnter() {
+
+    load() {
         this.DaysBeforeExpiration = this.GetSubscriptionExpirationDate(this.userSub.LatestRenewal as unknown as string, this.userSub.Type);
-        if(this.userSub.LatestRenewal.diffNow("days").days < 30) {
+        if(this.DaysBeforeExpiration < 30) {
             this.toast.PresentToast("Attention votre abonnement sera expiré à la fin du mois !")
         }
         this.loading.Loading = true;
