@@ -15,7 +15,7 @@ namespace cowork.test.Usercases.RoomBookingTests {
         [Test]
         public void ShouldCreateRoombooking() {
 
-            var date = new DateTime(2019, 10, 2, 8, 0,0);
+            var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day, 8, 0, 0, 0);
             var input = new CreateRoomBookingInput(date, date.AddHours(1), 0, 0);
             var domain = new RoomBooking(input.Start, input.End, input.RoomId, input.ClientId);
             var timeSlotRepo = new Mock<ITimeSlotRepository>();
