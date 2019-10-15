@@ -160,6 +160,7 @@ export class AccountUserComponent implements OnInit{
                     this.auth.PlaceId = res.data.Id;
                     this.auth.Subscription.PlaceId = res.data.Id;
                     this.auth.Subscription.Place = res.data;
+                    localStorage.setItem('PlaceId', res.data.Id.toString());
                 }
                 else this.toast.PresentToast("Erreur lors du changement d'espace Co'Work");
             });

@@ -13,7 +13,7 @@ import {WareBooking} from '../../models/WareBooking';
 import {CalendarBooking} from './CalendarBooking';
 import {Ware} from '../../models/Ware';
 import {colors} from './colors';
-import {TimeSlotService} from '../../services/time-slot.service';
+import {WareService} from '../../services/ware.service';
 
 @Component({
   selector: 'app-ware',
@@ -27,13 +27,14 @@ export class WareComponent {
   view: CalendarView = CalendarView.Week;
   refresh: Subject<any> = new Subject();
 
-  constructor(private modalCtrl: ModalController, public loading: LoadingService, public timeSlotService: TimeSlotService,
+  constructor(private modalCtrl: ModalController, public loading: LoadingService, public ware: WareService,
               private toast: ToastService, public auth: AuthService, private wareBooking: WareBookingService) {
 
   }
 
   ionViewWillEnter() {
-    this.loadEvents(this.SelectedWare.Id, DateTime.fromJSDate(this.viewDate));
+    this.events = [];
+    this.refresh.next();
   }
 
 
@@ -61,6 +62,10 @@ export class WareComponent {
   }
 
   async HourSegmentClicked(ev: {date: Date}) {
+    if(this.SelectedWare == null) {
+      this.toast.PresentToast("Aucun matériel selectionné");
+      return;
+    }
     if(ev.date.valueOf() < DateTime.local().valueOf() || ev.date.valueOf() < DateTime.local().valueOf()) return;
     const newEvent = this.CreateBaseCalendarEvent(ev);
     const wareBooking = this.InitWareBooking(newEvent);
