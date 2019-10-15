@@ -14,7 +14,7 @@ namespace cowork.test.Usercases.WareBookingTests {
 
         [Test]
         public void ShouldCreateWareBooking() {
-            var now = new DateTime(2019, 10, 2, 10, 0, 0, 0);
+            var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day, 10, 0, 0, 0);
             var input = new CreateWareBookingInput(0, 0, now, now.Date.AddHours(1));
             var domain = new WareBooking( 0, 0, now, now.AddHours(1));
             
