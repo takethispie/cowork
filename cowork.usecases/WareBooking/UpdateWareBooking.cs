@@ -21,7 +21,7 @@ namespace cowork.usecases.WareBooking {
 
 
         public long Execute() {
-            if (WareBooking.Start.Day != WareBooking.End.Date.Day) return -1;
+            if (WareBooking.Start.Day != WareBooking.End.Date.Day || WareBooking.Start.Date < DateTime.Today) return -1;
             var ware = wareRepository.GetById(WareBooking.WareId);
             var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
