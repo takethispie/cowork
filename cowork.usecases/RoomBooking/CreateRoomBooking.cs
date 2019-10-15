@@ -22,19 +22,19 @@ namespace cowork.usecases.RoomBooking {
 
 
         public long Execute() {
-            if (Input.Start.Day != Input.End.Date.Day) return -1;
-            
+            if (Input.Start.Day != Input.End.Date.Day || Input.Start.Date < DateTime.Today) return -1;
             var placeId = roomRepository.GetById(Input.RoomId).PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == Input.Start.DayOfWeek);
             if (Input.Start.Hour < openings.StartHour || new TimeSpan(0, Input.End.Hour, Input.End.Minute, 0) 
                 > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))
                 throw new Exception("Erreur: Impossible de réserver une salle hors des heures d'ouvertures");
-            var otherSlots = roomBookingRepository.GetAllFromGivenDate(Input.Start.Date);
+            var date = new DateTime(Input.Start.Year, Input.Start.Month, Input.Start.Day);
+            var otherSlots = roomBookingRepository.GetAllFromGivenDate(date);
             if (otherSlots != null) {
-                var overlapping = otherSlots.Where(slot => slot.End >= Input.End && slot.Start <= Input.Start)
-                    .Any(slot => Input.RoomId == slot.RoomId || slot.ClientId == Input.ClientId);
-                if (overlapping) return -1;
+                var noOverlap = otherSlots.Where(slot => Input.RoomId == slot.RoomId || slot.ClientId == Input.ClientId)
+                    .All((slot => slot.End <= Input.Start || slot.Start >= Input.End));
+                if (!noOverlap) return -1;
             }
             var roomBooking = new domain.RoomBooking(Input.Start, Input.End, Input.RoomId, Input.ClientId);
             return roomBookingRepository.Create(roomBooking);

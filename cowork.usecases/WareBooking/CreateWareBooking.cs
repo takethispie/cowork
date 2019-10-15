@@ -23,11 +23,11 @@ namespace cowork.usecases.WareBooking {
 
 
         public long Execute() {
-            if (Input.Start.Day != Input.End.Day) return -1;
-            var existing = wareBookingRepository.GetStartingAt(Input.Start.Date)
+            if (Input.Start.Day != Input.End.Day || Input.Start.Date < DateTime.Today) return -1;
+            var noConflict = wareBookingRepository.GetStartingAt(Input.Start.Date)
                 .Where(booking => booking.WareId == Input.WareId)
-                .Any(slot => slot.End >= Input.End && slot.Start <= Input.Start);
-            if (existing) throw new Exception("Erreur: créneau déjà pris");
+                .All(slot => slot.End <= Input.Start || slot.Start >= Input.End);
+            if (!noConflict) throw new Exception("Erreur: créneau déjà pris");
             var ware = wareRepository.GetById(Input.WareId);
             var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
