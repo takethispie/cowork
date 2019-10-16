@@ -28,7 +28,7 @@ namespace cowork.test.Usercases.WareBookingTests {
             
             var mockTimeSlotRepo = new Mock<ITimeSlotRepository>();
             mockTimeSlotRepo.Setup(m => m.GetAllOfPlace(0)).Returns(new List<TimeSlot> {
-                new TimeSlot(DayOfWeek.Wednesday, 8, 0, 20, 0, 0)
+                new TimeSlot(now.DayOfWeek, 8, 0, 20, 0, 0)
             });
 
             var res = new CreateWareBooking(mockWareBookingRepo.Object, mockTimeSlotRepo.Object, mockWareRepo.Object,

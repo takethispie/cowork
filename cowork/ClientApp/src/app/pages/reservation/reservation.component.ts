@@ -1,12 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {SubscriptionService} from '../../services/subscription.service';
-import {Subscription} from '../../models/Subscription';
-import {RoomBookingService} from '../../services/room-booking.service';
-import {RoomBooking} from '../../models/RoomBooking';
 import {Room} from '../../models/Room';
 import {RoomService} from '../../services/room.service';
-import {RoomType} from '../../models/RoomType';
 import {LoadingService} from '../../services/loading.service';
 import {ToastService} from '../../services/toast.service';
 
@@ -16,7 +11,6 @@ import {ToastService} from '../../services/toast.service';
   styleUrls: ['reservation.component.scss']
 })
 export class ReservationTabPage implements OnInit {
-  public bookedRooms: RoomBooking[];
   public rooms: Room[];
 
   constructor(public auth: AuthService, public loading: LoadingService,

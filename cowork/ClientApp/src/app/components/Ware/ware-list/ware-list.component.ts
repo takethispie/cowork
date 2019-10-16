@@ -52,10 +52,10 @@ export class WareListComponent implements OnInit {
     LoadData(event) {
         if(this.PlaceId == null) return;
         this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
+            if(event != null) event.target.complete();
             if(res.length === 0) return;
             res.forEach(ware => this.Wares.push(ware));
             this.page++;
-            if(event != null) event.target.complete();
         });
     }
 
