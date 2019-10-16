@@ -25,6 +25,7 @@ namespace cowork.usecases.RoomBooking {
             var placeId = roomRepository.GetById(roomBooking.RoomId).PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == roomBooking.Start.DayOfWeek);
+            if (openings == null) return -1;
             if (roomBooking.Start.Hour < openings.StartHour || new TimeSpan(0, roomBooking.End.Hour, roomBooking.End.Minute, 0) 
                 > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))
                 throw new Exception("Erreur: Impossible de réserver du matériel hors des heures d'ouvertures");

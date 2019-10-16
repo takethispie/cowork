@@ -13,8 +13,8 @@ export class TimeSlot {
     public Day: WeekDay;
     
     public static OrderByDay(slots: TimeSlot[]) {
-        let list = new List<TimeSlot>(slots);
+        const list = new List<TimeSlot>(slots);
         if(list.Count() === 0) return list.ToArray(); 
-        return list.Where(sl => sl.Day != 0).OrderBy(slot => slot.Day).ToArray();
+        return list.OrderBy(slot => slot.Day).ToArray();
     }
 }
