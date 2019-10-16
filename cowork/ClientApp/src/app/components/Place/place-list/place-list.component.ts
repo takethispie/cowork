@@ -38,6 +38,6 @@ export class PlaceListComponent implements OnInit {
 
   OrderByDay(openedTimes: TimeSlot[]) {
     if(openedTimes == null || openedTimes.length === 0) return [];
-    return TimeSlot.OrderByDay(openedTimes).map(ts => this.timeSlotService.TimeSlotFromUtc(ts));
+    return TimeSlot.OrderByDay(openedTimes);
   }
 }
