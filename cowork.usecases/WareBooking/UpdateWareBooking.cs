@@ -26,6 +26,7 @@ namespace cowork.usecases.WareBooking {
             var placeId = ware.PlaceId;
             var openings = timeSlotRepository.GetAllOfPlace(placeId)
                 .Find(op => op.Day == WareBooking.Start.DayOfWeek);
+            if (openings == null) return -1;
             if (WareBooking.Start.Hour < openings.StartHour || new TimeSpan(0, 
                     WareBooking.End.Hour, WareBooking.End.Minute, 0) 
                 > new TimeSpan(0, openings.EndHour, openings.EndMinutes, 0))

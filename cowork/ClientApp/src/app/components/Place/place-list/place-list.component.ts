@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Place} from '../../../models/Place';
 import {TimeSlot} from '../../../models/TimeSlot';
+import {TimeSlotService} from '../../../services/time-slot.service';
 
 @Component({
   selector: 'place-list',
@@ -13,7 +14,7 @@ export class PlaceListComponent implements OnInit {
   @Input() SelectedId: number;
   @Output() PlaceChosen: EventEmitter<Place> = new EventEmitter();
 
-  constructor() {}
+  constructor(public timeSlotService: TimeSlotService) {}
 
   Choose(item: Place) {
     if(this.SelectedId === item.Id) this.PlaceChosen.emit(null);
@@ -36,6 +37,7 @@ export class PlaceListComponent implements OnInit {
   }
 
   OrderByDay(openedTimes: TimeSlot[]) {
-    return TimeSlot.OrderByDay(openedTimes);
+    if(openedTimes == null || openedTimes.length === 0) return [];
+    return TimeSlot.OrderByDay(openedTimes).map(ts => this.timeSlotService.TimeSlotFromUtc(ts));
   }
 }

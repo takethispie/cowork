@@ -126,6 +126,7 @@ export class AccountUserComponent implements OnInit{
                         if(subId !== -1) this.toast.PresentToast("Abonnement enrengistré avec succès");
                         else this.toast.PresentToast("Erreur lors de l'abonnement");
                         this.loading.Loading = false;
+                        this.load();
                     },
                     error: err => {
                         this.toast.PresentToast("Erreur lors de la communication avec le serveur");
@@ -150,6 +151,7 @@ export class AccountUserComponent implements OnInit{
                     this.auth.Subscription = this.userSub;
                     this.auth.PlaceId = res.data.Place.Id;
                     this.toast.PresentToast("Abonnement enrengistré avec succès");
+                    this.load();
                 } else this.toast.PresentToast("Erreur lors de l'abonnement");
             });
         });
@@ -173,6 +175,7 @@ export class AccountUserComponent implements OnInit{
                     this.auth.Subscription.PlaceId = res.data.Id;
                     this.auth.Subscription.Place = res.data;
                     localStorage.setItem('PlaceId', res.data.Id.toString());
+                    this.load();
                 }
                 else this.toast.PresentToast("Erreur lors du changement d'espace Co'Work");
             });
