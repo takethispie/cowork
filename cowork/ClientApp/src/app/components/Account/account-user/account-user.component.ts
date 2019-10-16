@@ -29,6 +29,7 @@ export class AccountUserComponent implements OnInit{
     @Input() Refresher: Observable<object> = new Observable<object>();
     public userSub: Subscription;
     public userMeals: MealBooking[];
+    public openingTimes: TimeSlot[];
     public roomBookings: RoomBooking[];
     public DaysBeforeExpiration: number;
 
@@ -69,6 +70,17 @@ export class AccountUserComponent implements OnInit{
             },
             error: err => {
                 this.toast.PresentToast("Une erreur est survenue lors de la récupération des réservations de repas");
+                this.loading.Loading = false;
+            },
+            complete: () => this.loading.Loading = false
+        });
+        this.loading.Loading = true;
+        this.timeSlotService.AllFromPlace(this.auth.PlaceId).subscribe({
+            next: value => {
+               this.openingTimes = value;
+            },
+            error: err => {
+                this.toast.PresentToast("Une erreur est survenue lors de la récupération des heures d'ouverture");
                 this.loading.Loading = false;
             },
             complete: () => this.loading.Loading = false
@@ -160,6 +172,7 @@ export class AccountUserComponent implements OnInit{
                     this.auth.PlaceId = res.data.Id;
                     this.auth.Subscription.PlaceId = res.data.Id;
                     this.auth.Subscription.Place = res.data;
+                    localStorage.setItem('PlaceId', res.data.Id.toString());
                 }
                 else this.toast.PresentToast("Erreur lors du changement d'espace Co'Work");
             });

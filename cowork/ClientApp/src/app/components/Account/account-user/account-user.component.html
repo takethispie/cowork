@@ -111,7 +111,7 @@
                             <ion-item>
                                 <ion-label>
                                     <h2><b>{{ userSub.Place.Name }}</b></h2>
-                                    <p *ngFor="let time of OrderByDay(userSub.Place.OpenedTimes)">
+                                    <p *ngFor="let time of OrderByDay(openingTimes)">
                                         {{ GetWeekDayName(time.Day) }}
                                         {{ time.StartHour.toString().padStart(2, '0') + ":" + time.StartMinutes.toString().padStart(2, '0') }}
                                         -

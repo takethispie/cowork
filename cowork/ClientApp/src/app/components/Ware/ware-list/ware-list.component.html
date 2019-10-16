@@ -4,7 +4,7 @@
   </ion-item>
   <ion-item *ngFor="let ware of Wares" (click)="ItemSelected(ware)">
     <ion-label>
-      <h3>{{ ware.Name }}</h3>
+      <h3>{{ ware.Name }} - {{ ware.Id }}</h3>
       <p>{{ ware.Description }}</p>
     </ion-label>
   </ion-item>

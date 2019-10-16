@@ -20,7 +20,7 @@ namespace cowork.test.Usercases.RoomBookingTests {
             var domain = new RoomBooking(input.Start, input.End, input.RoomId, input.ClientId);
             var timeSlotRepo = new Mock<ITimeSlotRepository>();
             timeSlotRepo.Setup(m => m.GetAllOfPlace(0)).Returns(new List<TimeSlot> {
-                new TimeSlot(DayOfWeek.Wednesday, 8, 0, 20, 0, 0)
+                new TimeSlot(date.DayOfWeek, 8, 0, 20, 0, 0)
             });
             
             var roomRepo = new Mock<IRoomRepository>();

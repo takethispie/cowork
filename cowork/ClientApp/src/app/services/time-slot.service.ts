@@ -24,7 +24,7 @@ export class TimeSlotService {
   }
 
 
-  private TimeSlotFromUtc(timeslot: TimeSlot) {
+  public TimeSlotFromUtc(timeslot: TimeSlot) {
     const start = DateTime.utc().set({ hour: timeslot.StartHour, minute: timeslot.StartMinutes, second: 0 ,millisecond: 0}).toLocal();
     const end = DateTime.utc().set({ hour: timeslot.EndHour, minute: timeslot.EndMinutes, second: 0, millisecond: 0}).toLocal();
     timeslot.StartHour = start.hour;
