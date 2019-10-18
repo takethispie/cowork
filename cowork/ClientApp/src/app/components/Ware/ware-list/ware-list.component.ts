@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Ware} from '../../../models/Ware';
 import {WareService} from '../../../services/ware.service';
 import {Observable} from 'rxjs';
+import {UserType} from '../../../models/UserType';
 
 @Component({
     selector: 'ware-list',
@@ -13,6 +14,7 @@ export class WareListComponent implements OnInit {
     @Input() UserId: number;
     @Input() ShowUserRentedWare: Ware[];
     @Input() PlaceId: number;
+    @Input() UserType: UserType;
     @Input() Refresher: Observable<void>;
     @Output() WareSelected: EventEmitter<Ware> = new EventEmitter<Ware>();
     @Output() FirstWare: EventEmitter<Ware> = new EventEmitter<Ware>();
@@ -33,7 +35,13 @@ export class WareListComponent implements OnInit {
         if(this.PlaceId == null) return;
         this.page = 0;
         this.Wares = [];
-        this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
+        if(this.UserType === UserType.Staff || this.UserType === UserType.Admin) {
+            this.wareService.All().subscribe(res => {
+                if(res.length === 0) return;
+                this.Wares = res;
+                this.FirstWare.emit(res[0]);
+            });
+        } else this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
             if(res.length === 0) return;
             res.forEach(ware => this.Wares.push(ware));
             this.FirstWare.emit(res[0]);
@@ -51,7 +59,13 @@ export class WareListComponent implements OnInit {
 
     LoadData(event) {
         if(this.PlaceId == null) return;
-        this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
+        if(this.UserType === UserType.Staff || this.UserType === UserType.Admin) {
+            this.wareService.All().subscribe(res => {
+                if(event != null) event.target.complete();
+                if(res.length === 0) return;
+                this.Wares = res;
+            });
+        } else this.wareService.AllFromPlaceWithPaging(this.PlaceId, this.amount, this.page).subscribe(res => {
             if(event != null) event.target.complete();
             if(res.length === 0) return;
             res.forEach(ware => this.Wares.push(ware));

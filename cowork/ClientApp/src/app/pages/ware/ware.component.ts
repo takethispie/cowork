@@ -14,6 +14,7 @@ import {CalendarBooking} from './CalendarBooking';
 import {Ware} from '../../models/Ware';
 import {colors} from './colors';
 import {WareService} from '../../services/ware.service';
+import {UserType} from '../../models/UserType';
 
 @Component({
   selector: 'app-ware',
@@ -37,6 +38,11 @@ export class WareComponent {
     this.refresh.next();
   }
 
+  showStaffView(event: (CalendarBooking & CalendarEvent)): (CalendarBooking & CalendarEvent) {
+    event.title = "(" + event.UserId + ") " + event.User.FirstName + " " + event.User.LastName;
+    return event;
+  }
+
 
   loadEvents(wareId: number, dateTime: DateTime) {
     if(this.SelectedWare == null) return;
@@ -47,6 +53,9 @@ export class WareComponent {
           if(wareBooking.UserId === this.auth.UserId) return this.AddEditionProperties(ret);
           if(wareBooking.UserId === -1) ret.color = colors.red;
           else ret.color = colors.blue;
+          if(this.auth.UserType === UserType.Staff || this.auth.UserType == UserType.Admin) {
+            return this.showStaffView(ret);
+          }
           return ret;
         }))
     ).subscribe({
